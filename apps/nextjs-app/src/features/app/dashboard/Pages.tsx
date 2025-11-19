@@ -7,11 +7,17 @@ import { useEffect } from 'react';
 import { useBaseResource } from '../hooks/useBaseResource';
 import type { IBaseResourceDashboard } from '../hooks/useBaseResource';
 import { useInitializationZodI18n } from '../hooks/useInitializationZodI18n';
+import { DashboardContext } from './context';
 import { DashboardHeader } from './DashboardHeader';
 import { DashboardMain } from './DashboardMain';
 import { EmptyDashboard } from './EmptyDashboard';
 
-export function DashboardPage() {
+interface IDashboardPageProps {
+  chatComponent?: React.ReactNode;
+}
+
+export function DashboardPage(props: IDashboardPageProps = {}) {
+  const { chatComponent } = props;
   const baseId = useBaseId() as string;
   const isReadOnlyPreview = useIsReadOnlyPreview();
   useInitializationZodI18n();
@@ -46,9 +52,11 @@ export function DashboardPage() {
   const dashboardId = dashboardQueryId ?? dashboardList?.[0]?.id;
 
   return (
-    <div className="flex h-full flex-col">
-      <DashboardHeader dashboardId={dashboardId} />
-      <DashboardMain dashboardId={dashboardId} />
-    </div>
+    <DashboardContext.Provider value={{ chatComponent }}>
+      <div className="flex h-full flex-col">
+        <DashboardHeader dashboardId={dashboardId} />
+        <DashboardMain dashboardId={dashboardId} />
+      </div>
+    </DashboardContext.Provider>
   );
 }

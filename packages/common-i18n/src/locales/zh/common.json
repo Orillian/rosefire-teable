@@ -1012,6 +1012,7 @@
     "baseDescription": "恢复过去{{retentionDays}}天内从该数据库中删除的资源"
   },
   "pluginCenter": {
+    "addPluginTitle": "添加插件",
     "pluginUrlEmpty": "插件未设置 URL",
     "install": "安装",
     "publisher": "发布者",

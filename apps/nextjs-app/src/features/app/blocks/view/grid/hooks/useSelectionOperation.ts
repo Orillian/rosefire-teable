@@ -1151,6 +1151,8 @@ export const useSelectionOperation = (props?: {
 
       const { cellValues } = getCellPasteInfo(e);
 
+      console.log('cellValuescellValues', cellValues);
+
       const pasteRecordLength = cellValues?.length ?? 0;
       const effectRows = getEffectRows(selection, rowCount);
       const affectedRows = Math.max(pasteRecordLength, effectRows);
