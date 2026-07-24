@@ -58,7 +58,6 @@
     "deleteTip": "Вы уверены, что хотите удалить \"{{name}}\"?",
     "refresh": "Обновить",
     "login": "Войти",
-    "useTemplate": "Использовать шаблон",
     "copyToMySpace": "Copy to my space",
     "saveToMySpace": "Save to my space",
     "supportSaveCopy": "Support saving a copy",
@@ -96,13 +95,6 @@
     "loadMore": "Загрузить Больше",
     "allTemplatesLoaded": "Все шаблоны загружены",
     "createTemplate": "Создать Шаблон",
-    "useTemplateDialog": {
-      "title": "Выберите пространство",
-      "description": "Выберите пространство для шаблона",
-      "noSpaceDescription": "You don't have any spaces yet. Create one to continue.",
-      "newSpacePlaceholder": "Space name",
-      "createSpace": "Create"
-    },
     "promptBox": {
       "placeholder": "Создайте бизнес-приложение с Teable",
       "start": "Начать",
@@ -169,77 +161,6 @@
     "allSetting": "Настройки пространства и личные настройки",
     "personal": {
       "title": "Личное"
-    },
-    "templateAdmin": {
-      "title": "Управление шаблонами",
-      "noData": "Нет данных",
-      "importing": "Импорт...",
-      "usageCount": "Количество использований: {{count}}",
-      "useTemplate": "Использовать этот шаблон",
-      "createdBy": "от {{user}}",
-      "backToTemplateList": "Вернуться к списку шаблонов",
-      "tips": {
-        "errorCategoryName": "Категория не существует или была удалена",
-        "needSnapshot": "Перед публикацией создайте снимок, название и описание шаблона не могут быть пустыми",
-        "needPublish": "Опубликуйте шаблон перед установкой в рекомендуемые",
-        "needBaseSource": "Выберите базу-источник перед созданием снимка",
-        "forbiddenUpdateSystemTemplate": "Системный шаблон нельзя изменить",
-        "addCategoryTips": "Сначала введите название категории в поле поиска.",
-        "categoryNamePlaceholder": "Введите название категории",
-        "duplicateCategoryName": "Название категории уже существует"
-      },
-      "category": {
-        "menu": {
-          "getStarted": "Начать",
-          "recommended": "Рекомендуемые",
-          "all": "Все",
-          "browseByCategory": "Просмотр по категориям"
-        }
-      },
-      "header": {
-        "cover": "Обложка",
-        "name": "Название",
-        "description": "Описание",
-        "markdownDescription": "Описание в markdown",
-        "category": "Категория",
-        "isSystem": "Системный",
-        "source": "Источник",
-        "status": "Опубликован",
-        "publishSnapshot": "Опубликовать снимок",
-        "snapshotTime": "Время снимка",
-        "actions": "Действия",
-        "featured": "Рекомендуемый",
-        "createdBy": "Создан",
-        "userNonExistent": "Пользователь не существует",
-        "preview": "Предпросмотр",
-        "usage": "Использование",
-        "visit": "Посещения"
-      },
-      "actions": {
-        "title": "Действия",
-        "publish": "Опубликовать",
-        "delete": "Удалить",
-        "duplicate": "Дублировать",
-        "preview": "Предпросмотр",
-        "use": "Использовать",
-        "pinTop": "Закрепить сверху",
-        "addCategory": "Добавить категорию",
-        "selectCategory": "Выбрать категорию",
-        "viewTemplate": "Просмотреть шаблон",
-        "manageCategory": "Управление категориями"
-      },
-      "relatedTemplates": "Связанные шаблоны",
-      "noImage": "Нет изображения",
-      "baseSelectPanel": {
-        "title": "Выберите источник шаблона",
-        "description": "Выберите базу для шаблона",
-        "confirm": "Подтвердить",
-        "search": "Поиск...",
-        "cancel": "Отмена",
-        "selectBase": "Выбрать базу",
-        "createTemplate": "Создать шаблон",
-        "abnormalBase": "База не существует или была удалена"
-      }
     },
     "back": "Назад на главную",
     "account": {
@@ -370,8 +291,7 @@
     },
     "nav": {
       "settings": "Настройки",
-      "logout": "Выйти",
-      "contactSupport": "Связаться с поддержкой"
+      "logout": "Выйти"
     },
     "integration": {
       "title": "Интеграции",
@@ -397,7 +317,6 @@
     "authorityMatrix": "Матрица полномочий",
     "design": "Дизайн",
     "adminPanel": "Системное администрирование",
-    "license": "Самостоятельная лицензия",
     "instanceId": "ID экземпляра",
     "beta": "Бета",
     "trash": "Корзина",
@@ -509,18 +428,9 @@
     "levelTips": "Это пространство сейчас на тарифе {{level}}",
     "enterpriseFeature": "Функция Enterprise",
     "automationRequiresUpgrade": "Обновитесь до Enterprise Edition (EE) чтобы включить автоматизацию",
-    "authorityMatrixRequiresUpgrade": "Обновитесь до Enterprise Edition (EE) чтобы включить матрицу полномочий",
     "viewPricing": "Посмотреть цены",
     "billable": "Платный",
     "billableByAuthorityMatrix": "Биллинг, созданный матрицей полномочий",
-    "licenseExpiredGracePeriod": "Срок действия вашей лицензии для самостоятельного размещения истек и будет понижена до бесплатного плана {{expiredTime}}. Пожалуйста, обновите лицензию, чтобы сохранить доступ к премиум-функциям.",
-    "licenseAutoFetchFailed": "Не удалось автоматически продлить лицензию. До понижения осталось {{days}} дн. льготного периода.",
-    "licenseAutoFetchRetryFailed": "Автопродление снова не удалось. Проверьте подключение к серверу Teable или обновите лицензию вручную.",
-    "licenseExpiredGracePeriodDays": "Срок действия лицензии истёк. До понижения осталось {{days}} дн. льготного периода.",
-    "spaceSubscriptionModal": {
-      "title": "Обновить тарифный план пространства",
-      "description": "Вы можете обновить только те пространства, где вы являетесь владельцем"
-    },
     "status": {
       "active": "Активно",
       "canceled": "Отменено",

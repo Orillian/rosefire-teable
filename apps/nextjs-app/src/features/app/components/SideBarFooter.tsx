@@ -10,8 +10,6 @@ import { NotificationsManage } from '@/features/app/components/notifications/Not
 import { UserAvatar } from '@/features/app/components/user/UserAvatar';
 import { SettingDialog } from '@overridable/SettingDialog';
 import { DuplicateBaseModal } from '../blocks/base/duplicate/DuplicateBaseModal';
-import { TemplateCreateBaseModal } from '../blocks/base/duplicate/TemplateCreateBaseModal';
-import { SpaceSubscriptionModal } from '../blocks/billing/SpaceSubscriptionModal';
 import { useBrand } from '../hooks/useBrand';
 import { PublicOperateButton } from './PublicOperateButton';
 import { UserNav } from './user/UserNav';
@@ -65,8 +63,6 @@ export const SideBarFooter: React.FC = () => {
         </UserNav>
         <SettingDialog spaceId={base?.spaceId} />
         <DuplicateBaseModal />
-        <TemplateCreateBaseModal />
-        <SpaceSubscriptionModal />
         <NotificationsManage />
       </div>
     </div>

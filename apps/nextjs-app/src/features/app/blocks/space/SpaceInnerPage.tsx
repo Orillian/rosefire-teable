@@ -28,7 +28,6 @@ import { SpaceActionBar } from '../../components/space/SpaceActionBar';
 import { SpaceRenaming } from '../../components/space/SpaceRenaming';
 import { useIsCloud } from '../../hooks/useIsCloud';
 import { useSetting } from '../../hooks/useSetting';
-import { useTemplateMonitor } from '../base/duplicate/useTemplateMonitor';
 import { BaseList } from './BaseList';
 import { DataDbBadge } from './DataDbBadge';
 import { StarButton } from './space-side-bar/StarButton';
@@ -38,7 +37,6 @@ export const SpaceInnerPage: React.FC = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const isCloud = useIsCloud();
-  useTemplateMonitor();
   const ref = useRef<HTMLDivElement>(null);
   const spaceId = router.query.spaceId as string;
   const { t } = useTranslation(spaceConfig.i18nNamespaces);
@@ -50,7 +48,7 @@ export const SpaceInnerPage: React.FC = () => {
   const [spaceName, setSpaceName] = useState<string>();
   const [settingModalOpen, setSettingModalOpen] = useState(false);
   const [settingDefaultTab, setSettingDefaultTab] = useState<SpaceSettingTab | PersonalSettingTab>(
-    SpaceSettingTab.Plan
+    SpaceSettingTab.General
   );
 
   const { data: space } = useQuery({
@@ -167,19 +165,11 @@ export const SpaceInnerPage: React.FC = () => {
   };
 
   useEffect(() => {
-    const { subscribeLevel, host, settingTab } = router.query;
+    const { settingTab } = router.query;
 
-    let tab: SpaceSettingTab | PersonalSettingTab | undefined;
-
-    if (subscribeLevel) {
-      if (host === 'self-hosted') {
-        tab = PersonalSettingTab.LicensePlan;
-      } else if (isCloud && space?.role === Role.Owner) {
-        tab = SpaceSettingTab.Plan;
-      }
-    } else if (settingTab) {
-      tab = settingTab as SpaceSettingTab;
-    }
+    const tab: SpaceSettingTab | PersonalSettingTab | undefined = settingTab
+      ? (settingTab as SpaceSettingTab)
+      : undefined;
 
     if (!tab) return;
 

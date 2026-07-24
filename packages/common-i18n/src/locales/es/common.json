@@ -57,7 +57,6 @@
     "deleteTip": "¿Está seguro de que desea eliminar \"{{name}}\"?",
     "refresh": "Actualizar",
     "login": "Iniciar sesión",
-    "useTemplate": "Usar plantilla",
     "copyToMySpace": "Copy to my space",
     "saveToMySpace": "Save to my space",
     "supportSaveCopy": "Support saving a copy",
@@ -96,13 +95,6 @@
     "loadMore": "Cargar Más",
     "allTemplatesLoaded": "Todas las plantillas cargadas",
     "createTemplate": "Crear Plantilla",
-    "useTemplateDialog": {
-      "title": "Seleccionar espacio",
-      "description": "Por favor seleccione un espacio para la plantilla",
-      "noSpaceDescription": "You don't have any spaces yet. Create one to continue.",
-      "newSpacePlaceholder": "Space name",
-      "createSpace": "Create"
-    },
     "promptBox": {
       "placeholder": "Construye tu aplicación empresarial con Teable",
       "start": "Iniciar",
@@ -297,8 +289,7 @@
     },
     "nav": {
       "settings": "Configuración",
-      "logout": "Cerrar sesión",
-      "contactSupport": "Contactar con soporte"
+      "logout": "Cerrar sesión"
     },
     "integration": {
       "title": "Integraciones",
@@ -340,75 +331,6 @@
           "desc": "Puede cerrar esta ventana ahora."
         }
       }
-    },
-    "templateAdmin": {
-      "title": "Administración de plantillas",
-      "noData": "Sin datos",
-      "importing": "Importando...",
-      "usageCount": "Recuento de uso: {{count}}",
-      "useTemplate": "Usar esta plantilla",
-      "createdBy": "por {{user}}",
-      "backToTemplateList": "Volver a la lista de plantillas",
-      "tips": {
-        "errorCategoryName": "La categoría no existe o fue eliminada",
-        "needSnapshot": "Por favor cree una instantánea antes de publicar, y el nombre y descripción de la plantilla no pueden estar vacíos",
-        "needPublish": "Por favor publique la plantilla antes de destacarla",
-        "needBaseSource": "Por favor seleccione una fuente Base antes de crear la instantánea",
-        "forbiddenUpdateSystemTemplate": "Las plantillas del sistema no se pueden modificar",
-        "addCategoryTips": "Por favor ingrese primero un nombre de categoría en el cuadro de búsqueda."
-      },
-      "category": {
-        "menu": {
-          "getStarted": "Comenzar",
-          "recommended": "Recomendado",
-          "all": "Todos",
-          "browseByCategory": "Explorar por categoría"
-        }
-      },
-      "header": {
-        "cover": "Portada",
-        "name": "Nombre",
-        "description": "Descripción",
-        "markdownDescription": "Descripción Markdown",
-        "category": "Categoría",
-        "isSystem": "Sistema",
-        "source": "Fuente",
-        "status": "Publicado",
-        "publishSnapshot": "Publicar instantánea",
-        "snapshotTime": "Hora de instantánea",
-        "actions": "Acciones",
-        "featured": "Destacado",
-        "createdBy": "Creado por",
-        "userNonExistent": "Usuario no existe",
-        "preview": "Vista previa",
-        "usage": "Uso",
-        "visit": "Visitas"
-      },
-      "actions": {
-        "title": "Acciones",
-        "publish": "Publicar",
-        "delete": "Eliminar",
-        "duplicate": "Duplicar",
-        "preview": "Vista previa",
-        "use": "Usar",
-        "pinTop": "Fijar arriba",
-        "addCategory": "Agregar categoría",
-        "selectCategory": "Seleccionar categoría",
-        "viewTemplate": "Ver plantilla",
-        "manageCategory": "Gestionar categorías"
-      },
-      "relatedTemplates": "Plantillas relacionadas",
-      "noImage": "Sin imagen",
-      "baseSelectPanel": {
-        "title": "Seleccionar fuente de plantilla",
-        "description": "Seleccione una Base como plantilla",
-        "confirm": "Confirmar",
-        "search": "Buscar...",
-        "cancel": "Cancelar",
-        "selectBase": "Seleccionar Base",
-        "createTemplate": "Crear plantilla",
-        "abnormalBase": "La base no existe o fue eliminada"
-      }
     }
   },
   "noun": {
@@ -423,7 +345,6 @@
     "authorityMatrix": "Matriz de Autoridad",
     "design": "Diseño",
     "adminPanel": "Administración del sistema",
-    "license": "Licencia autoalojada",
     "instanceId": "ID de Instancia",
     "beta": "Beta",
     "trash": "Papelera",
@@ -540,18 +461,9 @@
     "levelTips": "Este espacio se encuentra actualmente en el plan {{level}}",
     "enterpriseFeature": "Función Enterprise",
     "automationRequiresUpgrade": "Actualice a Enterprise Edition (EE) para habilitar la automatización",
-    "authorityMatrixRequiresUpgrade": "Actualice a Enterprise Edition (EE) para habilitar la matriz de autoridad",
     "viewPricing": "Ver precios",
     "billable": "Facturable",
     "billableByAuthorityMatrix": "Facturación generada por la matriz de permisos",
-    "licenseExpiredGracePeriod": "Su licencia autohospedada ha caducado y se degradará al plan gratuito el {{expiredTime}}. Actualice su licencia de inmediato para mantener el acceso a las funciones premium.",
-    "licenseAutoFetchFailed": "Error en la renovación automática de la licencia. Quedan {{days}} día(s) del período de gracia antes de la degradación.",
-    "licenseAutoFetchRetryFailed": "La renovación automática sigue fallando. Comprueba la conexión con el servidor de Teable o actualiza la licencia manualmente.",
-    "licenseExpiredGracePeriodDays": "La licencia ha caducado. Quedan {{days}} día(s) del período de gracia antes de la degradación.",
-    "spaceSubscriptionModal": {
-      "title": "Plan de suscripción de actualización de Space",
-      "description": "Solo puede actualizar los espacios de trabajo donde es un propietario"
-    },
     "status": {
       "active": "Activo",
       "canceled": "Cancelado",

@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { hasPermission } from '@teable/core';
-import { ChevronsLeft, ChevronDown, Database, HelpCircle, Pencil, Share2 } from '@teable/icons';
+import { ChevronsLeft, ChevronDown, Database, Pencil, Share2 } from '@teable/icons';
 import {
   CollaboratorType,
   getBaseList,
@@ -29,7 +29,7 @@ import {
   TooltipTrigger,
   DropdownMenuSeparator,
 } from '@teable/ui-lib';
-import { ArrowLeft, Send } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
@@ -39,7 +39,6 @@ import { DataDbBadge } from '@/features/app/blocks/space/DataDbBadge';
 import { Emoji } from '@/features/app/components/emoji/Emoji';
 import { useIsCloud } from '@/features/app/hooks/useIsCloud';
 import { tableConfig } from '@/features/i18n/table.config';
-import { PublishBaseDialog } from '../../table/table-header/publish-base/PublishBaseDialog';
 import { useSharedNodeIds } from './BaseNodeShareIndicator';
 import { BaseShareDialog } from './BaseShareDialog';
 
@@ -203,30 +202,6 @@ const BaseDropdownMenu = ({
               </div>
             </DropdownMenuItem>
           )}
-          {showRename && (
-            <PublishBaseDialog onClose={() => setOpen(false)} closeOnSuccess={false}>
-              <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                <div className="flex w-full cursor-pointer items-center gap-2">
-                  <Send className="size-4" />
-                  {t('space:publishBase.publishToCommunity')}
-                </div>
-              </DropdownMenuItem>
-            </PublishBaseDialog>
-          )}
-
-          <DropdownMenuSeparator />
-          <DropdownMenuItem asChild>
-            <Link
-              href={t('help.mainLink')}
-              title={t('help.title')}
-              target="_blank"
-              rel="noreferrer"
-              className="flex w-full cursor-pointer items-center gap-2"
-            >
-              <HelpCircle className="size-4" />
-              {t('help.title')}
-            </Link>
-          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
       <BaseShareDialog

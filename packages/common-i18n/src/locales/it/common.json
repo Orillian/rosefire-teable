@@ -57,7 +57,6 @@
     "deleteTip": "Sei sicuro di voler eliminare \"{{name}}\"?",
     "refresh": "Aggiorna",
     "login": "Accedi",
-    "useTemplate": "Usa modello",
     "copyToMySpace": "Copy to my space",
     "saveToMySpace": "Save to my space",
     "supportSaveCopy": "Support saving a copy",
@@ -96,13 +95,6 @@
     "loadMore": "Carica Altro",
     "allTemplatesLoaded": "Tutti i modelli caricati",
     "createTemplate": "Crea Modello",
-    "useTemplateDialog": {
-      "title": "Seleziona spazio",
-      "description": "Seleziona uno spazio per il modello",
-      "noSpaceDescription": "You don't have any spaces yet. Create one to continue.",
-      "newSpacePlaceholder": "Space name",
-      "createSpace": "Create"
-    },
     "promptBox": {
       "placeholder": "Costruisci la tua app aziendale con Teable",
       "start": "Inizia",
@@ -169,77 +161,6 @@
     "allSetting": "Impostazioni dello spazio e personali",
     "personal": {
       "title": "Personale"
-    },
-    "templateAdmin": {
-      "title": "Gestione modelli",
-      "noData": "Nessun dato",
-      "importing": "Importazione...",
-      "usageCount": "Conteggio utilizzo: {{count}}",
-      "useTemplate": "Usa questo modello",
-      "createdBy": "da {{user}}",
-      "backToTemplateList": "Torna all'elenco modelli",
-      "tips": {
-        "errorCategoryName": "La categoria non esiste o è stata eliminata",
-        "needSnapshot": "Prima di pubblicare, crea uno snapshot, il nome e la descrizione del modello non possono essere vuoti",
-        "needPublish": "Pubblica il modello prima di impostarlo come in evidenza",
-        "needBaseSource": "Seleziona una base sorgente prima di creare uno snapshot",
-        "forbiddenUpdateSystemTemplate": "Il modello di sistema non può essere modificato",
-        "addCategoryTips": "Inserisci prima un nome categoria nell'input di ricerca.",
-        "categoryNamePlaceholder": "Inserisci nome categoria",
-        "duplicateCategoryName": "Il nome della categoria esiste già"
-      },
-      "category": {
-        "menu": {
-          "getStarted": "Inizia",
-          "recommended": "Consigliati",
-          "all": "Tutti",
-          "browseByCategory": "Sfoglia per categoria"
-        }
-      },
-      "header": {
-        "cover": "Copertina",
-        "name": "Nome",
-        "description": "Descrizione",
-        "markdownDescription": "Descrizione markdown",
-        "category": "Categoria",
-        "isSystem": "Sistema",
-        "source": "Fonte",
-        "status": "Pubblicato",
-        "publishSnapshot": "Pubblica snapshot",
-        "snapshotTime": "Ora snapshot",
-        "actions": "Azioni",
-        "featured": "In evidenza",
-        "createdBy": "Creato da",
-        "userNonExistent": "Utente non esistente",
-        "preview": "Anteprima",
-        "usage": "Utilizzo",
-        "visit": "Visite"
-      },
-      "actions": {
-        "title": "Azioni",
-        "publish": "Pubblica",
-        "delete": "Elimina",
-        "duplicate": "Duplica",
-        "preview": "Anteprima",
-        "use": "Usa",
-        "pinTop": "Fissa in alto",
-        "addCategory": "Aggiungi categoria",
-        "selectCategory": "Seleziona categoria",
-        "viewTemplate": "Visualizza modello",
-        "manageCategory": "Gestisci categorie"
-      },
-      "relatedTemplates": "Modelli correlati",
-      "noImage": "Nessuna immagine",
-      "baseSelectPanel": {
-        "title": "Seleziona fonte modello",
-        "description": "Seleziona una base come modello",
-        "confirm": "Conferma",
-        "search": "Cerca...",
-        "cancel": "Annulla",
-        "selectBase": "Seleziona base",
-        "createTemplate": "Crea modello",
-        "abnormalBase": "La base non esiste o è stata eliminata"
-      }
     },
     "back": "Torna alla home",
     "account": {
@@ -368,8 +289,7 @@
     },
     "nav": {
       "settings": "Impostazioni",
-      "logout": "Esci",
-      "contactSupport": "Contatta l'assistenza"
+      "logout": "Esci"
     },
     "integration": {
       "title": "Integrazioni",
@@ -425,7 +345,6 @@
     "authorityMatrix": "Matrice di autorità",
     "design": "Design",
     "adminPanel": "Amministrazione di sistema",
-    "license": "Licenza self-hosted",
     "instanceId": "ID istanza",
     "beta": "Beta",
     "trash": "Cestino",
@@ -542,18 +461,9 @@
     "levelTips": "Questo spazio è attualmente sul piano {{level}}",
     "enterpriseFeature": "Funzionalità Enterprise",
     "automationRequiresUpgrade": "Aggiorna a Enterprise Edition (EE) per abilitare l'automazione",
-    "authorityMatrixRequiresUpgrade": "Aggiorna a Enterprise Edition (EE) per abilitare la matrice di autorità",
     "viewPricing": "Visualizza prezzi",
     "billable": "Fatturabile",
     "billableByAuthorityMatrix": "Fatturazione generata dalla matrice dei permessi",
-    "licenseExpiredGracePeriod": "La tua licenza self-hosted è scaduta e verrà declassata al piano gratuito il {{expiredTime}}. Aggiorna la tua licenza tempestivamente per mantenere l'accesso alle funzionalità premium.",
-    "licenseAutoFetchFailed": "Rinnovo automatico della licenza non riuscito. Restano {{days}} giorno/i del periodo di tolleranza prima del downgrade.",
-    "licenseAutoFetchRetryFailed": "Il rinnovo automatico non è ancora riuscito. Verifica la connessione al server Teable o aggiorna la licenza manualmente.",
-    "licenseExpiredGracePeriodDays": "La licenza è scaduta. Restano {{days}} giorno/i del periodo di tolleranza prima del downgrade.",
-    "spaceSubscriptionModal": {
-      "title": "Aggiorna il piano di abbonamento dello spazio",
-      "description": "Puoi aggiornare solo gli spazi di lavoro di cui sei proprietario"
-    },
     "status": {
       "active": "Attivo",
       "canceled": "Annullato",

@@ -83,13 +83,6 @@
     "loadMore": "Завантажити Більше",
     "allTemplatesLoaded": "Усі шаблони завантажені",
     "createTemplate": "Створити Шаблон",
-    "useTemplateDialog": {
-      "title": "Виберіть простір",
-      "description": "Виберіть простір для застосування шаблону",
-      "noSpaceDescription": "You don't have any spaces yet. Create one to continue.",
-      "newSpacePlaceholder": "Space name",
-      "createSpace": "Create"
-    },
     "promptBox": {
       "placeholder": "Створіть свій бізнес-додаток з Teable",
       "start": "Почати",
@@ -156,77 +149,6 @@
     "allSetting": "Налаштування простору й особисті",
     "personal": {
       "title": "Особисте"
-    },
-    "templateAdmin": {
-      "title": "Керування шаблонами",
-      "noData": "Немає даних",
-      "importing": "Імпортування...",
-      "usageCount": "Кількість використань: {{count}}",
-      "useTemplate": "Використати цей шаблон",
-      "createdBy": "від {{user}}",
-      "backToTemplateList": "Повернутися до списку шаблонів",
-      "tips": {
-        "errorCategoryName": "Категорія не існує або була видалена",
-        "needSnapshot": "Перед публікацією створіть знімок, назва та опис шаблону не можуть бути порожніми",
-        "needPublish": "Опублікуйте шаблон перед встановленням як рекомендований",
-        "needBaseSource": "Виберіть базу-джерело перед створенням знімка",
-        "forbiddenUpdateSystemTemplate": "Системний шаблон не можна змінити",
-        "addCategoryTips": "Спочатку введіть назву категорії в поле пошуку.",
-        "categoryNamePlaceholder": "Введіть назву категорії",
-        "duplicateCategoryName": "Назва категорії вже існує"
-      },
-      "category": {
-        "menu": {
-          "getStarted": "Почати",
-          "recommended": "Рекомендовані",
-          "all": "Усі",
-          "browseByCategory": "Перегляд за категоріями"
-        }
-      },
-      "header": {
-        "cover": "Обкладинка",
-        "name": "Назва",
-        "description": "Опис",
-        "markdownDescription": "Опис у markdown",
-        "category": "Категорія",
-        "isSystem": "Системний",
-        "source": "Джерело",
-        "status": "Опубліковано",
-        "publishSnapshot": "Опублікувати знімок",
-        "snapshotTime": "Час знімка",
-        "actions": "Дії",
-        "featured": "Рекомендований",
-        "createdBy": "Створено",
-        "userNonExistent": "Користувач не існує",
-        "preview": "Попередній перегляд",
-        "usage": "Використання",
-        "visit": "Відвідування"
-      },
-      "actions": {
-        "title": "Дії",
-        "publish": "Опублікувати",
-        "delete": "Видалити",
-        "duplicate": "Дублювати",
-        "preview": "Попередній перегляд",
-        "use": "Використати",
-        "pinTop": "Закріпити зверху",
-        "addCategory": "Додати категорію",
-        "selectCategory": "Вибрати категорію",
-        "viewTemplate": "Переглянути шаблон",
-        "manageCategory": "Керування категоріями"
-      },
-      "relatedTemplates": "Пов'язані шаблони",
-      "noImage": "Немає зображення",
-      "baseSelectPanel": {
-        "title": "Виберіть джерело шаблону",
-        "description": "Виберіть базу для шаблону",
-        "confirm": "Підтвердити",
-        "search": "Пошук...",
-        "cancel": "Скасувати",
-        "selectBase": "Вибрати базу",
-        "createTemplate": "Створити шаблон",
-        "abnormalBase": "База не існує або була видалена"
-      }
     },
     "back": "Назад додому",
     "account": {
@@ -355,8 +277,7 @@
     },
     "nav": {
       "settings": "Налаштування",
-      "logout": "Вийти",
-      "contactSupport": "Зв'язатися з підтримкою"
+      "logout": "Вийти"
     },
     "integration": {
       "title": "Інтеграції",
@@ -382,7 +303,6 @@
     "authorityMatrix": "Матриця повноважень",
     "design": "Дизайн",
     "adminPanel": "Системне адміністрування",
-    "license": "Самостійна ліцензія",
     "instanceId": "Ідентифікатор екземпляра",
     "beta": "Бета",
     "trash": "Кошик",
@@ -499,14 +419,6 @@
     "levelTips": "Це простір зараз на тарифі {{level}}",
     "billable": "Платний",
     "billableByAuthorityMatrix": "Білінг, створений матрицею повноважень",
-    "licenseExpiredGracePeriod": "Термін дії вашої ліцензії для самостійного розміщення закінчився і буде понижена до безкоштовного плану {{expiredTime}}. Будь ласка, оновіть ліцензію, щоб зберегти доступ до преміум-функцій.",
-    "licenseAutoFetchFailed": "Не вдалося автоматично продовжити ліцензію. До зниження залишилося {{days}} дн. пільгового періоду.",
-    "licenseAutoFetchRetryFailed": "Автопродовження знову не вдалося. Перевірте з'єднання з сервером Teable або оновіть ліцензію вручну.",
-    "licenseExpiredGracePeriodDays": "Термін дії ліцензії минув. До зниження залишилося {{days}} дн. пільгового періоду.",
-    "spaceSubscriptionModal": {
-      "title": "Оновити тарифний план простору",
-      "description": "Ви можете оновити тільки ті місця, де ви є власником"
-    },
     "status": {
       "active": "Активно",
       "canceled": "Скасовано",

@@ -63,7 +63,6 @@
     "select": "选择",
     "refresh": "刷新",
     "login": "登录",
-    "useTemplate": "使用模版",
     "copyToMySpace": "复制到我的空间",
     "saveToMySpace": "保存到我的空间",
     "supportSaveCopy": "支持保存副本",
@@ -113,13 +112,6 @@
         "guide6": "创建内容计划器，包含帖子和发布日期",
         "guide7": "粘贴简历 → 让 Teable 整理和筛选候选人"
       }
-    },
-    "useTemplateDialog": {
-      "title": "选择空间",
-      "description": "请选择一个空间来应用模版",
-      "noSpaceDescription": "你还没有任何空间，请先创建一个空间以继续。",
-      "newSpacePlaceholder": "空间名称",
-      "createSpace": "创建"
     },
     "non": {
       "share": "分享",
@@ -178,77 +170,6 @@
     "allSetting": "个人 & 空间设置",
     "personal": {
       "title": "个人"
-    },
-    "templateAdmin": {
-      "title": "模板管理",
-      "noData": "暂无数据",
-      "importing": "导入中...",
-      "usageCount": "应用次数：{{count}}",
-      "useTemplate": "使用此模板",
-      "createdBy": "创建者：{{user}}",
-      "backToTemplateList": "返回模板列表",
-      "tips": {
-        "errorCategoryName": "分类不存在或已删除",
-        "needSnapshot": "上架前，请先创建快照，并且模板名和描述不能为空",
-        "needPublish": "请先上架模板，再设置推荐",
-        "needBaseSource": "创建快照前，请先选择模板来源",
-        "forbiddenUpdateSystemTemplate": "系统模板禁止修改",
-        "addCategoryTips": "请先在搜索框中输入分类名称。",
-        "categoryNamePlaceholder": "输入分类名称",
-        "duplicateCategoryName": "分类名称已存在"
-      },
-      "category": {
-        "menu": {
-          "getStarted": "开始",
-          "recommended": "推荐",
-          "all": "全部",
-          "browseByCategory": "按分类浏览"
-        }
-      },
-      "header": {
-        "cover": "封面",
-        "name": "名称",
-        "description": "描述",
-        "markdownDescription": "富文本描述",
-        "category": "分类",
-        "isSystem": "系统模板",
-        "source": "来源",
-        "status": "上架",
-        "publishSnapshot": "发布快照",
-        "snapshotTime": "快照时间",
-        "actions": "操作",
-        "featured": "推荐",
-        "createdBy": "创建者",
-        "userNonExistent": "用户不存在",
-        "preview": "预览",
-        "usage": "应用次数",
-        "visit": "访问次数"
-      },
-      "actions": {
-        "title": "操作",
-        "publish": "发布",
-        "delete": "删除",
-        "duplicate": "复制",
-        "preview": "预览",
-        "use": "使用",
-        "pinTop": "置顶",
-        "addCategory": "添加分类",
-        "selectCategory": "选择分类",
-        "viewTemplate": "查看模板",
-        "manageCategory": "分类管理"
-      },
-      "relatedTemplates": "相关模板",
-      "noImage": "暂无图片",
-      "baseSelectPanel": {
-        "title": "选择模板来源",
-        "description": "选择一个数据库作为模板",
-        "confirm": "确认",
-        "search": "搜索...",
-        "cancel": "取消",
-        "selectBase": "选择数据库",
-        "createTemplate": "新建模板",
-        "abnormalBase": "数据库不存在或已删除"
-      }
     },
     "back": "返回主页",
     "account": {
@@ -379,8 +300,7 @@
     },
     "nav": {
       "settings": "设置",
-      "logout": "退出登录",
-      "contactSupport": "联系支持"
+      "logout": "退出登录"
     },
     "integration": {
       "title": "集成",
@@ -436,7 +356,6 @@
     "authorityMatrix": "权限矩阵",
     "design": "设计",
     "adminPanel": "系统管理",
-    "license": "私有化部署许可证",
     "instanceId": "实例 ID",
     "beta": "测试版",
     "trash": "回收站",
@@ -541,11 +460,6 @@
       "accessPermission": "访问权限",
       "joinAt": "加入于",
       "lastLogin": "最近登录"
-    },
-    "authority": {
-      "title": "权限矩阵已启用",
-      "description": "协作者的有效访问权限受分配给他们的角色的影响，未分配用户使用默认角色",
-      "viewDetail": "查看详情"
     }
   },
   "help": {
@@ -565,19 +479,9 @@
     "levelTips": "当前空间使用的是{{level}}计划",
     "enterpriseFeature": "企业版功能",
     "automationRequiresUpgrade": "升级到企业版以启用自动化",
-    "authorityMatrixRequiresUpgrade": "升级到企业版以启用权限矩阵",
     "viewPricing": "查看定价",
     "billable": "计费",
     "billableByAuthorityMatrix": "由权限矩阵产生的计费",
-    "licenseExpiredGracePeriod": "您的私有化部署许可证已过期，系统将在 {{expiredTime}} 降级为免费版并停用高级功能，请尽快更新许可证以保留完整功能。",
-    "licenseAutoFetchFailed": "许可证自动续期失败，宽限期剩余 {{days}} 天，届时将降级为免费版。",
-    "licenseAutoFetchRetryFailed": "自动续期仍然失败，请检查与 Teable 服务器的连接，或手动更新许可证。",
-    "licenseExpiredGracePeriodDays": "许可证已过期，宽限期剩余 {{days}} 天，届时将降级为免费版。",
-    "spaceSubscriptionModal": {
-      "title": "升级空间站的订阅计划",
-      "description": "您只能升级具有「可管理」权限的空间站"
-    },
-    "contactAdminToUpgrade": "请联系空间站所有者升级订阅计划。",
     "status": {
       "active": "已激活",
       "canceled": "已取消",

@@ -1,5 +1,5 @@
 import { useTheme } from '@teable/next-themes';
-import { useIsAnonymous, useIsHydrated, useShareId, useTemplate } from '@teable/sdk/hooks';
+import { useIsAnonymous, useIsHydrated, useShareId } from '@teable/sdk/hooks';
 import { Button } from '@teable/ui-lib/shadcn';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -9,21 +9,16 @@ import { useShareAllowEdit, useShareAllowSave } from '../context/ShareContext';
 import { useIsInIframe } from '../hooks/useIsInIframe';
 import type { IShareSelectSpaceDialogRef } from './ShareSelectSpaceDialog';
 import { ShareSelectSpaceDialog } from './ShareSelectSpaceDialog';
-import type { ITemplateSelectSpaceDialogRef } from './TemplateSelectSpaceDialog';
-import { TemplateSelectSpaceDialog } from './TemplateSelectSpaceDialog';
 
 export const PublicOperateButton = () => {
   const isAnonymous = useIsAnonymous();
-  const template = useTemplate();
   const shareId = useShareId();
-  const isTemplate = !!template;
   const isShare = !!shareId;
   const allowSave = useShareAllowSave();
   const allowEdit = useShareAllowEdit();
   const { t } = useTranslation(['common', 'table']);
   const router = useRouter();
   const isInIframe = useIsInIframe();
-  const templateRef = useRef<ITemplateSelectSpaceDialogRef>(null);
   const shareRef = useRef<IShareSelectSpaceDialogRef>(null);
   const isHydrated = useIsHydrated();
 
@@ -101,34 +96,17 @@ export const PublicOperateButton = () => {
     );
   }
 
-  if (!isAnonymous && !isTemplate) {
+  if (!isAnonymous) {
     return null;
   }
 
   const handleClick = () => {
-    if (isTemplate) {
-      if (isAnonymous) {
-        const url = new URL(window.location.href);
-        url.searchParams.set('isUseTemplate', '1');
-        router.push(`/auth/login?redirect=${encodeURIComponent(url.toString())}`);
-        return;
-      }
-      templateRef.current?.setOpen(true);
-      return;
-    }
-    if (isAnonymous) {
-      router.push(`/auth/login?redirect=${encodeURIComponent(window.location.href)}`);
-    }
+    router.push(`/auth/login?redirect=${encodeURIComponent(window.location.href)}`);
   };
 
   return (
-    <>
-      <Button size={'sm'} className="w-full text-[13px] font-normal" onClick={handleClick}>
-        {isTemplate ? t('common:actions.useTemplate') : t('common:actions.login')}
-      </Button>
-      {isTemplate && !isAnonymous && (
-        <TemplateSelectSpaceDialog ref={templateRef} templateId={template.id} />
-      )}
-    </>
+    <Button size={'sm'} className="w-full text-[13px] font-normal" onClick={handleClick}>
+      {t('common:actions.login')}
+    </Button>
   );
 };

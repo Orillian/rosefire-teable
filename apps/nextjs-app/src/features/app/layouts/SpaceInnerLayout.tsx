@@ -7,7 +7,6 @@ import { isString } from 'lodash';
 import { useParams } from 'next/navigation';
 import { useTranslation } from 'next-i18next';
 import React, { Fragment, useEffect } from 'react';
-import { LicenseExpiryBanner } from '@/features/app/components/LicenseExpiryBanner';
 import { AppLayout } from '@/features/app/layouts';
 import { SpaceInnerSettingModal } from '@overridable/SpaceInnerSettingModal';
 import { SpaceInnerSideBar } from '../blocks/space/space-side-bar/SpaceInnerSideBar';
@@ -48,7 +47,6 @@ export const SpaceInnerLayout: React.FC<{
       <AppProvider locale={sdkLocale} lang={i18n.language} dehydratedState={dehydratedState}>
         <SessionProvider user={user}>
           <NotificationProvider>
-            <LicenseExpiryBanner />
             <div id="portal" className="relative flex h-screen w-full items-start">
               <Sidebar
                 headerLeft={<SpaceSwitcher />}

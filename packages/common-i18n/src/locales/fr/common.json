@@ -58,7 +58,6 @@
     "deleteTip": "Êtes-vous sûr de vouloir supprimer \"{{name}}\" ?",
     "refresh": "Actualiser",
     "login": "Se connecter",
-    "useTemplate": "Utiliser le modèle",
     "copyToMySpace": "Copy to my space",
     "saveToMySpace": "Save to my space",
     "supportSaveCopy": "Support saving a copy",
@@ -96,13 +95,6 @@
     "loadMore": "Charger Plus",
     "allTemplatesLoaded": "Tous les modèles chargés",
     "createTemplate": "Créer un Modèle",
-    "useTemplateDialog": {
-      "title": "Sélectionner un espace",
-      "description": "Veuillez sélectionner un espace pour le modèle",
-      "noSpaceDescription": "You don't have any spaces yet. Create one to continue.",
-      "newSpacePlaceholder": "Space name",
-      "createSpace": "Create"
-    },
     "promptBox": {
       "placeholder": "Créez votre application métier avec Teable",
       "start": "Démarrer",
@@ -299,8 +291,7 @@
     },
     "nav": {
       "settings": "Paramètres",
-      "logout": "Déconnexion",
-      "contactSupport": "Contacter l'assistance"
+      "logout": "Déconnexion"
     },
     "integration": {
       "title": "Intégrations",
@@ -342,75 +333,6 @@
           "desc": "Vous pouvez maintenant fermer cette fenêtre."
         }
       }
-    },
-    "templateAdmin": {
-      "title": "Administration des modèles",
-      "noData": "Aucune donnée",
-      "importing": "Importation...",
-      "usageCount": "Nombre d'utilisations: {{count}}",
-      "useTemplate": "Utiliser ce modèle",
-      "createdBy": "par {{user}}",
-      "backToTemplateList": "Retour à la liste des modèles",
-      "tips": {
-        "errorCategoryName": "La catégorie n'existe pas ou a été supprimée",
-        "needSnapshot": "Veuillez créer un instantané avant de publier, et le nom et la description du modèle ne peuvent pas être vides",
-        "needPublish": "Veuillez publier le modèle avant de le mettre en vedette",
-        "needBaseSource": "Veuillez sélectionner une source Base avant de créer l'instantané",
-        "forbiddenUpdateSystemTemplate": "Les modèles système ne peuvent pas être modifiés",
-        "addCategoryTips": "Veuillez d'abord saisir un nom de catégorie dans la zone de recherche."
-      },
-      "category": {
-        "menu": {
-          "getStarted": "Commencer",
-          "recommended": "Recommandé",
-          "all": "Tous",
-          "browseByCategory": "Parcourir par catégorie"
-        }
-      },
-      "header": {
-        "cover": "Couverture",
-        "name": "Nom",
-        "description": "Description",
-        "markdownDescription": "Description Markdown",
-        "category": "Catégorie",
-        "isSystem": "Système",
-        "source": "Source",
-        "status": "Publié",
-        "publishSnapshot": "Publier l'instantané",
-        "snapshotTime": "Heure de l'instantané",
-        "actions": "Actions",
-        "featured": "En vedette",
-        "createdBy": "Créé par",
-        "userNonExistent": "Utilisateur inexistant",
-        "preview": "Aperçu",
-        "usage": "Utilisation",
-        "visit": "Visites"
-      },
-      "actions": {
-        "title": "Actions",
-        "publish": "Publier",
-        "delete": "Supprimer",
-        "duplicate": "Dupliquer",
-        "preview": "Aperçu",
-        "use": "Utiliser",
-        "pinTop": "Épingler en haut",
-        "addCategory": "Ajouter une catégorie",
-        "selectCategory": "Sélectionner une catégorie",
-        "viewTemplate": "Voir le modèle",
-        "manageCategory": "Gérer les catégories"
-      },
-      "relatedTemplates": "Modèles associés",
-      "noImage": "Aucune image",
-      "baseSelectPanel": {
-        "title": "Sélectionner la source du modèle",
-        "description": "Sélectionnez une Base comme modèle",
-        "confirm": "Confirmer",
-        "search": "Rechercher...",
-        "cancel": "Annuler",
-        "selectBase": "Sélectionner une Base",
-        "createTemplate": "Créer un modèle",
-        "abnormalBase": "La base n'existe pas ou a été supprimée"
-      }
     }
   },
   "noun": {
@@ -425,7 +347,6 @@
     "authorityMatrix": "Matrice d'autorité",
     "design": "Conception",
     "adminPanel": "Administration système",
-    "license": "Licence auto-hébergée",
     "instanceId": "ID d'instance",
     "beta": "Bêta",
     "trash": "Corbeille",
@@ -542,18 +463,9 @@
     "levelTips": "Cet espace est actuellement sur le plan {{level}}",
     "enterpriseFeature": "Fonctionnalité Enterprise",
     "automationRequiresUpgrade": "Passez à Enterprise Edition (EE) pour activer l'automatisation",
-    "authorityMatrixRequiresUpgrade": "Passez à Enterprise Edition (EE) pour activer la matrice d'autorité",
     "viewPricing": "Voir les tarifs",
     "billable": "Facturable",
     "billableByAuthorityMatrix": "Facturation générée par la matrice d'autorités",
-    "licenseExpiredGracePeriod": "Votre licence auto-hébergée a expiré et sera rétrogradée au forfait gratuit le {{expiredTime}}. Veuillez mettre à jour votre licence rapidement pour conserver l'accès aux fonctionnalités premium.",
-    "licenseAutoFetchFailed": "Échec du renouvellement automatique de la licence. Il reste {{days}} jour(s) de période de grâce avant la rétrogradation.",
-    "licenseAutoFetchRetryFailed": "Le renouvellement automatique a de nouveau échoué. Veuillez vérifier la connexion au serveur Teable ou mettre à jour la licence manuellement.",
-    "licenseExpiredGracePeriodDays": "La licence a expiré. Il reste {{days}} jour(s) de période de grâce avant la rétrogradation.",
-    "spaceSubscriptionModal": {
-      "title": "Mettre à niveau le plan d'abonnement de l'espace",
-      "description": "Vous ne pouvez mettre à niveau que les espaces où vous êtes propriétaire"
-    },
     "status": {
       "active": "Actif",
       "canceled": "Annulé",

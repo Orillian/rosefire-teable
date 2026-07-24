@@ -18,12 +18,10 @@ import { ReactQueryKeys } from '@teable/sdk/config';
 import { useSession } from '@teable/sdk/hooks';
 import { Badge } from '@teable/ui-lib/shadcn';
 import { toast } from '@teable/ui-lib/shadcn/ui/sonner';
-import { useRouter } from 'next/router';
 import { Trans, useTranslation } from 'next-i18next';
 import { useMemo, useState } from 'react';
 import { useFilteredRoleStatic } from '../../collaborator-manage/base/useFilteredRoleStatic';
 import { CollaboratorsDialog } from './CollaboratorsDialog';
-import { AuthorityTips } from './common/AuthorityTips';
 import { CollaboratorButton } from './common/CollaboratorButton';
 import { CollaboratorTable } from './common/CollaboratorTable';
 import { DebounceInput } from './common/DebounceInput';
@@ -40,7 +38,6 @@ export const ShareBaseContent = ({
   baseId,
   baseName,
   role: userRole,
-  enabledAuthority,
   onClose,
 }: {
   baseId: string;
@@ -49,7 +46,6 @@ export const ShareBaseContent = ({
   enabledAuthority?: boolean;
   onClose: () => void;
 }) => {
-  const router = useRouter();
   const { user } = useSession();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { t } = useTranslation(['common', 'space', 'table']) as any;
@@ -172,13 +168,6 @@ export const ShareBaseContent = ({
     },
   });
 
-  const toAuthorityManage = () => {
-    router.push({
-      pathname: '/base/[baseId]/authority-matrix',
-      query: { baseId },
-    });
-  };
-
   const linkListCount = linkList?.length || 0;
   const onBack = () => setTabType(undefined);
   const defaultRole = userRole === Role.Owner ? Role.Creator : userRole;
@@ -258,7 +247,6 @@ export const ShareBaseContent = ({
           <Trans ns="common" i18nKey={'invite.base.desc'} count={total} components={{ b: <b /> }} />
         }
       />
-      {enabledAuthority && <AuthorityTips onViewDetail={toAuthorityManage} />}
       <div className="flex flex-col gap-5">
         <InviteEmailButton onClick={() => setTabType('email')} />
         {user?.organization && (
@@ -281,9 +269,6 @@ export const ShareBaseContent = ({
           <p className="text-sm font-semibold">{t('invite.dialog.baseTitle')}</p>
           <CollaboratorsDialog
             title={t('invite.base.baseTitleWithCount', { count: total })}
-            alert={
-              enabledAuthority ? <AuthorityTips onViewDetail={toAuthorityManage} /> : undefined
-            }
             list={collaborators || []}
             total={total}
             hasNextPage={hasNextPage}
@@ -306,21 +291,17 @@ export const ShareBaseContent = ({
                   updateRoleLoading={updateCollaboratorLoading}
                   deleteLoading={deleteCollaboratorLoading}
                   filteredRoleStatic={filteredRoleStatic}
-                  onUpdateRole={
-                    enabledAuthority
-                      ? undefined
-                      : (role, item) => {
-                          updateCollaborator({
-                            baseId,
-                            updateBaseCollaborateRo: {
-                              principalId:
-                                item.type === PrincipalType.User ? item.userId : item.departmentId,
-                              principalType: item.type,
-                              role: role as IBaseRole,
-                            },
-                          });
-                        }
-                  }
+                  onUpdateRole={(role, item) => {
+                    updateCollaborator({
+                      baseId,
+                      updateBaseCollaborateRo: {
+                        principalId:
+                          item.type === PrincipalType.User ? item.userId : item.departmentId,
+                        principalType: item.type,
+                        role: role as IBaseRole,
+                      },
+                    });
+                  }}
                   onDelete={(item) => {
                     deleteCollaborator({
                       baseId,

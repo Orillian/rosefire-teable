@@ -58,7 +58,6 @@
     "deleteTip": "\"{{name}}\" öğesini silmek istediğinizden emin misiniz?",
     "refresh": "Yenile",
     "login": "Giriş Yap",
-    "useTemplate": "Şablon Kullan",
     "copyToMySpace": "Copy to my space",
     "saveToMySpace": "Save to my space",
     "supportSaveCopy": "Support saving a copy",
@@ -96,13 +95,6 @@
     "loadMore": "Daha Fazla Yükle",
     "allTemplatesLoaded": "Tüm şablonlar yüklendi",
     "createTemplate": "Şablon Oluştur",
-    "useTemplateDialog": {
-      "title": "Alan Seçin",
-      "description": "Şablon için bir alan seçin",
-      "noSpaceDescription": "You don't have any spaces yet. Create one to continue.",
-      "newSpacePlaceholder": "Space name",
-      "createSpace": "Create"
-    },
     "promptBox": {
       "placeholder": "Teable ile iş uygulamanızı oluşturun",
       "start": "Başlat",
@@ -169,77 +161,6 @@
     "allSetting": "Alan ve kişisel ayarlar",
     "personal": {
       "title": "Kişisel"
-    },
-    "templateAdmin": {
-      "title": "Şablon yönetimi",
-      "noData": "Veri yok",
-      "importing": "İçe aktarılıyor...",
-      "usageCount": "Kullanım sayısı: {{count}}",
-      "useTemplate": "Bu şablonu kullan",
-      "createdBy": "{{user}} tarafından",
-      "backToTemplateList": "Şablon listesine dön",
-      "tips": {
-        "errorCategoryName": "Kategori mevcut değil veya silindi",
-        "needSnapshot": "Yayınlamadan önce bir anlık görüntü oluşturun, şablon adı ve açıklaması boş olamaz",
-        "needPublish": "Öne çıkan olarak ayarlamadan önce şablonu yayınlayın",
-        "needBaseSource": "Anlık görüntü oluşturmadan önce bir kaynak veritabanı seçin",
-        "forbiddenUpdateSystemTemplate": "Sistem şablonu değiştirilemez",
-        "addCategoryTips": "Lütfen önce arama kutusuna bir kategori adı girin.",
-        "categoryNamePlaceholder": "Kategori adını girin",
-        "duplicateCategoryName": "Kategori adı zaten mevcut"
-      },
-      "category": {
-        "menu": {
-          "getStarted": "Başlayın",
-          "recommended": "Önerilen",
-          "all": "Tümü",
-          "browseByCategory": "Kategoriye göre gözat"
-        }
-      },
-      "header": {
-        "cover": "Kapak",
-        "name": "Ad",
-        "description": "Açıklama",
-        "markdownDescription": "Markdown açıklaması",
-        "category": "Kategori",
-        "isSystem": "Sistem",
-        "source": "Kaynak",
-        "status": "Yayınlandı",
-        "publishSnapshot": "Anlık görüntü yayınla",
-        "snapshotTime": "Anlık görüntü zamanı",
-        "actions": "Eylemler",
-        "featured": "Öne çıkan",
-        "createdBy": "Oluşturan",
-        "userNonExistent": "Kullanıcı mevcut değil",
-        "preview": "Önizleme",
-        "usage": "Kullanım",
-        "visit": "Ziyaret"
-      },
-      "actions": {
-        "title": "Eylemler",
-        "publish": "Yayınla",
-        "delete": "Sil",
-        "duplicate": "Çoğalt",
-        "preview": "Önizleme",
-        "use": "Kullan",
-        "pinTop": "Üste sabitle",
-        "addCategory": "Kategori ekle",
-        "selectCategory": "Kategori seç",
-        "viewTemplate": "Şablonu görüntüle",
-        "manageCategory": "Kategorileri yönet"
-      },
-      "relatedTemplates": "İlgili Şablonlar",
-      "noImage": "Resim yok",
-      "baseSelectPanel": {
-        "title": "Şablon kaynağını seçin",
-        "description": "Şablon olarak bir veritabanı seçin",
-        "confirm": "Onayla",
-        "search": "Ara...",
-        "cancel": "İptal",
-        "selectBase": "Veritabanı seç",
-        "createTemplate": "Şablon oluştur",
-        "abnormalBase": "Veritabanı mevcut değil veya silindi"
-      }
     },
     "back": "Ana sayfaya dön",
     "account": {
@@ -370,8 +291,7 @@
     },
     "nav": {
       "settings": "Ayarlar",
-      "logout": "Çıkış yap",
-      "contactSupport": "Destek ile İletişim"
+      "logout": "Çıkış yap"
     },
     "integration": {
       "title": "Entegrasyonlar",
@@ -397,7 +317,6 @@
     "authorityMatrix": "Yetki Matrisi",
     "design": "Tasarım",
     "adminPanel": "Sistem Yönetimi",
-    "license": "Kendi sunuculu lisans",
     "instanceId": "Örnek Kimliği",
     "beta": "Beta",
     "trash": "Çöp Kutusu",
@@ -509,14 +428,6 @@
     "levelTips": "Bu alan şu anda {{level}} planında",
     "billable": "Faturalandırılabilir",
     "billableByAuthorityMatrix": "Yetki matrisi tarafından oluşturulan faturalandırma",
-    "licenseExpiredGracePeriod": "Kendi sunucunuzda barındırma lisansınızın süresi doldu ve {{expiredTime}} tarihinde ücretsiz plana düşürülecek. Premium özelliklere erişimi korumak için lütfen lisansınızı hemen güncelleyin.",
-    "licenseAutoFetchFailed": "Lisansın otomatik yenilenmesi başarısız oldu. Sürüm düşürülmeden önce {{days}} gün ek süre kaldı.",
-    "licenseAutoFetchRetryFailed": "Otomatik yenileme yine başarısız oldu. Lütfen Teable sunucusuyla bağlantıyı kontrol edin veya lisansı manuel olarak güncelleyin.",
-    "licenseExpiredGracePeriodDays": "Lisansın süresi doldu. Sürüm düşürülmeden önce {{days}} gün ek süre kaldı.",
-    "spaceSubscriptionModal": {
-      "title": "Alan abonelik planını yükselt",
-      "description": "Yalnızca sahibi olduğunuz çalışma alanlarını yükseltebilirsiniz"
-    },
     "status": {
       "active": "Aktif",
       "canceled": "İptal Edildi",

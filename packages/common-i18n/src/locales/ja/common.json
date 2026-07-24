@@ -58,7 +58,6 @@
     "deleteTip": "\"{{name}}\"を削除してもよろしいですか？",
     "refresh": "更新",
     "login": "ログイン",
-    "useTemplate": "テンプレートを使用",
     "copyToMySpace": "Copy to my space",
     "saveToMySpace": "Save to my space",
     "supportSaveCopy": "Support saving a copy",
@@ -96,13 +95,6 @@
     "loadMore": "さらに読み込む",
     "allTemplatesLoaded": "すべてのテンプレートが読み込まれました",
     "createTemplate": "テンプレートを作成",
-    "useTemplateDialog": {
-      "title": "スペースを選択",
-      "description": "テンプレート用のスペースを選択してください",
-      "noSpaceDescription": "You don't have any spaces yet. Create one to continue.",
-      "newSpacePlaceholder": "Space name",
-      "createSpace": "Create"
-    },
     "promptBox": {
       "placeholder": "Teableでビジネスアプリを構築",
       "start": "開始",
@@ -169,77 +161,6 @@
     "allSetting": "スペースと個人設定",
     "personal": {
       "title": "個人"
-    },
-    "templateAdmin": {
-      "title": "テンプレート管理",
-      "noData": "データなし",
-      "importing": "インポート中...",
-      "usageCount": "使用回数: {{count}}",
-      "useTemplate": "このテンプレートを使用",
-      "createdBy": "作成者: {{user}}",
-      "backToTemplateList": "テンプレート一覧に戻る",
-      "tips": {
-        "errorCategoryName": "カテゴリが存在しないか削除されています",
-        "needSnapshot": "公開前にスナップショットを作成してください。テンプレート名と説明は空にできません",
-        "needPublish": "おすすめに設定する前にテンプレートを公開してください",
-        "needBaseSource": "スナップショットを作成する前にベースソースを選択してください",
-        "forbiddenUpdateSystemTemplate": "システムテンプレートは変更できません",
-        "addCategoryTips": "検索入力欄にカテゴリ名を先に入力してください",
-        "categoryNamePlaceholder": "カテゴリ名を入力",
-        "duplicateCategoryName": "カテゴリ名は既に存在します"
-      },
-      "category": {
-        "menu": {
-          "getStarted": "はじめに",
-          "recommended": "おすすめ",
-          "all": "すべて",
-          "browseByCategory": "カテゴリで閲覧"
-        }
-      },
-      "header": {
-        "cover": "カバー",
-        "name": "名前",
-        "description": "説明",
-        "markdownDescription": "Markdown説明",
-        "category": "カテゴリ",
-        "isSystem": "システム",
-        "source": "ソース",
-        "status": "公開済み",
-        "publishSnapshot": "スナップショットを公開",
-        "snapshotTime": "スナップショット時間",
-        "actions": "アクション",
-        "featured": "おすすめ",
-        "createdBy": "作成者",
-        "userNonExistent": "ユーザーが存在しません",
-        "preview": "プレビュー",
-        "usage": "使用回数",
-        "visit": "訪問回数"
-      },
-      "actions": {
-        "title": "アクション",
-        "publish": "公開",
-        "delete": "削除",
-        "duplicate": "複製",
-        "preview": "プレビュー",
-        "use": "使用",
-        "pinTop": "上部に固定",
-        "addCategory": "カテゴリを追加",
-        "selectCategory": "カテゴリを選択",
-        "viewTemplate": "テンプレートを表示",
-        "manageCategory": "カテゴリ管理"
-      },
-      "relatedTemplates": "関連テンプレート",
-      "noImage": "画像なし",
-      "baseSelectPanel": {
-        "title": "テンプレートソースを選択",
-        "description": "テンプレートとしてベースを選択",
-        "confirm": "確認",
-        "search": "検索...",
-        "cancel": "キャンセル",
-        "selectBase": "ベースを選択",
-        "createTemplate": "テンプレートを作成",
-        "abnormalBase": "ベースが存在しないか削除されています"
-      }
     },
     "back": "ホームに戻る",
     "account": {
@@ -370,8 +291,7 @@
     },
     "nav": {
       "settings": "設定",
-      "logout": "ログアウト",
-      "contactSupport": "サポートに連絡"
+      "logout": "ログアウト"
     },
     "integration": {
       "title": "統合",
@@ -427,7 +347,6 @@
     "authorityMatrix": "権限マトリクス",
     "design": "デザイン",
     "adminPanel": "システム管理",
-    "license": "セルフホストライセンス",
     "instanceId": "インスタンスID",
     "beta": "ベータ",
     "trash": "ゴミ箱",
@@ -544,18 +463,9 @@
     "levelTips": "このスペースは現在{{level}}プランです",
     "enterpriseFeature": "エンタープライズ機能",
     "automationRequiresUpgrade": "オートメーションを有効にするにはEnterprise Edition（EE）にアップグレードしてください",
-    "authorityMatrixRequiresUpgrade": "権限マトリックスを有効にするにはEnterprise Edition（EE）にアップグレードしてください",
     "viewPricing": "料金を見る",
     "billable": "課金対象",
     "billableByAuthorityMatrix": "権限マトリックスによって生成された課金",
-    "licenseExpiredGracePeriod": "セルフホスト版ライセンスの有効期限が切れました。{{expiredTime}}に無料プランへダウングレードされ、プレミアム機能が利用できなくなります。完全な機能を維持するため、速やかにライセンスを更新してください。",
-    "licenseAutoFetchFailed": "ライセンスの自動更新に失敗しました。ダウングレードまでの猶予期間は残り {{days}} 日です。",
-    "licenseAutoFetchRetryFailed": "自動更新が再び失敗しました。Teable サーバーへの接続を確認するか、ライセンスを手動で更新してください。",
-    "licenseExpiredGracePeriodDays": "ライセンスの有効期限が切れています。ダウングレードまでの猶予期間は残り {{days}} 日です。",
-    "spaceSubscriptionModal": {
-      "title": "スペースの契約プランをアップグレード",
-      "description": "自分が所有者であるワークスペースのみアップグレードできます"
-    },
     "status": {
       "active": "アクティブ",
       "canceled": "中止",
