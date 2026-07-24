@@ -8,7 +8,7 @@ import { ColorPicker } from './ColorPicker';
 interface IOptionItemProps {
   choice: ISelectFieldChoice;
   readonly?: boolean;
-  onChange?: (key: keyof ISelectFieldChoice, value: string) => void;
+  onChange?: (key: keyof ISelectFieldChoice, value: string | undefined) => void;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   onInputRef?: (el: HTMLInputElement | null) => void;
 }

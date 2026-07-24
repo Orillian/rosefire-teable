@@ -4,8 +4,8 @@ import { keyBy } from 'lodash';
 import { LRUCache } from 'lru-cache';
 
 interface ISelectColorPair {
-  color: string;
-  backgroundColor: string;
+  color?: string;
+  backgroundColor?: string;
 }
 
 export interface ISelectFieldDisplayChoice extends ISelectColorPair {
@@ -320,7 +320,10 @@ export const selectColorMap: ISelectColorMap = {
   dark: buildColorMap('dark'),
 };
 
-export const getSelectColorPairs = (color: Colors, theme: string = 'light') => {
+export const getSelectColorPairs = (color?: Colors, theme: string = 'light') => {
+  // "No color" choice: render as plain text, no pill background at all.
+  if (color == null) return { color: undefined, backgroundColor: undefined };
+
   const themeKey: ISelectTheme = theme === 'dark' ? 'dark' : 'light';
   return (
     selectColorMap[themeKey][color] ??
@@ -347,7 +350,7 @@ export const getDisplayChoiceMap = (
   const displayedChoices = choices.map(({ id, name, color }) => ({
     id,
     name,
-    ...getSelectColorPairs(color, themeKey),
+    ...getSelectColorPairs(color as Colors | undefined, themeKey),
   }));
   const choiceMap = keyBy(displayedChoices, 'name') as Record<string, ISelectFieldDisplayChoice>;
   displayChoiceMapCache.set(cacheKey, choiceMap);

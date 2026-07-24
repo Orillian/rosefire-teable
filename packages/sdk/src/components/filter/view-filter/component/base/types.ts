@@ -6,7 +6,9 @@ interface IOption<T = string> {
 }
 
 interface IColorOption extends IOption {
-  color: Colors;
+  // Optional: an unset color renders the option/filter chip as plain text ("no color"),
+  // mirroring the select choice color behavior — see packages/sdk/src/utils/select-color.ts.
+  color?: Colors;
 }
 
 interface IBaseSelect<V, O = IOption<V>> {

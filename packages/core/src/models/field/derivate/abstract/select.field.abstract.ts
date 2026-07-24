@@ -9,10 +9,14 @@ export const selectFieldChoiceSchema = z.object({
     .string()
     .transform((s) => s.trim())
     .pipe(z.string().min(1)),
-  color: z.enum(Colors),
+  // Optional: an omitted color renders the choice as plain text ("no color").
+  // Kept in sync with packages/core/src/models/field/derivate/abstract/select-option.schema.ts
+  // (this file has a duplicate, independently-defined copy of the select choice schema that
+  // is the one actually consulted by SelectFieldCore#validateOptions()).
+  color: z.enum(Colors).optional(),
 });
 
-export const selectFieldChoiceRoSchema = selectFieldChoiceSchema.partial({ id: true, color: true });
+export const selectFieldChoiceRoSchema = selectFieldChoiceSchema.partial({ id: true });
 
 export type ISelectFieldChoice = z.infer<typeof selectFieldChoiceSchema>;
 

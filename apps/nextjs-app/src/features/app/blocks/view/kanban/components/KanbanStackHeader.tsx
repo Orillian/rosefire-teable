@@ -59,7 +59,7 @@ export const KanbanStackHeader = (props: IKanbanStackHeaderProps) => {
     setRenamingChoice({ ...curChoice });
   };
 
-  const onChange = (key: keyof ISelectFieldChoice, value: string) => {
+  const onChange = (key: keyof ISelectFieldChoice, value: string | undefined) => {
     setRenamingChoice({
       ...(renamingChoice as ISelectFieldChoice),
       [key]: value,
