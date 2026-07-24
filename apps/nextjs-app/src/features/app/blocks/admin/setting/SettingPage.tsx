@@ -98,33 +98,6 @@ export const SettingPage = (props: ISettingPageProps) => {
         path: '/admin/setting',
       },
       {
-        title: t('admin.configuration.list.llmApi.title'),
-        key: 'llmApi' as const,
-        isRequired: true,
-        isComplete: (() => {
-          const aiConfig = setting?.aiConfig;
-          const hasLlmApi =
-            Boolean(aiConfig?.aiGatewayApiKey) || (aiConfig?.llmProviders?.length ?? 0) > 0;
-          const hasModelPool = aiConfig?.aiGatewayApiKey
-            ? (aiConfig?.gatewayModels ?? []).some((m) => m.enabled)
-            : (aiConfig?.llmProviders?.length ?? 0) > 0;
-          const hasChatModel = Boolean(aiConfig?.chatModel?.lg);
-          return hasLlmApi && hasModelPool && hasChatModel;
-        })(),
-        group: 'ai' as const,
-        path: '/admin/ai-setting?anchor=llm',
-      },
-      {
-        title: t('admin.configuration.list.appBuilderEngine.title'),
-        key: 'appBuilderEngine' as const,
-        isRequired: true,
-        isComplete:
-          Boolean(setting?.appConfig?.vercelToken) ||
-          setting?.appConfig?.deployProvider === 'docker-runtime',
-        group: 'appBuilder' as const,
-        path: '/admin/ai-setting?anchor=app',
-      },
-      {
         title: t('admin.configuration.list.email.title'),
         key: 'email' as const,
         anchor: emailRef,
@@ -134,14 +107,7 @@ export const SettingPage = (props: ISettingPageProps) => {
         path: '/admin/setting?anchor=email',
       },
     ],
-    [
-      isHydrated,
-      publicOrigin,
-      setting?.aiConfig,
-      setting?.appConfig,
-      setting?.notifyMailTransportConfig,
-      t,
-    ]
+    [isHydrated, publicOrigin, setting?.notifyMailTransportConfig, t]
   );
 
   const router = useRouter();
