@@ -17,6 +17,7 @@ export const AppProviders: FC<Props & { env: IServerEnv }> = (props) => {
   return (
     <ThemeProvider
       attribute="class"
+      defaultTheme="light"
       themeColor={{
         light: '#ffffff',
         dark: '#09090b',
