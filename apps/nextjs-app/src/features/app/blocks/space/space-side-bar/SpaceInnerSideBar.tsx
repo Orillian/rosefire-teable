@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { getUniqName, hasPermission } from '@teable/core';
-import { Plus, Settings, Trash2, LayoutTemplate } from '@teable/icons';
+import { Plus, Settings, Trash2 } from '@teable/icons';
 import { createBase, getSpaceById } from '@teable/openapi';
 import { ReactQueryKeys } from '@teable/sdk/config';
 import { cn } from '@teable/ui-lib/shadcn';
@@ -21,8 +21,6 @@ import {
   CreateBaseDialog,
   useCreateBaseChooserEnabled,
 } from '@/features/app/components/space/create-base';
-import { TemplateModal } from '@/features/app/components/space/template';
-import { TemplateContext } from '@/features/app/components/space/template/context';
 import { spaceConfig } from '@/features/i18n/space.config';
 import { useBaseList } from '../useBaseList';
 import { PinList } from './PinList';
@@ -125,20 +123,6 @@ export const SpaceInnerSideBar = (props: {
                 <p className="truncate">{t('noun.trash')}</p>
               </Button>
             </SpaceInnerTrashModal>
-          </li>
-          <li key="template">
-            <TemplateContext.Provider value={{ spaceId }}>
-              <TemplateModal spaceId={spaceId}>
-                <Button
-                  variant="ghost"
-                  size={'xs'}
-                  className={cn('w-full justify-start h-8 text-sm font-normal')}
-                >
-                  <LayoutTemplate className="size-4 shrink-0" />
-                  <p className="truncate">{t('common:noun.template')}</p>
-                </Button>
-              </TemplateModal>
-            </TemplateContext.Provider>
           </li>
         </ul>
       </div>

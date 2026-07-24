@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { getUniqName } from '@teable/core';
-import { Database, LayoutTemplate } from '@teable/icons';
+import { Database } from '@teable/icons';
 import { createBase } from '@teable/openapi';
 import {
   Button,
@@ -15,8 +15,6 @@ import { useTranslation } from 'next-i18next';
 import type { ReactNode } from 'react';
 import { spaceConfig } from '@/features/i18n/space.config';
 import { useBaseList } from '../../blocks/space/useBaseList';
-import { TemplateModal } from './template';
-import { TemplateContext } from './template/context';
 
 export const CreateBaseModalTrigger = ({
   spaceId,
@@ -47,7 +45,7 @@ export const CreateBaseModalTrigger = ({
           <DialogHeader>
             <DialogTitle>{t('space:baseModal.howToCreate')}</DialogTitle>
           </DialogHeader>
-          <div className="flex justify-around pt-4">
+          <div className="flex justify-center pt-4">
             <Button
               className="flex h-auto grow flex-col items-center gap-4"
               variant="ghost"
@@ -63,14 +61,6 @@ export const CreateBaseModalTrigger = ({
               <Database className="size-8" />
               {t('space:baseModal.fromScratch')}
             </Button>
-            <TemplateContext.Provider value={{ spaceId }}>
-              <TemplateModal spaceId={spaceId}>
-                <Button className="flex h-auto grow flex-col items-center gap-4" variant="ghost">
-                  <LayoutTemplate className="size-8" />
-                  {t('space:baseModal.fromTemplate')}
-                </Button>
-              </TemplateModal>
-            </TemplateContext.Provider>
           </div>
         </DialogContent>
       </Dialog>
