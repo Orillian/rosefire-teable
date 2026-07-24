@@ -8,6 +8,7 @@ vi.mock('@teable/db-main-prisma', () => ({
   MetaPrismaService: class MetaPrismaService {},
   Prisma: {},
   PrismaModule: class PrismaModule {},
+  PgPoolRegistry: class PgPoolRegistry {},
   PrismaService: class PrismaService {},
   ProvisionState: {},
   getDatabaseUrl: vi.fn(),

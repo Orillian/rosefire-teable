@@ -507,6 +507,72 @@ describe('TableOpenApiService.dropTables', () => {
       '"bseTest"."tblA"'
     );
   });
+
+  const buildService = (dropError: Error, { isMetaFallback = true } = {}) => {
+    const metaTxClient = {
+      tableMeta: {
+        findMany: vi.fn().mockResolvedValue([
+          {
+            id: 'tblA',
+            baseId: 'bseTest',
+            dbTableName: '"bseTest"."tblA"',
+            version: 3,
+            deletedTime: new Date(),
+          },
+        ]),
+      },
+    };
+    const databaseRouter = {
+      executeDataPrismaForTable: vi.fn().mockRejectedValue(dropError),
+      getDataDatabaseForTable: vi.fn().mockResolvedValue({ isMetaFallback }),
+    };
+    const tableMutationCacheInvalidator = {
+      invalidateDroppedTable: vi.fn().mockResolvedValue(undefined),
+    };
+    const service = new TableOpenApiService(
+      { txClient: vi.fn().mockReturnValue(metaTxClient) } as never,
+      databaseRouter as never,
+      {} as never,
+      {} as never,
+      {} as never,
+      {} as never,
+      {} as never,
+      {} as never,
+      {} as never,
+      {} as never,
+      {} as never,
+      {} as never,
+      { saveRawOps: vi.fn() } as never,
+      { dropTable: vi.fn().mockReturnValue('drop table "bseTest"."tblA"') } as never,
+      {} as never,
+      {} as never,
+      {} as never,
+      tableMutationCacheInvalidator as never,
+      {} as never,
+      { deleteTablePrefix: async () => undefined } as never
+    );
+    return { service, tableMutationCacheInvalidator };
+  };
+
+  it('tolerates a failed physical drop on a bound (BYODB) data database', async () => {
+    const { service, tableMutationCacheInvalidator } = buildService(
+      new Error('(ENOTFOUND) tenant/user postgres.abc not found'),
+      { isMetaFallback: false }
+    );
+
+    await expect(service.dropTables(['tblA'])).resolves.toBeUndefined();
+    expect(tableMutationCacheInvalidator.invalidateDroppedTable).toHaveBeenCalledWith(
+      '"bseTest"."tblA"'
+    );
+  });
+
+  it('rethrows platform data DB errors from the physical drop', async () => {
+    const { service } = buildService(
+      new Error("Can't reach database server at `db.example.com:5432`")
+    );
+
+    await expect(service.dropTables(['tblA'])).rejects.toThrow("Can't reach database server");
+  });
 });
 
 describe('TableOpenApiService.sqlQuery', () => {

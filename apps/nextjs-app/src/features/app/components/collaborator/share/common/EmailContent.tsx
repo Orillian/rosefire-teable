@@ -4,7 +4,7 @@ import { z } from '@teable/openapi';
 import { Spin } from '@teable/ui-lib/base';
 import { Button } from '@teable/ui-lib/shadcn';
 import { useTranslation } from 'next-i18next';
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { RoleSelect } from '../../../collaborator-manage/components/RoleSelect';
 import type { IRoleStatic } from '../../../collaborator-manage/types';
 
@@ -25,6 +25,7 @@ export const EmailContent = ({
   const [selectedRole, setSelectedRole] = useState<IRole>(defaultRole);
   const [email, setEmail] = useState<string>('');
   const [inviteEmails, setInviteEmails] = useState<string[]>([]);
+  const emailInputRef = useRef<HTMLInputElement>(null);
 
   const emailInputChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.code === 'Backspace' && !email?.length) {
@@ -61,7 +62,11 @@ export const EmailContent = ({
         {t('invite.dialog.tabEmail')}
       </Button>
       <div className="space-y-4">
-        <div className="flex h-20 flex-1 flex-wrap gap-1 overflow-y-auto rounded-md border border-input bg-background p-2 text-sm shadow-sm transition-colors">
+        {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
+        <div
+          className="flex h-20 flex-1 cursor-text flex-wrap gap-1 overflow-y-auto rounded-md border bg-background p-2 text-sm transition-colors focus-within:border-primary hover:border-primary/30 focus-within:hover:border-primary"
+          onClick={() => emailInputRef.current?.focus()}
+        >
           {inviteEmails.map((email) => (
             <div
               key={email}
@@ -75,6 +80,7 @@ export const EmailContent = ({
             </div>
           ))}
           <input
+            ref={emailInputRef}
             className="h-6 flex-auto bg-background text-[13px] outline-none"
             placeholder={t('invite.dialog.emailPlaceholder')}
             type="email"

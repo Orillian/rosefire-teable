@@ -44,6 +44,7 @@ import { IDbProvider } from '../../../db-provider/db.provider.interface';
 import { EventEmitterService } from '../../../event-emitter/event-emitter.service';
 import { Events } from '../../../event-emitter/events';
 import type { IDataDbRoutingOptions } from '../../../global/data-db-client-manager.service';
+import { handleBestEffortDataDbDropError } from '../../../global/data-db-runtime-error';
 import { DatabaseRouter } from '../../../global/database-router.service';
 import { RawOpType } from '../../../share-db/interface';
 import type { IClsStore } from '../../../types/cls';
@@ -497,11 +498,23 @@ export class TableOpenApiService {
           { docId: table.id, version: table.version },
         ]);
       }
-      await this.databaseRouter.executeDataPrismaForTable(
-        table.id,
-        this.dbProvider.dropTable(table.dbTableName),
-        { useTransaction: true }
-      );
+      try {
+        await this.databaseRouter.executeDataPrismaForTable(
+          table.id,
+          this.dbProvider.dropTable(table.dbTableName),
+          { useTransaction: true }
+        );
+      } catch (error) {
+        const { isMetaFallback } = await this.databaseRouter.getDataDatabaseForTable(table.id, {
+          useTransaction: true,
+        });
+        handleBestEffortDataDbDropError({
+          error,
+          isMetaFallback,
+          logger: this.logger,
+          target: `table ${table.id}`,
+        });
+      }
       await this.tableMutationCacheInvalidator.invalidateDroppedTable(table.dbTableName);
     }
   }

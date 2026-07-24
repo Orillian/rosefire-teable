@@ -884,6 +884,10 @@
           "title": "Сповіщення про коментар до запису",
           "message": "{{fromUserName}} залишив коментар до {{recordName}} у {{tableName}} у {{baseName}}"
         },
+        "collaboratorInvite": {
+          "space": "{{fromUserName}} запросив вас приєднатися до простору {{resourceName}}",
+          "base": "{{fromUserName}} запросив вас приєднатися до бази {{resourceName}}"
+        },
         "automation": {
           "title": "Сповіщення про автоматизацію",
           "failed": {
@@ -1270,10 +1274,10 @@
     }
   },
   "changelog": {
-    "newUpdate": "ОНОВЛЕННЯ ВІД 15 ЛИПНЯ",
-    "title": "Пам’ять ШІ та завантаження файлів",
-    "url": "https://help.teable.ai/en/changelog#jul-15-2026",
-    "id": "changelog-2026-07-15-ai-memory-and-file-downloads"
+    "newUpdate": "ОНОВЛЕННЯ ВІД 23 ЛИПНЯ",
+    "title": "Представляємо Teable 3.0",
+    "url": "https://help.teable.ai/en/changelog#jul-23-2026",
+    "id": "changelog-2026-07-23-introducing-teable-3-0"
   },
   "resourceDescription": {
     "addDescription": "Додати опис",

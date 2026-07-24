@@ -1124,9 +1124,38 @@ export class ComputedTableRecordQueryBuilder implements ITableRecordQueryBuilder
           }
         );
         const columns: AliasedRawBuilder<unknown, string>[] = [];
+        const selectedFields = table
+          .getFields()
+          .filter(
+            (field) =>
+              !field.hasError().isError() &&
+              (!projection || projection.some((p) => p.equals(field.id())))
+          );
+        const lastFieldIdByColumn = new Map<string, string>();
 
-        for (const field of table.getFields()) {
-          if (projection && !projection.some((p) => p.toString() === field.id().toString())) {
+        for (const field of selectedFields) {
+          const dbFieldName = field.dbFieldName().andThen((name) => name.value());
+          if (dbFieldName.isOk()) {
+            lastFieldIdByColumn.set(dbFieldName.value, field.id().toString());
+          }
+        }
+
+        const selectedFieldById = new Map(
+          selectedFields.map((field) => [field.id().toString(), field] as const)
+        );
+        const orderedFields = projection
+          ? projection.flatMap((fieldId) => {
+              const field = selectedFieldById.get(fieldId.toString());
+              return field ? [field] : [];
+            })
+          : selectedFields;
+
+        for (const field of orderedFields) {
+          const dbFieldName = field.dbFieldName().andThen((name) => name.value());
+          if (
+            dbFieldName.isOk() &&
+            lastFieldIdByColumn.get(dbFieldName.value) !== field.id().toString()
+          ) {
             continue;
           }
           columns.push(yield* field.accept(visitor));

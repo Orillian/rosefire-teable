@@ -631,6 +631,18 @@ describeByodbStorage('BYODB space storage placement (e2e)', () => {
       records: [{ fields: {} }, { fields: {} }, { fields: {} }],
     });
     expect(mainTable.records).toHaveLength(3);
+    const computeActivityResponse = await axios.get('/v2/tables/getComputeActivity', {
+      params: { baseId: base.id, tableId: mainTable.id },
+    });
+    expect(computeActivityResponse.status).toBe(200);
+    expect(computeActivityResponse.data).toMatchObject({
+      ok: true,
+      data: {
+        baseId: base.id,
+        tableId: mainTable.id,
+        diagnostics: { activeFieldCount: 0 },
+      },
+    });
     const foreignTable = await createTable(base.id, {
       name: 'BYODB placement foreign',
       fields: [{ name: 'Name', type: FieldType.SingleLineText }],

@@ -65,6 +65,8 @@ export const ReactQueryKeys = {
 
   tableList: (baseId: string) => ['table-list', baseId] as const,
 
+  tableSeed: (tableId: string, viewId: string) => ['table-seed', tableId, viewId] as const,
+
   recordCommentCount: (tableId: string, recordId: string) =>
     ['record-comment-count', tableId, recordId] as const,
 

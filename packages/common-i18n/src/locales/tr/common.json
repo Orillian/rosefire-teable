@@ -894,6 +894,10 @@
           "title": "Kayıt Yorumu Bildirimi",
           "message": "{{fromUserName}}, {{baseName}} içindeki {{tableName}} tablosundaki {{recordName}} kaydına yorum yaptı"
         },
+        "collaboratorInvite": {
+          "space": "{{fromUserName}} sizi {{resourceName}} alanına davet etti",
+          "base": "{{fromUserName}} sizi {{resourceName}} veritabanına davet etti"
+        },
         "automation": {
           "title": "Otomasyon Bildirimi",
           "failed": {
@@ -1280,10 +1284,10 @@
     }
   },
   "changelog": {
-    "newUpdate": "15 TEMMUZ GUNCELLEMESI",
-    "title": "AI hafızası ve dosya indirmeleri",
-    "url": "https://help.teable.ai/en/changelog#jul-15-2026",
-    "id": "changelog-2026-07-15-ai-memory-and-file-downloads"
+    "newUpdate": "23 TEMMUZ GÜNCELLEMESİ",
+    "title": "Teable 3.0'ı tanıtıyoruz",
+    "url": "https://help.teable.ai/en/changelog#jul-23-2026",
+    "id": "changelog-2026-07-23-introducing-teable-3-0"
   },
   "resourceDescription": {
     "addDescription": "Açıklama ekle",

@@ -143,6 +143,7 @@ describe('InvitationService', () => {
         ],
         spaceId: mockSpace.id,
         role: Role.Owner,
+        skipEvent: true,
       });
 
       expect(prismaService.invitationRecord.create).toHaveBeenCalledWith({
@@ -226,6 +227,7 @@ describe('InvitationService', () => {
         ],
         baseId: 'base1',
         role: Role.Creator,
+        skipEvent: true,
       });
       expect(prismaService.invitationRecord.create).toHaveBeenCalledWith({
         data: {
@@ -486,6 +488,7 @@ describe('InvitationService', () => {
         spaceId: mockSpace.id,
         role: Role.Owner,
         createdBy: 'createdBy',
+        skipEvent: true,
       });
       expect(result.spaceId).toEqual(mockInvitation.spaceId);
     });

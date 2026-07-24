@@ -934,6 +934,10 @@
           "title": "Notificación de comentario de registro",
           "message": "{{fromUserName}} hizo un comentario en {{recordName}} en {{tableName}} en {{baseName}}"
         },
+        "collaboratorInvite": {
+          "space": "{{fromUserName}} te ha invitado a unirte al espacio {{resourceName}}",
+          "base": "{{fromUserName}} te ha invitado a unirte a la base {{resourceName}}"
+        },
         "automation": {
           "title": "Notificación de automatización",
           "failed": {
@@ -1289,10 +1293,10 @@
     }
   },
   "changelog": {
-    "newUpdate": "ACTUALIZACION DEL 15 DE JULIO",
-    "title": "Memoria de IA y descargas de archivos",
-    "url": "https://help.teable.ai/en/changelog#jul-15-2026",
-    "id": "changelog-2026-07-15-ai-memory-and-file-downloads"
+    "newUpdate": "ACTUALIZACIÓN DEL 23 DE JULIO",
+    "title": "Presentamos Teable 3.0",
+    "url": "https://help.teable.ai/en/changelog#jul-23-2026",
+    "id": "changelog-2026-07-23-introducing-teable-3-0"
   },
   "resourceDescription": {
     "addDescription": "Agregar descripción",

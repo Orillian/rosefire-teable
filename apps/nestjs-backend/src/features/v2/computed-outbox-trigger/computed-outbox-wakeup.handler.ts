@@ -18,15 +18,13 @@ export type ComputedOutboxWakeupHandlerOutcome = {
   status: 'processed' | 'noop' | 'deferred' | 'parked';
 };
 
-/** Minimum delay for transient claim races and database lock misses. */
-const MIN_DEFER_DELAY_MS = 2_000;
 /**
- * Retry when the base concurrency/advisory slot is busy.
+ * Retry when the base concurrency/advisory slot is busy or a claim races a transaction.
  * Keep this short: a successful worker now drains the remaining queue immediately
  * (see drainRemainingOutbox), so long concurrency sleeps only add dual-link lag
  * when that drain races another claim miss. Pause still uses deterministic resume.
  */
-const CONCURRENCY_DEFER_DELAY_MS = 100;
+const TRANSIENT_DEFER_DELAY_MS = 100;
 /** Conservative retry for blockers without a deterministic release time. */
 const BLOCKED_DEFER_DELAY_MS = 30_000;
 /** Per claimBatch size while continuing after a targeted wake-up. */
@@ -50,30 +48,45 @@ const resolveDeferredWakeup = (
   eligibility: Exclude<OutboxTaskClaimEligibility, { status: 'terminal' }>,
   nowMs: number
 ): { wakeupId: string; availableAt: Date } => {
-  const fallbackDelay =
-    eligibility.status === 'deferred' && eligibility.reason === 'concurrency'
-      ? CONCURRENCY_DEFER_DELAY_MS
-      : eligibility.status === 'deferred' && eligibility.reason === 'paused'
-        ? BLOCKED_DEFER_DELAY_MS
-        : MIN_DEFER_DELAY_MS;
-  const retryAt = eligibility.status === 'deferred' ? eligibility.retryAt : null;
-  const finitePauseResumeAt =
-    eligibility.status === 'deferred' && eligibility.reason === 'paused' && retryAt !== null
-      ? retryAt
-      : null;
-  let availableAt =
-    finitePauseResumeAt ??
-    new Date(Math.max(nowMs + fallbackDelay, retryAt?.getTime() ?? Number.NEGATIVE_INFINITY));
-  const baseWakeupId = createDeferredWakeupId(
-    taskId,
-    availableAt,
-    finitePauseResumeAt ? undefined : fallbackDelay
-  );
+  const transientRetryAt = new Date(nowMs + TRANSIENT_DEFER_DELAY_MS);
+  let availableAt: Date;
+  let bucketMs: number | undefined;
+
+  if (eligibility.status === 'eligible') {
+    // claimById can miss a row locked by a transaction that commits immediately afterwards.
+    availableAt = transientRetryAt;
+    bucketMs = TRANSIENT_DEFER_DELAY_MS;
+  } else {
+    const { reason, retryAt } = eligibility;
+    switch (reason) {
+      case 'concurrency':
+        // retryAt is the processing lease expiry, not the expected blocker completion time.
+        // The active worker drains siblings after it commits, so only use a short safety retry.
+        availableAt = transientRetryAt;
+        bucketMs = TRANSIENT_DEFER_DELAY_MS;
+        break;
+      case 'not_due':
+        // releaseForRetry already chose the safe retry instant (250ms for computed lock misses).
+        // Do not inflate it to the old generic two-second claim-race delay.
+        availableAt = retryAt && retryAt.getTime() > nowMs ? retryAt : transientRetryAt;
+        break;
+      case 'active_lease':
+        availableAt = new Date(
+          Math.max(transientRetryAt.getTime(), retryAt?.getTime() ?? Number.NEGATIVE_INFINITY)
+        );
+        break;
+      case 'paused':
+        availableAt = retryAt ?? new Date(nowMs + BLOCKED_DEFER_DELAY_MS);
+        break;
+    }
+  }
+
+  const baseWakeupId = createDeferredWakeupId(taskId, availableAt, bucketMs);
   if (currentWakeupId === baseWakeupId || currentWakeupId.startsWith(`${baseWakeupId}-r`)) {
-    availableAt = new Date(Math.max(availableAt.getTime(), nowMs + MIN_DEFER_DELAY_MS));
+    availableAt = new Date(Math.max(availableAt.getTime(), nowMs + TRANSIENT_DEFER_DELAY_MS));
     return {
       availableAt,
-      wakeupId: `${baseWakeupId}-r${Math.floor(availableAt.getTime() / MIN_DEFER_DELAY_MS)}`,
+      wakeupId: `${baseWakeupId}-r${Math.floor(availableAt.getTime() / TRANSIENT_DEFER_DELAY_MS)}`,
     };
   }
   return {

@@ -1263,6 +1263,10 @@
           "title": "记录评论通知",
           "message": "{{fromUserName}} 在数据库 {{baseName}} 的 {{tableName}} 的 {{recordName}} 上评论了"
         },
+        "collaboratorInvite": {
+          "space": "{{fromUserName}} 刚刚邀请你加入空间 {{resourceName}}",
+          "base": "{{fromUserName}} 刚刚邀请你加入数据库 {{resourceName}}"
+        },
         "automation": {
           "title": "自动化通知",
           "failed": {
@@ -1643,10 +1647,10 @@
     }
   },
   "changelog": {
-    "newUpdate": "7 月 15 日更新",
-    "title": "AI 记忆与生成文件下载",
-    "url": "https://help.teable.ai/en/changelog#jul-15-2026",
-    "id": "changelog-2026-07-15-ai-memory-and-file-downloads"
+    "newUpdate": "7 月 23 日更新",
+    "title": "Teable 3.0 正式发布",
+    "url": "https://help.teable.ai/en/changelog#jul-23-2026",
+    "id": "changelog-2026-07-23-introducing-teable-3-0"
   },
   "resourceDescription": {
     "addDescription": "添加描述",

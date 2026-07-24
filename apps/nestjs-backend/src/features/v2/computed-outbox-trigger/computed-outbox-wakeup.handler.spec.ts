@@ -1,4 +1,7 @@
-import { v2RecordRepositoryPostgresTokens } from '@teable/v2-adapter-table-repository-postgres';
+import {
+  v2RecordRepositoryPostgresTokens,
+  type OutboxTaskClaimEligibility,
+} from '@teable/v2-adapter-table-repository-postgres';
 import { v2CoreTokens } from '@teable/v2-core';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -30,6 +33,34 @@ describe('ComputedOutboxWakeupHandler', () => {
     publish,
     runAsConsumer: <T>(operation: () => Promise<T>) => operation(),
   });
+
+  const createClaimMissHandler = (
+    eligibility: Exclude<OutboxTaskClaimEligibility, { status: 'terminal' }>
+  ) => {
+    const publish = vi.fn().mockResolvedValue({ status: 'accepted' });
+    const handler = new ComputedOutboxWakeupHandler(
+      {
+        getContainerForBase: vi.fn().mockResolvedValue({
+          resolve: (token: unknown) => {
+            if (token === v2RecordRepositoryPostgresTokens.computedUpdateWorker) {
+              return {
+                runTaskById: vi.fn().mockResolvedValue({ isErr: () => false, value: false }),
+              };
+            }
+            return {
+              getTaskClaimEligibility: vi.fn().mockResolvedValue({
+                isErr: () => false,
+                value: eligibility,
+              }),
+            };
+          },
+        }),
+      } as never,
+      createMetrics() as never,
+      createPublisher(publish) as never
+    );
+    return { handler, publish };
+  };
 
   it('routes by base and executes the task without processing takeover', async () => {
     const runTaskById = vi.fn().mockResolvedValue({
@@ -178,6 +209,97 @@ describe('ComputedOutboxWakeupHandler', () => {
     const published = publish.mock.calls[0][0] as { availableAt: Date };
     expect(published.availableAt.getTime()).toBeGreaterThanOrEqual(nextRunAt.getTime());
     expect(metrics.recordConsume).toHaveBeenCalledWith('deferred');
+  });
+
+  it('preserves the outbox retry time after a computed lock miss', async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-01-05T12:00:00Z'));
+    try {
+      const retryAt = new Date(Date.now() + 250);
+      const { handler, publish } = createClaimMissHandler({
+        status: 'deferred',
+        reason: 'not_due',
+        retryAt,
+      });
+
+      await expect(handler.handle(wakeup)).resolves.toEqual({ status: 'deferred' });
+
+      expect(publish).toHaveBeenCalledWith(
+        expect.objectContaining({
+          taskId: wakeup.taskId,
+          availableAt: retryAt,
+        })
+      );
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('retries concurrency misses quickly instead of waiting for the processing lease', async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-01-05T12:00:00Z'));
+    try {
+      const leaseExpiresAt = new Date(Date.now() + 120_000);
+      const { handler, publish } = createClaimMissHandler({
+        status: 'deferred',
+        reason: 'concurrency',
+        retryAt: leaseExpiresAt,
+      });
+
+      await expect(handler.handle(wakeup)).resolves.toEqual({ status: 'deferred' });
+
+      expect(publish).toHaveBeenCalledWith(
+        expect.objectContaining({
+          taskId: wakeup.taskId,
+          availableAt: new Date(Date.now() + 100),
+        })
+      );
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('retries an eligible claim race quickly', async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-01-05T12:00:00Z'));
+    try {
+      const { handler, publish } = createClaimMissHandler({ status: 'eligible' });
+
+      await expect(handler.handle(wakeup)).resolves.toEqual({ status: 'deferred' });
+
+      expect(publish).toHaveBeenCalledWith(
+        expect.objectContaining({
+          taskId: wakeup.taskId,
+          availableAt: new Date(Date.now() + 100),
+        })
+      );
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('keeps active lease retries at the lease expiry', async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-01-05T12:00:00Z'));
+    try {
+      const leaseExpiresAt = new Date(Date.now() + 120_000);
+      const { handler, publish } = createClaimMissHandler({
+        status: 'deferred',
+        reason: 'active_lease',
+        retryAt: leaseExpiresAt,
+      });
+
+      await expect(handler.handle(wakeup)).resolves.toEqual({ status: 'deferred' });
+
+      expect(publish).toHaveBeenCalledWith(
+        expect.objectContaining({
+          taskId: wakeup.taskId,
+          availableAt: leaseExpiresAt,
+        })
+      );
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it('parks indefinitely paused tasks without publishing another wakeup', async () => {

@@ -22,7 +22,7 @@ import { pick } from 'lodash';
 import { ClsService } from 'nestjs-cls';
 import type { IMailConfig } from '../../configs/mail.config';
 import { CustomHttpException } from '../../custom.exception';
-import { Events } from '../../event-emitter/events';
+import { CollaboratorCreateEvent, Events } from '../../event-emitter/events';
 import type { IClsStore } from '../../types/cls';
 import { generateInvitationCode } from '../../utils/code-generate';
 import { AuditScope } from '../audit/audit-scope';
@@ -115,16 +115,16 @@ export class InvitationService {
     resourceId,
     resourceName,
     resourceType,
+    spaceId,
   }: {
     emails: string[];
     role: IRole;
     resourceId: string;
     resourceName: string;
     resourceType: CollaboratorType;
+    spaceId: string;
   }) {
     const user = { ...this.cls.get('user') };
-
-    await this.checkInvitationLimits();
 
     const departmentIds = this.cls.get('organization.departments')?.map((d) => d.id);
     await this.collaboratorService.validateUserAddRole({
@@ -174,10 +174,12 @@ export class InvitationService {
       (email) => !sendUsers.find((u) => u.email.toLowerCase() === email.toLowerCase())
     );
 
-    return this.prismaService.$tx(async () => {
+    const newUserIds = new Set<string>();
+    const invitationResult = await this.prismaService.$tx(async () => {
       // create user if not exist
       const newUsers = await this.createNotExistedUser(noExistEmails);
       sendUsers.push(...newUsers);
+      newUsers.forEach((u) => newUserIds.add(u.id));
 
       const result: EmailInvitationVo = {};
       for (const sendUser of sendUsers) {
@@ -192,6 +194,7 @@ export class InvitationService {
             ],
             spaceId: resourceId,
             role: role as IRole,
+            skipEvent: true,
           });
         } else {
           await this.collaboratorService.createBaseCollaborator({
@@ -203,6 +206,7 @@ export class InvitationService {
             ],
             baseId: resourceId,
             role: role as IBaseRole,
+            skipEvent: true,
           });
         }
         // generate invitation record
@@ -262,6 +266,27 @@ export class InvitationService {
 
       return result;
     });
+
+    // The batch's single COLLABORATOR_CREATE, emitted after the transaction.
+    const invitedUsers = sendUsers
+      .filter((u) => !newUserIds.has(u.id))
+      .map((u) => ({ principalId: u.id, principalType: PrincipalType.User }));
+    this.eventEmitter.emitAsync(
+      Events.COLLABORATOR_CREATE,
+      new CollaboratorCreateEvent(
+        spaceId,
+        invitedUsers.length
+          ? {
+              resourceId,
+              resourceType,
+              collaborators: invitedUsers,
+              createdBy: user.id,
+            }
+          : undefined
+      )
+    );
+
+    return invitationResult;
   }
 
   async emailInvitationBySpace(spaceId: string, data: EmailSpaceInvitationRo) {
@@ -285,6 +310,7 @@ export class InvitationService {
       resourceId: spaceId,
       resourceName: space.name,
       resourceType: CollaboratorType.Space,
+      spaceId,
     });
   }
 
@@ -309,6 +335,7 @@ export class InvitationService {
       resourceId: baseId,
       resourceName: base.name,
       resourceType: CollaboratorType.Base,
+      spaceId: base.spaceId,
     });
   }
 
@@ -547,6 +574,7 @@ export class InvitationService {
             spaceId: spaceId!,
             role: role as IRole,
             createdBy,
+            skipEvent: true,
           });
         } else {
           await this.collaboratorService.createBaseCollaborator({
@@ -559,6 +587,7 @@ export class InvitationService {
             baseId: baseId!,
             role: role as IBaseRole,
             createdBy,
+            skipEvent: true,
           });
         }
         // save invitation record for audit
@@ -573,12 +602,19 @@ export class InvitationService {
           },
         });
       });
+      // Post-commit and without a notification context: quantity-check
+      // listeners must see the new collaborator, while the accepter joined by
+      // their own action and gets no invite notification.
+      this.eventEmitter.emitAsync(
+        Events.COLLABORATOR_CREATE,
+        new CollaboratorCreateEvent((spaceId ?? baseSpaceId)!)
+      );
     }
     await this.recordInvitationAccept({
-      resourceId: (spaceId || baseId) as string,
+      resourceId,
       accepterId: currentUserId,
       inviterId: createdBy,
-      resourceType: spaceId ? CollaboratorType.Space : CollaboratorType.Base,
+      resourceType,
     });
 
     return { baseId, spaceId };
@@ -605,37 +641,5 @@ export class InvitationService {
     resourceType: CollaboratorType;
   }) {
     // Decorator does all the work; body is empty.
-  }
-
-  private async checkInvitationLimits(): Promise<void> {
-    if (!process.env.MAX_INVITATIONS_PER_HOUR) return;
-
-    const user = this.cls.get('user');
-    const maxInvitationsPerHour = Number(process.env.MAX_INVITATIONS_PER_HOUR);
-    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
-    const recentInvitations = await this.prismaService.invitationRecord.count({
-      where: {
-        inviter: user.id,
-        createdTime: { gte: oneHourAgo.toISOString() },
-      },
-    });
-
-    if (Number(recentInvitations) >= maxInvitationsPerHour) {
-      await this.prismaService.user.update({
-        where: { id: user.id },
-        data: {
-          deactivatedTime: new Date().toISOString(),
-        },
-      });
-      throw new CustomHttpException(
-        'You have reached the maximum number of invitations per hour',
-        HttpErrorCode.VALIDATION_ERROR,
-        {
-          localization: {
-            i18nKey: 'httpErrors.invitation.limitExceeded',
-          },
-        }
-      );
-    }
   }
 }

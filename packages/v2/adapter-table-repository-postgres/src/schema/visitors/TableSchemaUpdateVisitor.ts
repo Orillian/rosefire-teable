@@ -197,7 +197,7 @@ export class TableSchemaUpdateVisitor
   }
 
   /**
-   * A stored generated tsvector depends on its source columns, so PostgreSQL
+   * A managed stored search document depends on its source columns, so PostgreSQL
    * rejects ALTER COLUMN TYPE until the managed column is removed. The
    * post-schema projection rebuilds it from the latest Table aggregate.
    */
@@ -218,7 +218,10 @@ export class TableSchemaUpdateVisitor
             AND a.attnum > 0
             AND NOT a.attisdropped
             AND a.attgenerated = 's'
-            AND a.attname LIKE '\\_\\_tqops\\_tsv\\_%' ESCAPE '\\'
+            AND (
+              a.attname LIKE '\\_\\_tqops\\_tsv\\_%' ESCAPE '\\'
+              OR a.attname LIKE '\\_\\_tqops\\_search\\_%' ESCAPE '\\'
+            )
         LOOP
           EXECUTE format(
             'ALTER TABLE %I.%I DROP COLUMN IF EXISTS %I',

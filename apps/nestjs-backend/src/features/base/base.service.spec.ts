@@ -415,5 +415,57 @@ describe('BaseService', () => {
 
       expect(tableOpenApiService.dropTables).toHaveBeenCalledWith(['tbl1', 'tbl2']);
     });
+
+    const buildRoutedService = (
+      executeRawUnsafe: ReturnType<typeof vi.fn>,
+      { isMetaFallback = true } = {}
+    ) => {
+      const routedDataPrisma = {
+        txClient: vi.fn().mockReturnValue({ $executeRawUnsafe: executeRawUnsafe }),
+      };
+      const tableOpenApiService = { dropTables: vi.fn() };
+      const service = new BaseService(
+        {} as never,
+        {
+          dataPrismaForBase: vi.fn().mockResolvedValue(routedDataPrisma),
+          getDataDatabaseForBase: vi.fn().mockResolvedValue({ isMetaFallback }),
+        } as never,
+        {} as never,
+        {} as never,
+        {} as never,
+        {} as never,
+        {} as never,
+        tableOpenApiService as never,
+        {} as never,
+        {} as never,
+        {} as never,
+        {} as never,
+        { dropSchema: vi.fn().mockReturnValue('DROP SCHEMA "bse1" CASCADE') } as never,
+        {} as never,
+        {} as never,
+        {} as never,
+        {} as never
+      );
+      return { service, tableOpenApiService };
+    };
+
+    it('tolerates a failed schema drop on a bound (BYODB) data database', async () => {
+      const executeRawUnsafe = vi
+        .fn()
+        .mockRejectedValue(new Error('(ENOTFOUND) tenant/user postgres.abc not found'));
+      const { service, tableOpenApiService } = buildRoutedService(executeRawUnsafe, {
+        isMetaFallback: false,
+      });
+
+      await expect(service.dropBase('bse1', ['tbl1'])).resolves.toBeUndefined();
+      expect(tableOpenApiService.dropTables).not.toHaveBeenCalled();
+    });
+
+    it('rethrows platform data DB errors so cleanup can retry', async () => {
+      const executeRawUnsafe = vi.fn().mockRejectedValue(new Error('connection refused'));
+      const { service } = buildRoutedService(executeRawUnsafe);
+
+      await expect(service.dropBase('bse1', ['tbl1'])).rejects.toThrow('connection refused');
+    });
   });
 });
