@@ -1,6 +1,6 @@
 import type { DropResult } from '@hello-pangea/dnd';
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd';
-import type { ISelectFieldChoice, ISelectFieldOptions } from '@teable/core';
+import type { Colors, ISelectFieldChoice, ISelectFieldOptions } from '@teable/core';
 import { ColorUtils } from '@teable/core';
 import { DraggableHandle, Plus, Trash } from '@teable/icons';
 import { cn, Label, Switch } from '@teable/ui-lib/shadcn';
@@ -32,7 +32,11 @@ export const SelectOptions = (props: {
 
   const choices = useMemo(() => options?.choices ?? [], [options?.choices]);
 
-  const updateOptionChange = (index: number, key: keyof ISelectFieldChoice, value: string) => {
+  const updateOptionChange = (
+    index: number,
+    key: keyof ISelectFieldChoice,
+    value: string | undefined
+  ) => {
     const newChoice = choices.map((v, i) => {
       if (i === index) {
         return {
@@ -60,7 +64,9 @@ export const SelectOptions = (props: {
   };
 
   const addOption = () => {
-    const existColors = choices.map((v) => v.color);
+    // Newly auto-added choices still get an assigned color; existing "no color"
+    // choices are simply excluded from the used-colors set passed to randomColor.
+    const existColors = choices.map((v) => v.color).filter((c): c is Colors => c != null);
     const choice = {
       name: '',
       color: ColorUtils.randomColor(existColors)[0],

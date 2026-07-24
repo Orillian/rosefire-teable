@@ -1,4 +1,4 @@
-import { ColorUtils, type ISelectFieldChoice } from '@teable/core';
+import { ColorUtils, type Colors, type ISelectFieldChoice } from '@teable/core';
 import { Plus } from '@teable/icons';
 import type { SingleSelectField } from '@teable/sdk/model';
 import { Button, Popover, PopoverContent, PopoverTrigger } from '@teable/ui-lib/shadcn';
@@ -20,7 +20,9 @@ export const KanbanStackCreator = () => {
   const inputRef = useRef<HTMLInputElement | null>();
 
   const onToggle = () => {
-    const existColors = choices.map((v) => v.color);
+    // Newly created stacks still get an assigned color; existing "no color"
+    // choices are simply excluded from the used-colors set passed to randomColor.
+    const existColors = choices.map((v) => v.color).filter((c): c is Colors => c != null);
     const newChoice = {
       name: '',
       color: ColorUtils.randomColor(existColors)[0],
@@ -29,7 +31,7 @@ export const KanbanStackCreator = () => {
     setTimeout(() => inputRef.current?.focus());
   };
 
-  const onChange = (key: keyof ISelectFieldChoice, value: string) => {
+  const onChange = (key: keyof ISelectFieldChoice, value: string | undefined) => {
     setChoice({
       ...(choice as ISelectFieldChoice),
       [key]: value,

@@ -1153,10 +1153,12 @@ export class FieldConvertingService {
     });
 
     if (newChoicesSet.size) {
-      const colors = ColorUtils.randomColor(
-        choices.map((item) => item.color),
-        newChoicesSet.size
-      );
+      // Newly auto-created choices still get an assigned color; existing "no color"
+      // choices are simply excluded from the used-colors set passed to randomColor.
+      const existingColors = choices
+        .map((item) => item.color)
+        .filter((color): color is string => color != null);
+      const colors = ColorUtils.randomColor(existingColors, newChoicesSet.size);
       const newChoices = choices.concat(
         Array.from(newChoicesSet).map<ISelectFieldChoice>((item, i) => ({
           id: generateChoiceId(),

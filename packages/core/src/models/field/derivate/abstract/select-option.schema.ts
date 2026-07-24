@@ -4,10 +4,13 @@ import { z } from '../../../../zod';
 export const selectFieldChoiceSchema = z.object({
   id: z.string(),
   name: z.string(),
-  color: z.string(),
+  // Optional: an omitted color renders the choice as plain text ("no color"),
+  // additive change — all pre-existing choices already carry a color and are
+  // unaffected. See packages/sdk/src/utils/select-color.ts.
+  color: z.string().optional(),
 });
 
-export const selectFieldChoiceRoSchema = selectFieldChoiceSchema.partial({ id: true, color: true });
+export const selectFieldChoiceRoSchema = selectFieldChoiceSchema.partial({ id: true });
 
 export type ISelectFieldChoice = z.infer<typeof selectFieldChoiceSchema>;
 

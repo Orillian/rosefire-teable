@@ -1,4 +1,4 @@
-import type { ISelectFieldChoice, ISelectFieldOptions } from '@teable/core';
+import type { Colors, ISelectFieldChoice, ISelectFieldOptions } from '@teable/core';
 import { ColorUtils, generateChoiceId } from '@teable/core';
 
 /**
@@ -24,10 +24,17 @@ export function ensureSelectChoice(
     return existing;
   }
 
+  // New choices created via this path still get an assigned color (this is the
+  // "quick add during editing" flow, not the explicit "no color" picker choice);
+  // existing "no color" choices are simply excluded from the used-colors set.
+  const existingColors = choices
+    .map((item) => item.color)
+    .filter((color): color is Colors => color != null);
+
   const choice: ISelectFieldChoice = {
     id: generateChoiceId(),
     name: trimmedName,
-    color: ColorUtils.randomColor(choices.map((item) => item.color))[0],
+    color: ColorUtils.randomColor(existingColors)[0],
   };
   choices.push(choice);
   return choice;

@@ -159,10 +159,13 @@ export const buttonCellRenderer: IInternalCellRenderer<IButtonCell> = {
     const { ctx, rect, theme } = props;
     const { x, y, width, height } = rect;
     const rectColor = readonly ? Colors.Gray : fieldOptions.color;
+    // Button field options always carry a concrete Colors value (unaffected by the
+    // select-choice "no color" feature), so the "no color" branch of getSelectColorPairs
+    // never applies here — the cast reflects that.
     const { color: textColor, backgroundColor: bgColor } = getSelectColorPairs(
       rectColor,
       theme.themeKey
-    );
+    ) as { color: string; backgroundColor: string };
     const position = calcPosition(cell, {
       width,
       ctx,

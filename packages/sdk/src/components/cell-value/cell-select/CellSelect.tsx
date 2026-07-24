@@ -7,13 +7,16 @@ import { getSelectColorPairs } from '../../../utils/select-color';
 import type { ICellValue } from '../type';
 import { SelectTag } from './SelectTag';
 
+// Callers of getColorPairs always pass a concrete Colors value (falling back to a default
+// color themselves, e.g. calendar/util.ts), so the "no color" branch of getSelectColorPairs
+// (which only triggers on an undefined color) never applies here — the cast reflects that.
 export const getColorPairs = (
   color: Colors,
   theme: string = 'light'
 ): {
   color: string;
   backgroundColor: string;
-} => getSelectColorPairs(color, theme);
+} => getSelectColorPairs(color, theme) as { color: string; backgroundColor: string };
 
 export const transformSelectOptions = (
   choices: ISelectFieldOptions['choices'],

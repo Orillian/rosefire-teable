@@ -216,7 +216,12 @@ export class TypeCastAndValidate {
       | MultipleSelectFieldDto;
     const existsChoicesNameMap = this.cache.choicesMap as Record<string, ISelectFieldChoice>;
     const notExists = choicesNames.filter((name) => !existsChoicesNameMap[name]);
-    const colors = ColorUtils.randomColor(map(options.choices, 'color'), notExists.length);
+    // Newly auto-created choices still get an assigned color; existing "no color"
+    // choices are simply excluded from the used-colors set passed to randomColor.
+    const existingColors = map(options.choices, 'color').filter(
+      (color): color is string => color != null
+    );
+    const colors = ColorUtils.randomColor(existingColors, notExists.length);
     const newChoices = notExists.map((name, index) => ({
       id: generateChoiceId(),
       name,

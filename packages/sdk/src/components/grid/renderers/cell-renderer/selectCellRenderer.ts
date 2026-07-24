@@ -51,20 +51,34 @@ const drawLabel = (
     editable?: boolean;
     theme: IGridTheme;
     spriteManager: SpriteManager;
+    hasBackground?: boolean;
   }
 ) => {
-  const { x, y, width, text, maxTextWidth, textColor, bgColor, editable, theme, spriteManager } =
-    props;
-  const { fontSizeXS, iconSizeSM } = theme;
-
-  drawRect(ctx, {
+  const {
     x,
     y,
     width,
-    height: iconSizeSM,
-    radius: OPTION_RADIUS,
-    fill: bgColor,
-  });
+    text,
+    maxTextWidth,
+    textColor,
+    bgColor,
+    editable,
+    theme,
+    spriteManager,
+    hasBackground = true,
+  } = props;
+  const { fontSizeXS, iconSizeSM } = theme;
+
+  if (hasBackground) {
+    drawRect(ctx, {
+      x,
+      y,
+      width,
+      height: iconSizeSM,
+      radius: OPTION_RADIUS,
+      fill: bgColor,
+    });
+  }
   drawSingleLineText(ctx, {
     text,
     x: x + OPTION_PADDING_HORIZONTAL,
@@ -242,6 +256,9 @@ export const selectCellRenderer: IInternalCellRenderer<ISelectCell> = {
 
     for (const text of displayData) {
       const choice = choiceMap?.[text];
+      // A resolved choice with no color is a deliberate "no color" pick — skip the pill
+      // background. An *unresolved* value (choice === undefined) keeps the old fallback pill.
+      const hasBackground = choice ? choice.backgroundColor != null : true;
       const bgColor = choice?.backgroundColor || cellOptionBg;
       const textColor = choice?.color || cellOptionTextColor;
 
@@ -279,6 +296,7 @@ export const selectCellRenderer: IInternalCellRenderer<ISelectCell> = {
         maxTextWidth: actualMaxTextWidth,
         textColor,
         bgColor,
+        hasBackground,
         editable,
         theme,
         spriteManager,

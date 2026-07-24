@@ -6,7 +6,6 @@ import {
   ButtonFieldCore,
   CellValueType,
   CheckboxFieldCore,
-  ColorUtils,
   ConditionalRollupFieldCore,
   CreatedTimeFieldCore,
   DateFieldCore,
@@ -1425,7 +1424,12 @@ export class FieldSupplementService {
       return {
         name: choice.name,
         id: choice.id ?? generateChoiceId(),
-        color: choice.color ?? ColorUtils.randomColor()[0],
+        // An explicitly omitted color is the "no color" choice (plain-text rendering) —
+        // it must NOT be silently backfilled with a random color here, otherwise the
+        // "no color" picker selection would never actually persist. (Previously this
+        // unconditionally assigned a random color whenever color was missing, which
+        // predates the "no color" feature and would defeat it end-to-end.)
+        color: choice.color,
       };
     });
 
