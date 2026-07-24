@@ -44,7 +44,6 @@ import { useShareUrlPrefix } from '@/features/app/context/ShareContext';
 import { useBaseResource } from '@/features/app/hooks/useBaseResource';
 import { useDisableAIAction } from '@/features/app/hooks/useDisableAIAction';
 import { useIsCommunity } from '@/features/app/hooks/useIsCommunity';
-import { useSetting } from '@/features/app/hooks/useSetting';
 import { usePinMap } from '../../space/usePinMap';
 import { useTableHref } from '../../table-list/useTableHref';
 import { useGridSearchStore } from '../../view/grid/useGridSearchStore';
@@ -154,12 +153,13 @@ export const BaseNodeTree = (props: IBaseNodeTreeProps) => {
   const { hrefMap: tableHrefMap, viewIdMap: tableViewIdsMap } = useTableHref();
   const permission = useBasePermission();
   const { aiChat: aiChatEnabled } = useDisableAIAction();
-  const { disallowDashboard } = useSetting();
   const pinMap = usePinMap();
   const isCommunity = useIsCommunity();
   const shareUrlPrefix = useShareUrlPrefix();
   const canCreateTable = Boolean(permission?.['table|create']);
-  const canCreateDashboard = Boolean(permission?.['base|update'] && !disallowDashboard);
+  // Dashboards are a first-class Rosefire feature; the disallowDashboard
+  // admin setting no longer gates creation (see P7).
+  const canCreateDashboard = Boolean(permission?.['base|update']);
   const canCreateWorkflow = !isCommunity && Boolean(permission?.['automation|create']);
   const canCreateApp = !isCommunity && Boolean(aiChatEnabled && permission?.['app|create']);
   const canCreateFolder = Boolean(permission?.['base|update']);

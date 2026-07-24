@@ -55,7 +55,6 @@ import { useTranslation } from 'next-i18next';
 import type { ReactNode } from 'react';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { useBaseResource } from '@/features/app/hooks/useBaseResource';
-import { useSetting } from '@/features/app/hooks/useSetting';
 import { tableConfig } from '@/features/i18n/table.config';
 import { LoginAppWarning } from '../../../components/LoginAppWarning';
 import { useDownload } from '../../../hooks/useDownLoad';
@@ -359,11 +358,12 @@ const CommonOperation = (props: ICommonOperationProps) => {
 export const DashboardOperation = (props: IBaseNodeMoreProps) => {
   const { t } = useTranslation(tableConfig.i18nNamespaces);
   const permission = useBasePermission();
-  const { disallowDashboard } = useSetting();
   const canRename = Boolean(permission?.['base|update']);
   const canDelete = false;
   const canPermanentDelete = Boolean(permission?.['base|delete']);
-  const canDuplicate = Boolean(permission?.['base|update'] && !disallowDashboard);
+  // Dashboards are a first-class Rosefire feature; the disallowDashboard
+  // admin setting no longer gates duplication (see P7).
+  const canDuplicate = Boolean(permission?.['base|update']);
   const canShare = Boolean(permission?.['base|update']);
 
   return (
