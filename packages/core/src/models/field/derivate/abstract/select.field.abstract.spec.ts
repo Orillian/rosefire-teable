@@ -1,3 +1,4 @@
+import { Colors } from '../../colors';
 import { selectFieldOptionsRoSchema, selectFieldOptionsSchema } from './select.field.abstract';
 
 describe('select field schema test', () => {
@@ -38,5 +39,38 @@ describe('select field schema test', () => {
 
     const result = selectFieldOptionsSchema.safeParse(options);
     expect(result.success).toBe(false);
+  });
+
+  // P2: color became optional on both the ro and vo (full) schemas here - an
+  // omitted color renders the choice as plain text ("no color").
+  it('should return true when ro options validate with an explicit valid color', () => {
+    const options = {
+      choices: [{ name: 'name', color: Colors.Blue }],
+    };
+
+    const result = selectFieldOptionsRoSchema.safeParse(options);
+    expect(result.success).toBe(true);
+    result.success && expect(result.data).toEqual(options);
+  });
+
+  it('should return true when vo options validate with an id and no color', () => {
+    const options = {
+      choices: [{ id: 'cho1', name: 'name' }],
+    };
+
+    const result = selectFieldOptionsSchema.safeParse(options);
+    expect(result.success).toBe(true);
+    result.success && expect(result.data).toEqual(options);
+    result.success && expect(result.data.choices[0].color).toBeUndefined();
+  });
+
+  it('should return true when vo options validate with an id and a valid color', () => {
+    const options = {
+      choices: [{ id: 'cho1', name: 'name', color: Colors.Blue }],
+    };
+
+    const result = selectFieldOptionsSchema.safeParse(options);
+    expect(result.success).toBe(true);
+    result.success && expect(result.data).toEqual(options);
   });
 });
