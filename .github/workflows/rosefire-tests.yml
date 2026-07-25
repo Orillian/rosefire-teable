@@ -1,24 +1,23 @@
-name: Unit Tests
+name: Rosefire Tests
 
+# Fork-local CI: runs the unit suites for the packages the rosefire patch
+# series (P1-P9 + this pass) actually touches. Deliberately does NOT run the
+# nestjs-backend e2e battery (needs a live Postgres/Redis + per-worker DB
+# provisioning - see dev-workflow.md for how to run that scope locally) and
+# does NOT build/push a Docker image (images are built locally by design).
 on:
   push:
     branches:
-      - develop
-  pull_request:
-    branches:
-      - develop
-    paths:
-      - 'apps/nextjs-app/**'
-      - 'packages/core/**'
-      - 'packages/sdk/**'
-      - 'packages/openapi/**'
+      - rosefire
+
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+
 jobs:
-  test:
+  unit-tests:
     runs-on: ubuntu-latest
-    name: Unit Tests
+    name: Unit Tests (core, sdk, app, backend)
 
     strategy:
       matrix:
@@ -44,6 +43,6 @@ jobs:
         run: |
           pnpm -F "./packages/**" -F "!@teable/v2-*" run build
 
-      - name: 🧪 Run Tests
+      - name: 🧪 Run unit tests
         run: |
-          pnpm -r -F "@teable/app" -F "@teable/core" -F "@teable/sdk" -F "@teable/openapi" --parallel test-unit
+          pnpm -r -F "@teable/app" -F "@teable/core" -F "@teable/sdk" -F "@teable/backend" --parallel test-unit
