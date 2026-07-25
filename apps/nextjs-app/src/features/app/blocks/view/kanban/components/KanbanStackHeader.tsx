@@ -68,8 +68,18 @@ export const KanbanStackHeader = (props: IKanbanStackHeaderProps) => {
 
   const onOptionUpdate = () => {
     const value = inputRef.current?.value;
-    if (!value || !renamingChoice || isEqual(value, stackData)) return;
+    if (!value || !renamingChoice) return;
     const newChoice: ISelectFieldChoice = { ...renamingChoice, name: value };
+    // The dirty-check must not be name-only: it previously bailed out whenever the
+    // text was untouched, silently discarding a color-only edit (e.g. picking the
+    // "no color" swatch without renaming) so it never reached stackField.convert().
+    // Compare name and color independently — color must use strict equality so an
+    // explicit `undefined` (color removed) is correctly seen as a change from a
+    // previously-set color, never conflated with "unchanged".
+    const originalChoice = choices.find((choice) => choice.name === stackData);
+    const nameUnchanged = isEqual(value, stackData);
+    const colorUnchanged = originalChoice?.color === newChoice.color;
+    if (nameUnchanged && colorUnchanged) return;
     const newChoices = choices.map((choice) => {
       if (choice.name === stackData) return newChoice;
       return choice;
