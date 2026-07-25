@@ -3,7 +3,6 @@ import { create } from 'zustand';
 export enum PersonalSettingTab {
   Profile = 'profile',
   System = 'system',
-  Notifications = 'notifications',
   Integration = 'integration',
   PersonalAccessToken = 'personal-access-token',
   OAuthApp = 'oauth-app',

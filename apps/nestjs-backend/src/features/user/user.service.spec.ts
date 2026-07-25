@@ -42,6 +42,33 @@ describe('UserService', () => {
     };
   };
 
+  const createUserCreationService = () => {
+    const create = vi.fn().mockResolvedValue({ id: 'usrNewTest', name: 'test' });
+    const findFirst = vi.fn().mockResolvedValue(null);
+    const prismaService = {
+      txClient: () => ({
+        user: {
+          findFirst,
+          create,
+        },
+      }),
+    };
+    const creationService = new UserService(
+      prismaService as never,
+      {} as never,
+      {} as never,
+      {} as never,
+      {} as never,
+      {} as never,
+      {} as never,
+      {} as never,
+      {} as never,
+      {} as never
+    );
+
+    return { creationService, create, findFirst };
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [GlobalModule, UserModule],
@@ -52,6 +79,22 @@ describe('UserService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  it('defaults new users to email notifications off', async () => {
+    const { creationService, create } = createUserCreationService();
+
+    // avatar is supplied so generateDefaultAvatar (storage upload) is never
+    // reached, and baseConfig is untyped/falsy so auto space-creation is
+    // skipped too — this isolates the notifyMeta default being asserted.
+    await creationService.createUser({
+      email: 'new-user@rosefire.test',
+      avatar: 'existing-avatar-path',
+    });
+
+    expect(create).toHaveBeenCalledTimes(1);
+    const createData = create.mock.calls[0][0].data;
+    expect(JSON.parse(createData.notifyMeta)).toEqual({ email: false });
   });
 
   it('merges notify meta updates with existing values', async () => {

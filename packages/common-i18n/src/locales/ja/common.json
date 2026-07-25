@@ -238,11 +238,6 @@
         }
       }
     },
-    "notify": {
-      "title": "通知",
-      "label": "スペースの活動",
-      "desc": "コメント、メンション、ページ招待、リマインダー、アクセス要求、プロパティの変更があったときにメールを受信します。"
-    },
     "setting": {
       "title": "自分の設定",
       "theme": "テーマ",
@@ -672,10 +667,6 @@
     "exportBase": {
       "successText": "エクスポートデータの準備ができました",
       "failedText": "エクスポートに失敗しました。再試行してください"
-    },
-    "importantNotice": {
-      "title": "Important Notice",
-      "acknowledge": "I Understand"
     }
   },
   "role": {
@@ -855,7 +846,6 @@
             "message": "自動化{{name}}の実行に失敗しました。下のボタンをクリックして、実行履歴から具体的なエラーを表示してください。"
           },
           "insufficientCredit": {
-            "title": "自動化{{name}}がクレジット不足により失敗しました",
             "message": "自動化{{name}}がクレジット不足により実行に失敗しました。サブスクリプションをアップグレードするか、サポートに連絡してください。"
           },
           "runQuotaExceeded": {
@@ -932,7 +922,6 @@
             "cancelled": {
               "title": "AIタスクがキャンセルされました",
               "rateLimit": "テーブル \"{{tableName}}\" のAIタスクは、レート制限（429）によりキャンセルされました。後でもう一度お試しください。",
-              "creditExhausted": "テーブル \"{{tableName}}\" のAIタスクは、クレジットが使い切られたためキャンセルされました。サブスクリプションをアップグレードするか、クレジットの更新をお待ちください。",
               "authFailed": "テーブル \"{{tableName}}\" のAIタスクは、認証エラーによりキャンセルされました。APIキーの設定をご確認ください。",
               "serviceUnavailable": "テーブル \"{{tableName}}\" のAIタスクは、AIサービスが一時的に利用できないためキャンセルされました。後でもう一度お試しください。",
               "unknown": "テーブル \"{{tableName}}\" のAIタスクがキャンセルされました。エラー：{{errorMessage}}"

@@ -236,11 +236,6 @@
         }
       }
     },
-    "notify": {
-      "title": "Le mie notifiche",
-      "label": "Attività nel tuo spazio",
-      "desc": "Ricevi email quando ricevi commenti, menzioni, inviti a pagine, promemoria, richieste di accesso e modifiche alle proprietà."
-    },
     "setting": {
       "title": "Le mie impostazioni",
       "theme": "Tema interfaccia",
@@ -670,10 +665,6 @@
     "exportBase": {
       "successText": "I dati di esportazione sono pronti",
       "failedText": "Esportazione fallita, riprova"
-    },
-    "importantNotice": {
-      "title": "Important Notice",
-      "acknowledge": "I Understand"
     }
   },
   "role": {
@@ -853,7 +844,6 @@
             "message": "La tua automazione {{name}} non è riuscita ad essere eseguita. Fai clic sul pulsante qui sotto per visualizzare errori specifici dalla cronologia di esecuzione."
           },
           "insufficientCredit": {
-            "title": "L'automazione {{name}} è fallita a causa di credito insufficiente",
             "message": "La tua automazione {{name}} non è riuscita ad essere eseguita a causa di credito insufficiente. Aggiorna l'abbonamento o contatta il supporto."
           },
           "runQuotaExceeded": {
@@ -930,7 +920,6 @@
             "cancelled": {
               "title": "Attività IA annullata",
               "rateLimit": "L'attività IA per la tabella \"{{tableName}}\" è stata annullata a causa del limite di velocità (429). Si prega di riprovare più tardi.",
-              "creditExhausted": "L'attività IA per la tabella \"{{tableName}}\" è stata annullata perché i crediti sono esauriti. Si prega di aggiornare l'abbonamento o attendere il rinnovo dei crediti.",
               "authFailed": "L'attività IA per la tabella \"{{tableName}}\" è stata annullata a causa di un errore di autenticazione. Si prega di verificare la configurazione della chiave API.",
               "serviceUnavailable": "L'attività IA per la tabella \"{{tableName}}\" è stata annullata perché il servizio IA è temporaneamente non disponibile. Si prega di riprovare più tardi.",
               "unknown": "L'attività IA per la tabella \"{{tableName}}\" è stata annullata. Errore: {{errorMessage}}"

@@ -241,11 +241,6 @@
         "loading": "Deleting..."
       }
     },
-    "notify": {
-      "title": "Notifications",
-      "label": "Activity in your space",
-      "desc": "Receive emails when you get comments, mentions, page invites, reminders, access requests, and property changes."
-    },
     "setting": {
       "title": "Preferences",
       "theme": "Intertace theme",
@@ -977,26 +972,15 @@
     "markAllAsRead": "Mark all as read",
     "noUnread": "No {{status}} notifications",
     "noAttention": "No notifications need attention",
-    "noSeverity": "No {{severity}} notifications",
     "changeSetting": "Change page notification settings",
     "new": "new {{count}}",
     "showMore": "Show more",
     "sections": {
-      "needsAction": "Important",
-      "all": "All"
-    },
-    "severity": {
-      "critical": "Important",
-      "warning": "Warning",
-      "info": "Normal"
+      "needsAction": "Important"
     },
     "exportBase": {
       "successText": "Export data is ready",
       "failedText": "Export failed, please retry"
-    },
-    "importantNotice": {
-      "title": "Important Notice",
-      "acknowledge": "I Understand"
     }
   },
   "role": {
@@ -1177,7 +1161,6 @@
             "message": "Your automation {{name}} encountered an execution error. Open run history to view details."
           },
           "insufficientCredit": {
-            "title": "Automation {{name}} run failed due to insufficient AI credits",
             "message": "Your automation {{name}} failed because AI credits are insufficient. Please add credits or upgrade your plan."
           },
           "runQuotaExceeded": {
@@ -1254,7 +1237,6 @@
             "cancelled": {
               "title": "AI task cancelled",
               "rateLimit": "AI task for table \"{{tableName}}\" was cancelled due to rate limiting (429). Please try again later.",
-              "creditExhausted": "AI task for table \"{{tableName}}\" was cancelled because credits have been exhausted. Please upgrade your subscription or wait for credits to refresh.",
               "authFailed": "AI task for table \"{{tableName}}\" was cancelled due to authentication failure. Please check your API key configuration.",
               "serviceUnavailable": "AI task for table \"{{tableName}}\" was cancelled because the AI service is temporarily unavailable. Please try again later.",
               "unknown": "AI task for table \"{{tableName}}\" was cancelled. Error: {{errorMessage}}"

@@ -245,11 +245,6 @@
         "loading": "删除中..."
       }
     },
-    "notify": {
-      "title": "我的通知",
-      "label": "您工作区的活动",
-      "desc": "在收到评论、提及、页面邀请、提醒、访问请求和属性更改时接收电子邮件通知。"
-    },
     "setting": {
       "title": "我的设置",
       "theme": "主题",
@@ -974,26 +969,15 @@
     "markAllAsRead": "全部标记为已读",
     "noUnread": "没有{{status}}通知",
     "noAttention": "没有需要关注的通知",
-    "noSeverity": "没有{{severity}}通知",
     "changeSetting": "更改页面通知设置",
     "new": "新消息{{count}}条",
     "showMore": "显示更多",
     "sections": {
-      "needsAction": "重要",
-      "all": "全部"
-    },
-    "severity": {
-      "critical": "重要",
-      "warning": "警告",
-      "info": "普通"
+      "needsAction": "重要"
     },
     "exportBase": {
       "successText": "导出数据已就绪",
       "failedText": "导出失败，请重试"
-    },
-    "importantNotice": {
-      "title": "重要通知",
-      "acknowledge": "我已知晓"
     }
   },
   "role": {
@@ -1174,7 +1158,6 @@
             "message": "自动化 {{name}} 执行时发生错误，请前往运行历史查看详情。"
           },
           "insufficientCredit": {
-            "title": "自动化 {{name}} 运行失败（AI 算力不足）",
             "message": "自动化 {{name}} 运行失败，原因是 AI 算力不足。请补充算力或升级订阅。"
           },
           "runQuotaExceeded": {
@@ -1251,7 +1234,6 @@
             "cancelled": {
               "title": "AI 任务已取消",
               "rateLimit": "表 \"{{tableName}}\" 的 AI 任务因请求频率超限（429）已取消。请稍后重试。",
-              "creditExhausted": "表 \"{{tableName}}\" 的 AI 任务因算力额度已用尽已取消。请升级订阅或等待额度刷新。",
               "authFailed": "表 \"{{tableName}}\" 的 AI 任务因认证失败已取消。请检查 API Key 配置。",
               "serviceUnavailable": "表 \"{{tableName}}\" 的 AI 任务因 AI 服务暂时不可用已取消。请稍后重试。",
               "unknown": "表 \"{{tableName}}\" 的 AI 任务已取消。错误：{{errorMessage}}"

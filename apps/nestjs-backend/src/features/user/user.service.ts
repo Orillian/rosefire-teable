@@ -237,8 +237,12 @@ export class UserService {
     autoSpaceCreation: boolean = true
   ) {
     // defaults
+    // Email notifications default OFF: this fork has no SMTP configured, so an
+    // email:true default only silently no-ops (failures logged, never surfaced)
+    // and queues pointless BullMQ email jobs. The email toggle UI is removed;
+    // in-app bell notifications are unaffected.
     const defaultNotifyMeta: IUserNotifyMeta = {
-      email: true,
+      email: false,
     };
 
     user = {

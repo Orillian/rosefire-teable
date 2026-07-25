@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { Role } from '@teable/core';
-import { Bell, Key, Link, Lock, Settings, Toolbox, User } from '@teable/icons';
+import { Key, Link, Lock, Settings, Toolbox, User } from '@teable/icons';
 import { getSpaceById } from '@teable/openapi';
 import { ReactQueryKeys } from '@teable/sdk/config';
 import { useBase, useSession } from '@teable/sdk/hooks';
@@ -16,7 +16,6 @@ import { GeneralPage } from '@/features/app/blocks/space-setting/general';
 import { SpaceSettingTab } from '@/features/app/blocks/space-setting/types';
 import { Account } from '@/features/app/components/setting/Account';
 import { Integration } from '@/features/app/components/setting/integration/Integration';
-import { Notifications } from '@/features/app/components/setting/Notifications';
 import { OAuthAppSection } from '@/features/app/components/setting/oauth-app';
 import { PersonalAccessTokenSection } from '@/features/app/components/setting/personal-access-token';
 import { System } from '@/features/app/components/setting/System';
@@ -119,12 +118,6 @@ export const UnifiedSettingDialogContent = ({
         name: t('settings.setting.title'),
         Icon: Settings,
         content: <System />,
-      },
-      {
-        key: PersonalSettingTab.Notifications,
-        name: t('settings.notify.title'),
-        Icon: Bell,
-        content: <Notifications />,
       },
       {
         key: PersonalSettingTab.Integration,

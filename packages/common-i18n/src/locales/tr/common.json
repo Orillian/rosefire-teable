@@ -238,11 +238,6 @@
         }
       }
     },
-    "notify": {
-      "title": "Bildirimlerim",
-      "label": "Alan etkinliği",
-      "desc": "Yorum aldığınızda, bahsedildiğinizde, sayfa davetleri, hatırlatmalar, erişim istekleri ve özellik değişiklikleri için e-posta alın."
-    },
     "setting": {
       "title": "Ayarlarım",
       "theme": "Tema",
@@ -629,10 +624,6 @@
     "exportBase": {
       "successText": "Dışa aktarma verileri hazır",
       "failedText": "Dışa aktarma başarısız oldu, lütfen tekrar deneyin"
-    },
-    "importantNotice": {
-      "title": "Important Notice",
-      "acknowledge": "I Understand"
     }
   },
   "role": {
@@ -812,7 +803,6 @@
             "message": "Otomasyonunuz {{name}} çalıştırılamadı. Çalıştırma geçmişinden belirli hataları görmek için aşağıdaki düğmeye tıklayın."
           },
           "insufficientCredit": {
-            "title": "Otomasyon {{name}} yetersiz kredi nedeniyle başarısız oldu",
             "message": "Otomasyonunuz {{name}} yetersiz kredi nedeniyle çalıştırılamadı. Lütfen aboneliği yükseltin veya destekle iletişime geçin."
           },
           "runQuotaExceeded": {
@@ -889,7 +879,6 @@
             "cancelled": {
               "title": "AI görevi iptal edildi",
               "rateLimit": "\"{{tableName}}\" tablosu için AI görevi, hız sınırlaması (429) nedeniyle iptal edildi. Lütfen daha sonra tekrar deneyin.",
-              "creditExhausted": "\"{{tableName}}\" tablosu için AI görevi, krediler tükendiği için iptal edildi. Lütfen aboneliğinizi yükseltin veya kredilerin yenilenmesini bekleyin.",
               "authFailed": "\"{{tableName}}\" tablosu için AI görevi, kimlik doğrulama hatası nedeniyle iptal edildi. Lütfen API anahtarı yapılandırmanızı kontrol edin.",
               "serviceUnavailable": "\"{{tableName}}\" tablosu için AI görevi, AI hizmeti geçici olarak kullanılamadığı için iptal edildi. Lütfen daha sonra tekrar deneyin.",
               "unknown": "\"{{tableName}}\" tablosu için AI görevi iptal edildi. Hata: {{errorMessage}}"

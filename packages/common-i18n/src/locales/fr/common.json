@@ -238,11 +238,6 @@
         }
       }
     },
-    "notify": {
-      "title": "Mes notifications",
-      "label": "Activité dans votre espace",
-      "desc": "Recevez des emails lorsque vous recevez des commentaires, des mentions, des invitations à des pages, des rappels, des demandes d'accès et des modifications de propriété."
-    },
     "setting": {
       "title": "Mes paramètres",
       "theme": "Thème",
@@ -672,10 +667,6 @@
     "exportBase": {
       "successText": "Les données d'exportation sont prêtes",
       "failedText": "L'exportation a échoué, veuillez réessayer"
-    },
-    "importantNotice": {
-      "title": "Important Notice",
-      "acknowledge": "I Understand"
     }
   },
   "role": {
@@ -855,7 +846,6 @@
             "message": "Votre automatisation {{name}} n'a pas pu s'exécuter. Cliquez sur le bouton ci-dessous pour voir les erreurs spécifiques de l'historique d'exécution."
           },
           "insufficientCredit": {
-            "title": "L'automatisation {{name}} a échoué en raison d'un crédit insuffisant",
             "message": "Votre automatisation {{name}} n'a pas pu s'exécuter en raison d'un crédit insuffisant. Veuillez mettre à niveau votre abonnement ou contacter le support."
           },
           "runQuotaExceeded": {
@@ -932,7 +922,6 @@
             "cancelled": {
               "title": "Tâche IA annulée",
               "rateLimit": "La tâche IA pour la table \"{{tableName}}\" a été annulée en raison d'une limitation de débit (429). Veuillez réessayer plus tard.",
-              "creditExhausted": "La tâche IA pour la table \"{{tableName}}\" a été annulée car les crédits sont épuisés. Veuillez mettre à niveau votre abonnement ou attendre le renouvellement des crédits.",
               "authFailed": "La tâche IA pour la table \"{{tableName}}\" a été annulée en raison d'un échec d'authentification. Veuillez vérifier la configuration de votre clé API.",
               "serviceUnavailable": "La tâche IA pour la table \"{{tableName}}\" a été annulée car le service IA est temporairement indisponible. Veuillez réessayer plus tard.",
               "unknown": "La tâche IA pour la table \"{{tableName}}\" a été annulée. Erreur : {{errorMessage}}"

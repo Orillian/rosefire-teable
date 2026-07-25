@@ -2,7 +2,6 @@
 import type {
   IFieldRo,
   IConvertFieldRo,
-  NotificationSeverityEnum,
   NotificationStatesEnum,
   IGetFieldsQuery,
 } from '@teable/core';
@@ -106,10 +105,9 @@ export const ReactQueryKeys = {
   recordCollaboratorList: (tableId: string, options: IRecordGetCollaboratorsRo) =>
     ['record-collaborator-list', tableId, options] as const,
 
-  notifyList: (filter?: { status: NotificationStatesEnum; severity?: NotificationSeverityEnum }) =>
+  notifyList: (filter?: { status: NotificationStatesEnum }) =>
     filter ? (['notification', 'list', filter] as const) : (['notification', 'list'] as const),
   notifyUnreadCount: () => ['notification', 'unread-count'],
-  notifyCriticalAdmin: () => ['notification', 'critical-admin'] as const,
 
   rowCount: (tableId: string, query: IQueryBaseRo) => ['row-count', tableId, query] as const,
   groupPoints: (tableId: string, query: IGroupPointsRo) =>

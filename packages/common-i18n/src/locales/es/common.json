@@ -236,11 +236,6 @@
         }
       }
     },
-    "notify": {
-      "title": "Mis Notificaciones",
-      "label": "Actividad en tu espacio",
-      "desc": "Recibe correos electrónicos cuando recibas comentarios, menciones, invitaciones a páginas, recordatorios, solicitudes de acceso y cambios de propiedades."
-    },
     "setting": {
       "title": "Mis Ajustes",
       "theme": "Tema de interfaz",
@@ -670,10 +665,6 @@
     "exportBase": {
       "successText": "Los datos de exportación están listos",
       "failedText": "La exportación falló, por favor reinténtelo"
-    },
-    "importantNotice": {
-      "title": "Important Notice",
-      "acknowledge": "I Understand"
     }
   },
   "role": {
@@ -853,7 +844,6 @@
             "message": "Tu automatización {{name}} no se pudo ejecutar. Haz clic en el botón a continuación para ver los errores específicos del historial de ejecución."
           },
           "insufficientCredit": {
-            "title": "La automatización {{name}} falló por crédito insuficiente",
             "message": "Tu automatización {{name}} no se pudo ejecutar por crédito insuficiente. Por favor actualiza la suscripción o contacta con soporte."
           },
           "runQuotaExceeded": {
@@ -930,7 +920,6 @@
             "cancelled": {
               "title": "Tarea de IA cancelada",
               "rateLimit": "La tarea de IA para la tabla \"{{tableName}}\" fue cancelada debido a limitación de velocidad (429). Por favor intente de nuevo más tarde.",
-              "creditExhausted": "La tarea de IA para la tabla \"{{tableName}}\" fue cancelada porque los créditos se han agotado. Por favor actualice su suscripción o espere a que los créditos se renueven.",
               "authFailed": "La tarea de IA para la tabla \"{{tableName}}\" fue cancelada debido a un fallo de autenticación. Por favor verifique la configuración de su clave API.",
               "serviceUnavailable": "La tarea de IA para la tabla \"{{tableName}}\" fue cancelada porque el servicio de IA no está disponible temporalmente. Por favor intente de nuevo más tarde.",
               "unknown": "La tarea de IA para la tabla \"{{tableName}}\" fue cancelada. Error: {{errorMessage}}"
