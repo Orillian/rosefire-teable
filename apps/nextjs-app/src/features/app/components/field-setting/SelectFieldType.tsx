@@ -23,7 +23,6 @@ import { Check, ChevronDown } from 'lucide-react';
 import { useTranslation } from 'next-i18next';
 import { useMemo, useRef, useState } from 'react';
 import { tableConfig } from '@/features/i18n/table.config';
-import { useBaseUsage } from '../../hooks/useBaseUsage';
 
 type InnerFieldType = FieldType | 'lookup' | 'conditionalLookup';
 
@@ -73,12 +72,15 @@ const BASE_FIELD_TYPE = [
   FieldType.Attachment,
 ];
 
-const ADVANCED_FIELD_TYPE_ORDER = [
+// P11: FieldType.Button is intentionally omitted from this creatable/convertible list.
+// Button field creation is permanently gated behind a plan-tip in community builds
+// (useBaseUsage never resolves buttonFieldEnable here), so it's hidden from the picker
+// rather than shown disabled. Core/renderer support for FieldType.Button is untouched.
+export const ADVANCED_FIELD_TYPE_ORDER = [
   FieldType.Formula,
   FieldType.Link,
   FieldType.Rollup,
   FieldType.ConditionalRollup,
-  FieldType.Button,
   FieldType.AutoNumber,
 ];
 
@@ -141,8 +143,6 @@ export const SelectFieldType = (props: {
   onChange?: (type: InnerFieldType) => void;
 }) => {
   const { isPrimary, value = FieldType.SingleLineText, onChange } = props;
-  const usage = useBaseUsage();
-  const { buttonFieldEnable = false } = usage?.limit ?? {};
   const getFieldStatic = useFieldStaticGetter();
   const { t } = useTranslation(tableConfig.i18nNamespaces);
   const [open, setOpen] = useState(false);
@@ -179,16 +179,11 @@ export const SelectFieldType = (props: {
         isLookup: false,
         hasAiConfig: false,
       });
-      const isButton = type === FieldType.Button;
-      const disabled = isButton ? !buttonFieldEnable : false;
-      const disabledReason = isButton && disabled ? t('billing.unavailableInPlanTips') : undefined;
       return {
         id: type,
         name: title,
         description,
         icon: <Icon className="size-4" />,
-        disabled,
-        disabledReason,
       };
     });
     if (!isPrimary) {
@@ -206,7 +201,7 @@ export const SelectFieldType = (props: {
       });
     }
     return list;
-  }, [getFieldStatic, isPrimary, t, buttonFieldEnable]);
+  }, [getFieldStatic, isPrimary, t]);
 
   const systemGroup = useMemo((): ISelectorItem[] => {
     const fieldTypes = isPrimary
