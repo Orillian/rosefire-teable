@@ -64,6 +64,39 @@ describe('PostgresTableRepository helpers', () => {
     expect(repo.resolveSortColumn({ toString: () => 'anythingElse' })).toBe('id');
   });
 
+  // P9.1: this is the hydration step used to rebuild the Table aggregate (and thus the
+  // response body) from the raw Postgres `field.options` JSON on every read, including
+  // the read done immediately after a field convert/update to build its HTTP response.
+  // It previously reassigned a deterministic fieldColorValues[index % length] color to
+  // any choice whose stored color was missing/invalid — so even after a "remove color"
+  // edit was correctly persisted with no color key, re-reading the field (e.g. the value
+  // returned by PUT .../convert) silently reintroduced a color.
+  it('does not backfill a color for object-shaped choices with no stored color', () => {
+    const repo = createRepository() as any;
+
+    const result = repo.normalizeSelectOptions({
+      choices: [
+        { id: 'choAlberta00001', name: 'Alberta', color: 'blueLight2' },
+        { id: 'choBc000000001', name: 'British Columbia' },
+        { id: 'choSask0000001', name: 'Saskatchewan', color: 'not-a-real-color' },
+      ],
+    });
+
+    expect(result.choices).toEqual([
+      { id: 'choAlberta00001', name: 'Alberta', color: 'blueLight2' },
+      { id: 'choBc000000001', name: 'British Columbia' },
+      { id: 'choSask0000001', name: 'Saskatchewan' },
+    ]);
+    expect(result.choices[1]).not.toHaveProperty('color');
+    expect(result.choices[2]).not.toHaveProperty('color');
+
+    // Legacy shorthand (bare option names, no way to express "no color") still gets an
+    // assigned default, same as before.
+    const legacy = repo.normalizeSelectOptions({ options: ['Todo', 'Done'] });
+    expect(legacy.choices[0].color).toBeDefined();
+    expect(legacy.choices[1].color).toBeDefined();
+  });
+
   it('parses and normalizes view query fragments', () => {
     const repo = createRepository() as any;
 

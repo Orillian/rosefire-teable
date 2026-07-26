@@ -24,7 +24,8 @@ type SelectField = SingleSelectField | MultipleSelectField;
 type SelectChoiceDto = {
   id: string;
   name: string;
-  color: string;
+  // Optional: an omitted color renders the choice as plain text ("no color").
+  color?: string;
 };
 
 const normalizeSelectChoice = (value: unknown): SelectChoiceDto | undefined => {
@@ -36,7 +37,7 @@ const normalizeSelectChoice = (value: unknown): SelectChoiceDto | undefined => {
   if (
     typeof candidate.id !== 'string' ||
     typeof candidate.name !== 'string' ||
-    typeof candidate.color !== 'string'
+    (candidate.color !== undefined && typeof candidate.color !== 'string')
   ) {
     return undefined;
   }
@@ -44,7 +45,7 @@ const normalizeSelectChoice = (value: unknown): SelectChoiceDto | undefined => {
   return {
     id: candidate.id,
     name: candidate.name,
-    color: candidate.color,
+    ...(candidate.color !== undefined ? { color: candidate.color } : {}),
   };
 };
 

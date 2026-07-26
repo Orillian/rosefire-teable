@@ -230,6 +230,9 @@ const parseSelectOptionWithFallback = (
   choice: unknown,
   index: number
 ): Result<SelectOption, DomainError> => {
+  // Bare-string choices (legacy/shorthand shape, e.g. ["Todo", "Done"]) have no way to
+  // express "no color", so they still get an assigned default — same as the frontend
+  // assigning a color to a brand-new manually-added choice.
   if (typeof choice === 'string') {
     return SelectOption.create({
       name: choice,
@@ -237,16 +240,13 @@ const parseSelectOptionWithFallback = (
     });
   }
 
-  if (choice && typeof choice === 'object' && !Array.isArray(choice)) {
-    const raw = choice as Record<string, unknown>;
-    if (raw.color == null) {
-      return SelectOption.create({
-        ...raw,
-        color: fieldColorValues[index % fieldColorValues.length],
-      });
-    }
-  }
-
+  // For object-shaped choices, an explicitly omitted/null color IS the "no color"
+  // choice (plain-text rendering) and must be passed through as-is, never backfilled.
+  // This previously reassigned a deterministic default color whenever color was
+  // missing, which silently reverted every "remove color" edit made through the
+  // field-settings panel (or any other client) for select fields on a v2-enabled
+  // base — the color key an explicit user edit had just dropped from the request
+  // came right back. See P9.1.
   return SelectOption.create(choice);
 };
 

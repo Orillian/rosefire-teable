@@ -29,6 +29,7 @@ import { SingleSelectField } from '../domain/table/fields/types/SingleSelectFiel
 import { FieldValueTypeVisitor } from '../domain/table/fields/visitors/FieldValueTypeVisitor';
 import { UpdateLinkConfigSpec } from '../domain/table/specs/field-updates/UpdateLinkConfigSpec';
 import { UpdateLookupOptionsSpec } from '../domain/table/specs/field-updates/UpdateLookupOptionsSpec';
+import { UpdateSingleSelectOptionsSpec } from '../domain/table/specs/field-updates/UpdateSingleSelectOptionsSpec';
 import { TableUpdateFieldNameSpec } from '../domain/table/specs/TableUpdateFieldNameSpec';
 import { TableUpdateFieldTypeSpec } from '../domain/table/specs/TableUpdateFieldTypeSpec';
 import { Table } from '../domain/table/Table';
@@ -372,6 +373,88 @@ describe('TableFieldUpdateSpecs', () => {
     );
     expect((newField as SingleSelectField).defaultValue()?.toDto()).toBe('Closed');
     expect((newField as SingleSelectField).preventAutoNewOptions().toBoolean()).toBe(true);
+  });
+
+  // P9.1: same-type option update (no type conversion) removing a color from an
+  // existing choice — this is the exact shape of request the field-settings side
+  // panel sends when a user picks the "no color" swatch and hits Save. This
+  // previously failed: parseSelectOptionWithFallback backfilled a deterministic
+  // fieldColorValues[index % length] color whenever a choice's color was
+  // missing, silently reverting the removal (the color the client had just
+  // dropped from the request came right back, sometimes even matching the
+  // original by coincidence of index). Fails pre-fix, passes post-fix.
+  it('removes a choice color when the update payload omits it, instead of backfilling a default', () => {
+    const baseId = createBaseId('r');
+    const tableId = createTableId('r');
+    const targetFieldId = createFieldId('s');
+    const optionAlberta = createSelectOption('optAlberta000001', 'Alberta', 'blueLight2');
+    const optionBc = createSelectOption('optBc00000000001', 'British Columbia', 'blueLight1');
+    const optionSask = createSelectOption('optSask000000001', 'Saskatchewan', 'blueBright');
+
+    const builder = Table.builder()
+      .withBaseId(baseId)
+      .withId(tableId)
+      .withName(TableName.create('Color Removal')._unsafeUnwrap());
+    builder
+      .field()
+      .singleLineText()
+      .withId(createFieldId('t'))
+      .withName(FieldName.create('Primary')._unsafeUnwrap())
+      .primary()
+      .done();
+    builder
+      .field()
+      .singleSelect()
+      .withId(targetFieldId)
+      .withName(FieldName.create('Province')._unsafeUnwrap())
+      .withOptions([optionAlberta, optionBc, optionSask])
+      .done();
+    builder.view().defaultGrid().done();
+    const table = builder.build()._unsafeUnwrap();
+
+    const currentField = table
+      .getField((field) => field.id().equals(targetFieldId))
+      ._unsafeUnwrap();
+
+    // Same shape as the real /convert request body: type unchanged, choices carry
+    // the same ids/names, but British Columbia's "color" key is simply absent.
+    const specsResult = buildUpdateFieldSpecs(
+      currentField,
+      {
+        type: 'singleSelect',
+        options: {
+          choices: [
+            { id: 'optAlberta000001', name: 'Alberta', color: 'blueLight2' },
+            { id: 'optBc00000000001', name: 'British Columbia' },
+            { id: 'optSask000000001', name: 'Saskatchewan', color: 'blueBright' },
+          ],
+        },
+      },
+      { hostTable: table }
+    );
+
+    expect(specsResult.isOk()).toBe(true);
+    if (specsResult.isErr()) {
+      return;
+    }
+
+    const optionsSpec = specsResult.value.find(
+      (spec): spec is UpdateSingleSelectOptionsSpec => spec instanceof UpdateSingleSelectOptionsSpec
+    );
+    expect(optionsSpec).toBeDefined();
+    if (!optionsSpec) {
+      return;
+    }
+
+    const nextChoices = optionsSpec.nextOptions().map((option) => option.toDto());
+    const bcChoice = nextChoices.find((choice) => choice.name === 'British Columbia');
+
+    // The removal must survive: no "color" key at all, not a backfilled default.
+    expect(bcChoice).toEqual({ id: 'optBc00000000001', name: 'British Columbia' });
+    expect(bcChoice).not.toHaveProperty('color');
+    // Untouched choices must keep their original colors.
+    expect(nextChoices.find((choice) => choice.name === 'Alberta')?.color).toBe('blueLight2');
+    expect(nextChoices.find((choice) => choice.name === 'Saskatchewan')?.color).toBe('blueBright');
   });
 
   it('derives rollup resultType for type conversion when cellValueType is omitted', () => {

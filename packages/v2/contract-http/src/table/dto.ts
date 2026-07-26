@@ -235,7 +235,8 @@ const ratingOptionsSchema = z.object({
 const selectChoiceSchema = z.object({
   id: z.string(),
   name: z.string(),
-  color: fieldColorSchema,
+  // Optional: an omitted color renders the choice as plain text ("no color").
+  color: fieldColorSchema.optional(),
 });
 
 const selectOptionsSchema = z.object({

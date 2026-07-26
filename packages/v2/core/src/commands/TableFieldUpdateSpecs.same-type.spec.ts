@@ -496,9 +496,14 @@ const sameTypeCases: SameTypeCase[] = [
               spec instanceof UpdateSingleSelectOptionsSpec
           );
           expect(optionsSpec).toBeDefined();
+          // 'Doing' is the bare-string shorthand, which still gets an assigned default
+          // color (fieldColorValues[0] = 'blueLight2'). { name: 'Done' } is an
+          // object-shaped choice with no color key at all — that must NOT be
+          // backfilled (P9.1): an omitted color is the explicit "no color" choice,
+          // whether the choice is new or an edit of an existing one.
           expect(optionsSpec?.nextOptions().map((option) => option.toDto().color)).toEqual([
             'blueLight2',
-            'blueLight1',
+            undefined,
           ]);
         },
       };

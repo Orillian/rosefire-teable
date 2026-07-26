@@ -2360,27 +2360,21 @@ const parseSelectOptions = (raw: unknown): Result<ParsedSelectOptions, DomainErr
   };
   const rawChoices = Array.isArray(rawOptions.choices) ? rawOptions.choices : [];
 
-  return parseSelectOptionList(rawChoices, (choice, index) => {
-    if (choice && typeof choice === 'object' && !Array.isArray(choice)) {
-      const rawChoice = choice as Record<string, unknown>;
-      if (rawChoice.color == null) {
-        return SelectOption.create({
-          ...rawChoice,
-          color: fieldColorValues[index % fieldColorValues.length],
-        });
-      }
-    }
-    return SelectOption.create(choice);
-  }).andThen((options) =>
-    optional(rawOptions.defaultValue, SelectDefaultValue.create).andThen((defaultValue) =>
-      optional(rawOptions.preventAutoNewOptions, SelectAutoNewOptions.create).map(
-        (preventAutoNewOptions) => ({
-          options,
-          defaultValue,
-          preventAutoNewOptions,
-        })
+  // For object-shaped choices, an explicitly omitted/null color IS the "no color"
+  // choice (plain-text rendering) and must be passed through as-is, never backfilled
+  // — see the matching comment in TableFieldUpdateSpecs.ts's parseSelectOptionWithFallback
+  // (P9.1). Only the bare-string shorthand below still gets an assigned default.
+  return parseSelectOptionList(rawChoices, (choice) => SelectOption.create(choice)).andThen(
+    (options) =>
+      optional(rawOptions.defaultValue, SelectDefaultValue.create).andThen((defaultValue) =>
+        optional(rawOptions.preventAutoNewOptions, SelectAutoNewOptions.create).map(
+          (preventAutoNewOptions) => ({
+            options,
+            defaultValue,
+            preventAutoNewOptions,
+          })
+        )
       )
-    )
   );
 };
 

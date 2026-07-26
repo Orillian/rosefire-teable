@@ -45,7 +45,8 @@ export const ratingOptionsSchema = z.object({
 export const selectChoiceSchema = z.object({
   id: z.string().optional(),
   name: z.string(),
-  color: fieldColorSchema,
+  // Optional: an omitted color renders the choice as plain text ("no color").
+  color: fieldColorSchema.optional(),
 });
 
 const normalizedSelectChoicesSchema = z.preprocess((value) => {
@@ -55,16 +56,21 @@ const normalizedSelectChoicesSchema = z.preprocess((value) => {
       ? Object.values(value as Record<string, unknown>)
       : [];
 
-  return toArray.map((item, index) => {
+  return toArray.map((item) => {
     const choice = item && typeof item === 'object' ? (item as Record<string, unknown>) : {};
+    // An explicitly omitted/invalid color IS the "no color" choice (plain-text
+    // rendering) and must never be backfilled with a deterministic default here —
+    // this schema normalizes choices for field create/update commands and for
+    // undo/redo snapshot restore, so backfilling would silently revert a user's
+    // "no color" edit the moment it round-trips through validation. See P9.1.
     const color =
       typeof choice.color === 'string' && fieldColorValues.includes(choice.color as never)
         ? choice.color
-        : fieldColorValues[index % fieldColorValues.length];
+        : undefined;
     return {
       id: typeof choice.id === 'string' ? choice.id : undefined,
       name: String(choice.name ?? ''),
-      color,
+      ...(color !== undefined ? { color } : {}),
     };
   });
 }, z.array(selectChoiceSchema));

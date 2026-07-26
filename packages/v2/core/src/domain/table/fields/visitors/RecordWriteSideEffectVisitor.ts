@@ -226,7 +226,10 @@ export class RecordWriteSideEffectVisitor implements IFieldVisitor<RecordWriteSi
     const orderedNames = [...names];
     if (orderedNames.length === 0) return ok([]);
 
-    const existingColors = field.selectOptions().map((option) => option.color().toString());
+    const existingColors = field
+      .selectOptions()
+      .map((option) => option.color()?.toString())
+      .filter((color): color is FieldColorValue => color != null);
     const colors = randomColors(existingColors, orderedNames.length);
     const newOptions: SelectOption[] = [];
 

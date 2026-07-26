@@ -9,14 +9,18 @@ import { AbstractTableUpdatedEvent } from './AbstractTableUpdatedEvent';
 export interface SelectOptionDTO {
   readonly id: string;
   readonly name: string;
-  readonly color: string;
+  // Optional: an omitted color renders the choice as plain text ("no color"). This
+  // event is only ever raised for freshly auto-created choices (which always get an
+  // assigned color, see RecordWriteSideEffectVisitor), but the type stays optional to
+  // match SelectOption#toDto().
+  readonly color?: string;
 }
 
 const isSelectOptionDto = (option: SelectOption | SelectOptionDTO): option is SelectOptionDTO => {
   return (
     typeof option.id === 'string' &&
     typeof option.name === 'string' &&
-    typeof option.color === 'string'
+    (option.color === undefined || typeof option.color === 'string')
   );
 };
 
