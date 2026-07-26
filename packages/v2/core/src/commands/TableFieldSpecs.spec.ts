@@ -6,6 +6,7 @@ import { BaseId } from '../domain/base/BaseId';
 import { FieldId } from '../domain/table/fields/FieldId';
 import { FieldName } from '../domain/table/fields/FieldName';
 import { ConditionalLookupField } from '../domain/table/fields/types/ConditionalLookupField';
+import { SingleSelectField } from '../domain/table/fields/types/SingleSelectField';
 import { Table } from '../domain/table/Table';
 import { TableName } from '../domain/table/TableName';
 import { TableId } from '../domain/table/TableId';
@@ -388,6 +389,29 @@ describe('TableFieldSpecs', () => {
         .andThen((dbFieldName) => dbFieldName.value())
         ._unsafeUnwrap()
     ).toBe('custom_column');
+  });
+
+  // P9.1: creating a select field with an explicit no-color choice must not have a
+  // default color backfilled for it. parseSelectOptions previously assigned
+  // fieldColorValues[index % length] to any object-shaped choice missing a color,
+  // defeating the "no color" (plain-text) choice option at creation time too, not
+  // just on later edits.
+  it('creates a select field choice with no color when the payload omits it', () => {
+    const spec = parseSpec({
+      type: 'singleSelect',
+      name: 'Province',
+      options: {
+        choices: [{ name: 'Alberta', color: 'blueLight2' }, { name: 'British Columbia' }],
+      },
+    })._unsafeUnwrap();
+
+    const field = spec.createField()._unsafeUnwrap();
+    expect(field).toBeInstanceOf(SingleSelectField);
+    const choices = (field as SingleSelectField).selectOptions().map((option) => option.toDto());
+
+    const bcChoice = choices.find((choice) => choice.name === 'British Columbia');
+    expect(bcChoice).not.toHaveProperty('color');
+    expect(choices.find((choice) => choice.name === 'Alberta')?.color).toBe('blueLight2');
   });
 
   it('rejects manual select field creation when options exceed configured max', () => {

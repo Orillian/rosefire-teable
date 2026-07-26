@@ -91,7 +91,7 @@ describe('RecordWriteSideEffectVisitor', () => {
     expect(multiNames).toEqual(['Tag C', 'Tag D']);
 
     for (const option of [...singleOptions, ...multiOptions]) {
-      expect(fieldColorValues).toContain(option.color().toString());
+      expect(fieldColorValues).toContain(option.color()!.toString());
     }
   });
 

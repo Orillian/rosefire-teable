@@ -356,7 +356,7 @@ describe('FieldCrossTableUpdateSideEffectService', () => {
       SelectOption.create({
         id: option.id().toString(),
         name: option.name().toString() === 'Active' ? 'Active Plus' : option.name().toString(),
-        color: option.color().toString(),
+        color: option.color()!.toString(),
       })._unsafeUnwrap()
     );
     const optionsSpec = UpdateSingleSelectOptionsSpec.create(
@@ -528,7 +528,7 @@ describe('FieldCrossTableUpdateSideEffectService', () => {
       SelectOption.create({
         id: option.id().toString(),
         name: option.name().toString() === 'Active' ? 'Active Plus' : option.name().toString(),
-        color: option.color().toString(),
+        color: option.color()!.toString(),
       })._unsafeUnwrap()
     );
     const optionsSpec = UpdateSingleSelectOptionsSpec.create(

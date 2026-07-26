@@ -49,6 +49,38 @@ describe('CreateFieldCommand', () => {
     expect(command.field.type).toBe('singleLineText');
   });
 
+  // P9.1: createFieldInputSchema validates `field` through tableFieldInputSchema
+  // (schemas/field/tableField.schema.ts), which normalizes select choices via its own
+  // preprocessor independently of TableFieldSpecs.ts's parseSelectOptions. That
+  // preprocessor previously backfilled a deterministic default color onto ANY
+  // object-shaped choice with no color, before the command's `field` payload ever
+  // reached field-creation — so an explicit "no color" choice was reverted right at
+  // command construction, regardless of downstream fixes. Assert on
+  // `command.field` (the actual validated/normalized command payload), not a
+  // re-derivation from the raw input, since that's what a real CreateFieldCommand
+  // handler operates on.
+  it('does not backfill a color for a no-color choice through command input validation', () => {
+    const commandResult = CreateFieldCommand.create({
+      baseId,
+      tableId,
+      field: {
+        type: 'singleSelect',
+        name: 'Province',
+        options: {
+          choices: [{ name: 'Alberta', color: 'blueLight2' }, { name: 'British Columbia' }],
+        },
+      },
+    });
+
+    const command = commandResult._unsafeUnwrap();
+    const choices = (
+      command.field as { options: { choices: ReadonlyArray<{ name: string; color?: string }> } }
+    ).options.choices;
+    const bcChoice = choices.find((choice) => choice.name === 'British Columbia');
+    expect(bcChoice).not.toHaveProperty('color');
+    expect(choices.find((choice) => choice.name === 'Alberta')?.color).toBe('blueLight2');
+  });
+
   it('accepts link input without lookupFieldId and keeps foreign table reference', () => {
     const foreignTableId = `tbl${'c'.repeat(16)}`;
     const commandResult = CreateFieldCommand.create({

@@ -35,7 +35,7 @@ const formatSpecDetails = (specInfo: TableWhereSpecInfo): string => {
   return parts.join(' ');
 };
 
-type SelectChoiceDto = { id: string; name: string; color: string };
+type SelectChoiceDto = { id: string; name: string; color?: string };
 
 const deduplicateSelectChoices = (
   choices: ReadonlyArray<SelectChoiceDto>
@@ -2174,11 +2174,23 @@ export class PostgresTableRepository implements core.ITableRepository {
     defaultValue?: string | ReadonlyArray<string>;
     preventAutoNewOptions?: boolean;
   } {
-    const normalizeColor = (color: unknown, index: number): string => {
+    // Legacy shorthand only (bare choice names from raw.options, see below) has no way to
+    // express "no color", so it still gets an assigned default.
+    const assignDefaultColor = (index: number): string =>
+      core.fieldColorValues[index % core.fieldColorValues.length];
+    // For object-shaped choices (raw.choices), an explicitly omitted/invalid color IS the
+    // "no color" choice (plain-text rendering) and must be passed through as undefined,
+    // never backfilled. Previously this always assigned a deterministic default color
+    // whenever the stored color was missing, which meant that even after the field was
+    // correctly persisted with no color (see the command-side fix in
+    // TableFieldUpdateSpecs.ts / TableFieldSpecs.ts), re-hydrating the Table aggregate for
+    // a query/response (e.g. the value returned immediately by PUT .../convert) silently
+    // reintroduced a color — a distinct instance of the same P9.1 bug in the read path.
+    const normalizeColor = (color: unknown): string | undefined => {
       if (typeof color === 'string' && core.fieldColorValues.includes(color as never)) {
         return color;
       }
-      return core.fieldColorValues[index % core.fieldColorValues.length];
+      return undefined;
     };
     const normalizeDefaultValue = (value: unknown): string | ReadonlyArray<string> | undefined => {
       if (typeof value === 'string') {
@@ -2199,22 +2211,23 @@ export class PostgresTableRepository implements core.ITableRepository {
       const choices = raw.options.map((name, index) => ({
         id: `cho${core.getRandomString(8)}`,
         name: String(name),
-        color: normalizeColor(undefined, index),
+        color: assignDefaultColor(index),
       }));
       return { choices: deduplicateSelectChoices(choices) };
     }
 
     const choices = Array.isArray(raw.choices)
-      ? raw.choices.map((choice, index) => {
+      ? raw.choices.map((choice) => {
           const item =
             choice && typeof choice === 'object' ? (choice as Record<string, unknown>) : {};
+          const color = normalizeColor(item.color);
           return {
             id:
               typeof item.id === 'string' && item.id.length > 0
                 ? item.id
                 : `cho${core.getRandomString(8)}`,
             name: typeof item.name === 'string' ? item.name : String(item.name ?? ''),
-            color: normalizeColor(item.color, index),
+            ...(color !== undefined ? { color } : {}),
           };
         })
       : [];

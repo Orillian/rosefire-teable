@@ -40,7 +40,8 @@ export type IRatingFieldOptionsDTO = {
 export type ISelectFieldChoiceDTO = {
   id: string;
   name: string;
-  color: string;
+  // Optional: an omitted color renders the choice as plain text ("no color").
+  color?: string;
 };
 
 export type ISelectFieldOptionsDTO = {
