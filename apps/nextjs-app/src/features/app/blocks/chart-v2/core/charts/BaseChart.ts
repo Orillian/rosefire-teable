@@ -2,6 +2,7 @@ import type { IFieldVo } from '@teable/core';
 import type { IChartStorage, IDashboardLayout } from '@teable/openapi';
 import type { IChartData } from '../adapters/BaseAdapter';
 import type { ISeriesConfig } from '../types';
+import { DEFAULT_EMPTY_GROUP_LABEL } from '../utils';
 
 export interface IChartOptions {
   backgroundColor?: string;
@@ -92,19 +93,22 @@ export abstract class BaseChart {
   protected echartsType: string;
   protected fields: IFieldVo[];
   protected layout?: IDashboardLayout[number];
+  protected emptyLabel: string;
 
   constructor(
     storage: IChartStorage,
     chartData: IChartData,
     echartsType: string,
     fields: IFieldVo[],
-    layout?: IDashboardLayout[number]
+    layout?: IDashboardLayout[number],
+    emptyLabel: string = DEFAULT_EMPTY_GROUP_LABEL
   ) {
     this.storage = storage;
     this.chartData = chartData;
     this.echartsType = echartsType;
     this.fields = fields;
     this.layout = layout;
+    this.emptyLabel = emptyLabel;
   }
 
   abstract generateOptions(): IChartOptions;

@@ -1,7 +1,7 @@
 import type { ITableQuery } from '@teable/openapi';
 import { AGGREGATE_COUNT_KEY, DataSource } from '@teable/openapi';
 import type { ISeriesConfig } from '../types';
-import { getGroupKeyName } from '../utils';
+import { formatGroupDisplayValue } from '../utils';
 import { BaseChart, type IChartOptions } from './BaseChart';
 
 export class PieChart extends BaseChart {
@@ -62,11 +62,11 @@ export class PieChart extends BaseChart {
     const key = this.getKey();
 
     if (dataSource === DataSource.Table) {
+      const xAxis = (query as ITableQuery).xAxis;
+      const field = this.fields.find((field) => field.id === xAxis);
       return rawData.map((item) => {
-        const xAxis = (query as ITableQuery).xAxis;
         const value = item[key];
-        const finalName =
-          getGroupKeyName(this.fields.find((field) => field.id === xAxis)!, item[xAxis]) || 'null';
+        const finalName = formatGroupDisplayValue(field, item[xAxis], this.emptyLabel);
         return {
           value,
           name: finalName,
@@ -77,7 +77,8 @@ export class PieChart extends BaseChart {
     const { xAxis } = this.storage.config;
     return rawData.map((item) => {
       const value = item[key];
-      const name = item[xAxis];
+      // SQL data source has no field metadata to format against.
+      const name = formatGroupDisplayValue(undefined, item[xAxis], this.emptyLabel);
       return {
         value,
         name,

@@ -8,19 +8,21 @@ import { TableAdapter } from '../adapters/TableAdapter';
 import type { BaseChart, IChartOptions } from '../charts/BaseChart';
 import { CartesianChart } from '../charts/CartesianChart';
 import { PieChart, DonutChart } from '../charts/PieChart';
+import { DEFAULT_EMPTY_GROUP_LABEL } from '../utils';
 
 export class ChartFactory {
   static createAdapter(
     dataSource: DataSource,
     storage: IChartStorage,
     result: Record<string, unknown>[],
-    fields?: IFieldVo[]
+    fields?: IFieldVo[],
+    emptyLabel: string = DEFAULT_EMPTY_GROUP_LABEL
   ): BaseAdapter<ITableQuery | ISqlQuery> {
     switch (dataSource) {
       case DataSource.Table:
-        return new TableAdapter(storage as IChartStorage<ITableQuery>, result, fields);
+        return new TableAdapter(storage as IChartStorage<ITableQuery>, result, fields, emptyLabel);
       case DataSource.Sql:
-        return new SqlAdapter(storage as IChartStorage<ISqlQuery>, result);
+        return new SqlAdapter(storage as IChartStorage<ISqlQuery>, result, emptyLabel);
       default:
         throw new Error(`Unsupported data source: ${dataSource}`);
     }
@@ -31,7 +33,8 @@ export class ChartFactory {
     storage: IChartStorage,
     chartData: IChartData,
     fields: IFieldVo[],
-    layout?: IDashboardLayout[number]
+    layout?: IDashboardLayout[number],
+    emptyLabel: string = DEFAULT_EMPTY_GROUP_LABEL
   ): BaseChart {
     const echartsType = getEchartsType(chartType);
 
@@ -39,13 +42,13 @@ export class ChartFactory {
       case ChartType.Line:
       case ChartType.Bar:
       case ChartType.Area:
-        return new CartesianChart(storage, chartData, echartsType, fields, layout);
+        return new CartesianChart(storage, chartData, echartsType, fields, layout, emptyLabel);
 
       case ChartType.Pie:
-        return new PieChart(storage, chartData, echartsType, fields, layout);
+        return new PieChart(storage, chartData, echartsType, fields, layout, emptyLabel);
 
       case ChartType.DonutChart:
-        return new DonutChart(storage, chartData, echartsType, fields, layout);
+        return new DonutChart(storage, chartData, echartsType, fields, layout, emptyLabel);
 
       default:
         throw new Error(`Unsupported chart type: ${chartType}`);
@@ -56,7 +59,8 @@ export class ChartFactory {
     storage: IChartStorage,
     result: Record<string, unknown>[],
     fields?: IFieldVo[],
-    layout?: IDashboardLayout[number]
+    layout?: IDashboardLayout[number],
+    emptyLabel: string = DEFAULT_EMPTY_GROUP_LABEL
   ): IChartOptions | null {
     const { dataSource, chartType } = storage;
 
@@ -64,7 +68,7 @@ export class ChartFactory {
       return null;
     }
 
-    const adapter = this.createAdapter(dataSource, storage, result, fields);
+    const adapter = this.createAdapter(dataSource, storage, result, fields, emptyLabel);
     const chartData = adapter.getData();
 
     const chart = this.createChart(
@@ -72,7 +76,8 @@ export class ChartFactory {
       storage,
       chartData,
       (fields || []) as IFieldVo[],
-      layout
+      layout,
+      emptyLabel
     );
     const options = chart.generateOptions();
 
