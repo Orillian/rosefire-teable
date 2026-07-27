@@ -1,6 +1,6 @@
-import { CellValueType } from '@teable/core';
 import { Plus } from '@teable/icons';
 import type { ITableQuery } from '@teable/openapi';
+import { getValidFieldRollup } from '@teable/openapi';
 import {
   Button,
   DropdownMenu,
@@ -9,7 +9,6 @@ import {
   DropdownMenuTrigger,
 } from '@teable/ui-lib/shadcn';
 import { useFields, useStorage } from '../../../../hooks';
-import { RollupFunc } from './types';
 
 export const AddFieldButton = () => {
   const { fields } = useFields();
@@ -17,7 +16,7 @@ export const AddFieldButton = () => {
   const { query } = storage || {};
   const { seriesArray } = (query || {}) as ITableQuery;
   const fieldOptions = fields
-    .filter(({ cellValueType }) => cellValueType === CellValueType.Number)
+    .filter((field) => getValidFieldRollup(field).length > 0)
     ?.filter(
       (field) =>
         Array.isArray(seriesArray) && !seriesArray?.some((item) => item.column === field.id)
@@ -35,23 +34,19 @@ export const AddFieldButton = () => {
             <DropdownMenuItem
               key={field.id}
               onClick={() => {
-                const paths: Array<{ path: string; value: unknown }> = [
-                  {
-                    path: 'query.seriesArray',
-                    value: [
-                      ...seriesArray,
-                      {
-                        column: field.id,
-                        rollup: RollupFunc.Sum,
-                      },
-                    ],
-                  },
-                ];
+                const defaultRollup = getValidFieldRollup(field)[0];
                 const newSeriesArray = [
                   ...seriesArray,
                   {
                     column: field.id,
-                    rollup: RollupFunc.Sum,
+                    rollup: defaultRollup,
+                  },
+                ];
+
+                const paths: Array<{ path: string; value: unknown }> = [
+                  {
+                    path: 'query.seriesArray',
+                    value: newSeriesArray,
                   },
                 ];
 

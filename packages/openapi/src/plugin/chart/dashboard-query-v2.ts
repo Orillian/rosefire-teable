@@ -32,12 +32,39 @@ export enum DataSource {
   Sql = 'sql',
 }
 
+/**
+ * Aggregation/statistic functions selectable for a chart v2 series column.
+ *
+ * Ported from legacy's `StatisticsFunc` (`packages/core/src/models/aggregation/statistics-func.enum.ts`)
+ * to reach capability parity - see `getValidFieldRollup` in `./field-rollup` for which functions are
+ * valid for which field type, and for the one documented gap versus legacy: `Unique`/`PercentUnique`
+ * are not supported on multi-value fields (multi-select, multi-collaborator, multi-link) because
+ * chartv2's query pipeline (`PluginChartService.applyGroupByAndSeries`) aggregates a field's db column
+ * directly and has no equivalent of legacy's multiple-value aggregation adapter, which unnests JSON
+ * arrays (`jsonb_array_elements_text`) before computing DISTINCT. Every other function - including on
+ * multi-value fields - is fully ported.
+ */
 export enum FieldRollup {
   Sum = 'sum',
   Avg = 'avg',
   Min = 'min',
   Max = 'max',
   Count = 'count',
+  Empty = 'empty',
+  Filled = 'filled',
+  Unique = 'unique',
+  PercentEmpty = 'percentEmpty',
+  PercentFilled = 'percentFilled',
+  PercentUnique = 'percentUnique',
+  Checked = 'checked',
+  UnChecked = 'unChecked',
+  PercentChecked = 'percentChecked',
+  PercentUnChecked = 'percentUnChecked',
+  EarliestDate = 'earliestDate',
+  LatestDate = 'latestDate',
+  DateRangeOfDays = 'dateRangeOfDays',
+  DateRangeOfMonths = 'dateRangeOfMonths',
+  TotalAttachmentSize = 'totalAttachmentSize',
 }
 
 export interface ITableQuery {

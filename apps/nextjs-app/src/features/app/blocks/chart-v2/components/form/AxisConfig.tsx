@@ -1,5 +1,6 @@
-import { CellValueType, FieldType } from '@teable/core';
+import { FieldType } from '@teable/core';
 import type { ITableQuery } from '@teable/openapi';
+import { getValidFieldRollup } from '@teable/openapi';
 import {
   Label,
   Separator,
@@ -62,8 +63,10 @@ export const AxisConfig = () => {
     [updateStorageByPath, defaultField]
   );
 
+  // Any field with at least one valid rollup function can be charted as a series - not just
+  // Number fields anymore, now that Count/Empty/Filled/... etc. are ported for every field type.
   const countFields = useMemo(() => {
-    return fields?.filter((f) => f.cellValueType === CellValueType.Number);
+    return fields?.filter((f) => getValidFieldRollup(f).length > 0);
   }, [fields]);
 
   return (
@@ -139,10 +142,11 @@ export const AxisConfig = () => {
                 className="w-full"
                 onClick={() => {
                   if (countFields.length > 0) {
+                    const defaultRollup = getValidFieldRollup(countFields[0])[0];
                     updateStorageByPath(`query.seriesArray`, [
                       {
                         column: countFields[0].id,
-                        rollup: 'sum',
+                        rollup: defaultRollup,
                       },
                     ]);
                   } else {

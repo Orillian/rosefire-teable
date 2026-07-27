@@ -1,9 +1,12 @@
-import { CellValueType } from '@teable/core';
 import { Trash2 } from '@teable/icons';
+import type { FieldRollup } from '@teable/openapi';
+import { getValidFieldRollup } from '@teable/openapi';
 import { Button } from '@teable/ui-lib/shadcn';
+import { useMemo } from 'react';
+import { useFields } from '../../../../hooks';
 import { FieldSelect } from '../FieldSelect';
 import { StatisticFunSelect } from './StatisticFunSelect';
-import type { IStatisticFieldItem, RollupFunc } from './types';
+import type { IStatisticFieldItem } from './types';
 
 interface IStaticFieldItemProps {
   allStaticFields: IStatisticFieldItem[];
@@ -13,6 +16,18 @@ interface IStaticFieldItemProps {
 }
 export const StatisticFieldItem = (props: IStaticFieldItemProps) => {
   const { allStaticFields, value, onChange, onDelete } = props;
+  const { fields } = useFields();
+
+  const selectedField = useMemo(
+    () => fields.find((field) => field.id === value?.column),
+    [fields, value?.column]
+  );
+
+  // Which rollup functions are valid depends on the selected field's type - e.g. Sum/Avg only
+  // make sense for a Number field, while Checked/UnChecked only make sense for a Boolean field.
+  // See getValidFieldRollup for the full per-type table (ported from legacy's
+  // getValidStatisticFunc).
+  const rollupOptions = useMemo(() => getValidFieldRollup(selectedField), [selectedField]);
 
   return (
     <div className="flex w-full gap-2">
@@ -20,22 +35,26 @@ export const StatisticFieldItem = (props: IStaticFieldItemProps) => {
         selectedFields={allStaticFields.map((field) => field.column)}
         value={value?.column}
         onChange={(property: string) => {
+          const nextField = fields.find((field) => field.id === property);
+          const validRollups = getValidFieldRollup(nextField);
           onChange({
-            ...value,
             column: property,
+            // Keep the current rollup if it's still valid for the newly picked field, otherwise
+            // fall back to the first valid one instead of silently keeping an invalid selection.
+            rollup: validRollups.includes(value?.rollup) ? value.rollup : validRollups[0],
           } as IStatisticFieldItem);
         }}
         className="w-full"
-        allowCellValueType={[CellValueType.Number]}
       />
 
       <StatisticFunSelect
-        value={value.rollup as RollupFunc}
-        onChange={(property: RollupFunc) => {
+        value={value.rollup}
+        options={rollupOptions}
+        onChange={(property: FieldRollup) => {
           onChange({
             ...value,
-            rollup: property as RollupFunc,
-          } as IStatisticFieldItem);
+            rollup: property,
+          });
         }}
         className="w-full"
       />

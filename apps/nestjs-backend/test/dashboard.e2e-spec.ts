@@ -1,5 +1,6 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import type { INestApplication } from '@nestjs/common';
+import { FieldKeyType } from '@teable/core';
 import { PrismaService } from '@teable/db-main-prisma';
 import type { ITableFullVo } from '@teable/openapi';
 import {
@@ -26,6 +27,7 @@ import {
   submitPlugin,
   updateDashboardPluginStorage,
   updateLayoutDashboard,
+  updateRecord,
   getDashboardInstallPluginQueryV2,
   getDashboardTestSqlResult,
   ChartType,
@@ -809,6 +811,83 @@ describe('DashboardController', () => {
 
       expect(queryRes.status).toBe(200);
       expect(baseQuerySchemaVoV2.safeParse(queryRes.data).success).toBe(true);
+    });
+
+    // Parity port: legacy has ~15 more StatisticsFunc values than chartv2's original 5-member
+    // FieldRollup enum - see chart-improvement-plan.md's "Evaluation results" section. These cases
+    // exercise the ported functions end-to-end against a real database, complementing the unit
+    // tests in plugin-chart.service.spec.ts / rollup-expression.spec.ts, which cover the
+    // SQL-generation and validation logic in isolation.
+    describe('extended aggregations (parity port)', () => {
+      it('computes Filled/Empty using newly-ported aggregation functions', async () => {
+        const textField = table.fields.find((field) => field.name === 'Name')!;
+        const numberField = table.fields.find((field) => field.name === 'Count')!;
+        const [rec1, rec2] = table.records;
+
+        await updateRecord(table.id, rec1.id, {
+          record: { fields: { [numberField.id]: 10 } },
+          fieldKeyType: FieldKeyType.Id,
+        });
+        await updateRecord(table.id, rec2.id, {
+          record: { fields: { [numberField.id]: 20 } },
+          fieldKeyType: FieldKeyType.Id,
+        });
+
+        await updateDashboardPluginStorage(baseId, dashboardId, pluginInstallId, {
+          chartType: ChartType.Bar,
+          dataSource: DataSource.Table,
+          query: {
+            tableId: table.id,
+            viewId: table.views[0].id,
+            xAxis: textField.id,
+            seriesArray: [
+              { column: numberField.id, rollup: FieldRollup.Filled },
+              { column: numberField.id, rollup: FieldRollup.Empty },
+            ],
+            groupBy: null,
+          },
+          config: {},
+          appearance: { theme: 'light', legendVisible: true, labelVisible: false },
+        });
+
+        const queryRes = await getDashboardInstallPluginQueryV2(
+          pluginInstallId,
+          dashboardId,
+          baseId
+        );
+
+        expect(queryRes.status).toBe(200);
+        expect(baseQuerySchemaVoV2.safeParse(queryRes.data).success).toBe(true);
+        // All 3 default records share the same (null) Name, so they collapse into 1 group.
+        expect(queryRes.data.result.length).toBe(1);
+        const firstRow = queryRes.data.result[0];
+        expect(Number(firstRow[`${numberField.name}_${FieldRollup.Filled}`])).toBe(2);
+        expect(Number(firstRow[`${numberField.name}_${FieldRollup.Empty}`])).toBe(1);
+      });
+
+      it('rejects a rollup that is invalid for the field type (Checked on a Number field)', async () => {
+        const textField = table.fields.find((field) => field.name === 'Name')!;
+        const numberField = table.fields.find((field) => field.name === 'Count')!;
+
+        await updateDashboardPluginStorage(baseId, dashboardId, pluginInstallId, {
+          chartType: ChartType.Bar,
+          dataSource: DataSource.Table,
+          query: {
+            tableId: table.id,
+            viewId: table.views[0].id,
+            xAxis: textField.id,
+            seriesArray: [{ column: numberField.id, rollup: FieldRollup.Checked }],
+            groupBy: null,
+          },
+          config: {},
+          appearance: { theme: 'light', legendVisible: true, labelVisible: false },
+        });
+
+        const error = await getError(() =>
+          getDashboardInstallPluginQueryV2(pluginInstallId, dashboardId, baseId)
+        );
+        expect(error?.status).toBe(400);
+      });
     });
   });
 });

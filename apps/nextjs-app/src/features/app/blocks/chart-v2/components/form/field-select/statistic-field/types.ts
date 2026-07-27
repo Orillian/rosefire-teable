@@ -1,12 +1,6 @@
-export enum RollupFunc {
-  Count = 'count',
-  Sum = 'sum',
-  Average = 'avg',
-  Min = 'min',
-  Max = 'max',
-}
+import type { FieldRollup } from '@teable/openapi';
 
 export interface IStatisticFieldItem {
   column: string;
-  rollup: RollupFunc;
+  rollup: FieldRollup;
 }

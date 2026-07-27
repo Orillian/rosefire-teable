@@ -1,8 +1,11 @@
-import { HttpErrorCode } from '@teable/core';
-import { CustomHttpException } from '../../../../custom.exception';
-import { Injectable, NotFoundException } from '@nestjs/common';
-import type { IFilter, ISortItem } from '@teable/core';
-import { CellFormat, mergeWithDefaultFilter, mergeWithDefaultSort } from '@teable/core';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import type { IFilter, ISortItem, FieldType, CellValueType } from '@teable/core';
+import {
+  HttpErrorCode,
+  CellFormat,
+  mergeWithDefaultFilter,
+  mergeWithDefaultSort,
+} from '@teable/core';
 import { PrismaService } from '@teable/db-main-prisma';
 import type {
   ISqlQuery,
@@ -13,16 +16,27 @@ import type {
   ITestSqlRo,
   FieldRollup,
 } from '@teable/openapi';
-import { DataSource, AGGREGATE_COUNT_KEY } from '@teable/openapi';
+import { DataSource, AGGREGATE_COUNT_KEY, getValidFieldRollup } from '@teable/openapi';
 import { Knex } from 'knex';
 import { keyBy } from 'lodash';
 import { InjectModel } from 'nest-knexjs';
+import { CustomHttpException } from '../../../../custom.exception';
 import { BaseQueryService } from '../../../base/base-query/base-query.service';
 import { BaseSqlExecutorService } from '../../../base-sql-executor/base-sql-executor.service';
 import { DashboardService } from '../../../dashboard/dashboard.service';
 import { FieldService } from '../../../field/field.service';
 import { PluginPanelService } from '../../../plugin-panel/plugin-panel.service';
 import { RecordService } from '../../../record/record.service';
+import { buildRollupExpression } from './rollup-expression';
+
+interface IChartField {
+  id: string;
+  dbFieldName: string;
+  name: string;
+  type: string;
+  cellValueType: string;
+  isMultipleCellValue?: boolean | null;
+}
 
 @Injectable()
 export class PluginChartService {
@@ -135,7 +149,7 @@ export class PluginChartService {
 
   private applyGroupByAndSeries(
     queryBuilder: Knex.QueryBuilder,
-    fields: Array<{ id: string; dbFieldName: string }>,
+    fields: Array<IChartField>,
     xAxis: string | string[] | undefined,
     groupBy: string | undefined,
     seriesArray: string | Array<{ column: string; rollup: FieldRollup }> | undefined
@@ -153,29 +167,33 @@ export class PluginChartService {
     if (Array.isArray(seriesArray) && seriesArray.length) {
       seriesArray.forEach((item) => {
         const field = fields.find((field) => field.id === item.column);
-        const dbFieldName = field?.dbFieldName;
-        if (dbFieldName && item?.rollup) {
-          const rollupMethod = item.rollup as 'sum' | 'avg' | 'min' | 'max' | 'count';
-          switch (rollupMethod) {
-            case 'sum':
-              queryBuilder.sum({ [`${dbFieldName}_sum`]: dbFieldName });
-              break;
-            case 'avg':
-              queryBuilder.avg({ [`${dbFieldName}_avg`]: dbFieldName });
-              break;
-            case 'min':
-              queryBuilder.min({ [`${dbFieldName}_min`]: dbFieldName });
-              break;
-            case 'max':
-              queryBuilder.max({ [`${dbFieldName}_max`]: dbFieldName });
-              break;
-            case 'count':
-              queryBuilder.count({ [`${dbFieldName}_count`]: dbFieldName });
-              break;
-            default:
-              throw new NotFoundException('Unsupported rollup method');
-          }
+        if (!field || !item?.rollup) {
+          return;
         }
+        // Validate the requested rollup is actually valid for this field's type before building
+        // any SQL for it - see getValidFieldRollup for the full per-type table (ported from
+        // legacy's getValidStatisticFunc) and its one documented gap (Unique/PercentUnique on
+        // multi-value fields).
+        const validRollups = getValidFieldRollup({
+          type: field.type as FieldType,
+          cellValueType: field.cellValueType as CellValueType,
+          isMultipleCellValue: field.isMultipleCellValue,
+        });
+        if (!validRollups.includes(item.rollup)) {
+          throw new BadRequestException(
+            `Rollup "${item.rollup}" is not supported for field "${field.name}" (type: ${field.type})`
+          );
+        }
+        const expression = buildRollupExpression(
+          this.knex,
+          field.dbFieldName,
+          field.dbFieldName,
+          item.rollup
+        );
+        if (!expression) {
+          throw new NotFoundException('Unsupported rollup method');
+        }
+        queryBuilder.select(expression.raw);
       });
     } else {
       queryBuilder.select(this.knex.raw(`COUNT(*) as ${AGGREGATE_COUNT_KEY}`));
@@ -185,8 +203,8 @@ export class PluginChartService {
   private getYColumnForOrderBy(
     groupBy: string | undefined,
     seriesArray: string | Array<{ column: string; rollup: FieldRollup }> | undefined,
-    fields: Array<{ id: string; dbFieldName: string }>,
-    fieldsMap: Record<string, { id: string; dbFieldName: string; name: string }>
+    fields: Array<IChartField>,
+    fieldsMap: Record<string, IChartField>
   ): string {
     if (groupBy) {
       const groupByField = fields.find((field) => field.id === groupBy);
@@ -216,8 +234,8 @@ export class PluginChartService {
     xAxis: string | string[] | undefined,
     groupBy: string | undefined,
     seriesArray: string | Array<{ column: string; rollup: FieldRollup }> | undefined,
-    fields: Array<{ id: string; dbFieldName: string }>,
-    fieldsMap: Record<string, { id: string; dbFieldName: string; name: string }>
+    fields: Array<IChartField>,
+    fieldsMap: Record<string, IChartField>
   ): void {
     if (!orderBy) {
       return;
@@ -279,7 +297,7 @@ export class PluginChartService {
       };
     }
 
-    const fields = await this.prismaService.txClient().field.findMany({
+    const fields: IChartField[] = await this.prismaService.txClient().field.findMany({
       where: {
         tableId,
         deletedTime: null,
@@ -288,6 +306,9 @@ export class PluginChartService {
         id: true,
         dbFieldName: true,
         name: true,
+        type: true,
+        cellValueType: true,
+        isMultipleCellValue: true,
       },
     });
 

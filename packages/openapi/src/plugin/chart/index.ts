@@ -5,3 +5,4 @@ export * from './dashboard-sql-test';
 export * from './get-base-table-schema';
 export * from './constant';
 export * from './plugin-panel-query-v2';
+export * from './field-rollup';
