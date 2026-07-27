@@ -1,11 +1,13 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import type { INestApplication } from '@nestjs/common';
-import { FieldKeyType } from '@teable/core';
+import { FieldKeyType, FieldType, Relationship } from '@teable/core';
 import { PrismaService } from '@teable/db-main-prisma';
 import type { ITableFullVo } from '@teable/openapi';
 import {
+  AGGREGATE_COUNT_KEY,
   createDashboard,
   createDashboardVoSchema,
+  createField,
   createPlugin,
   createTable,
   dashboardInstallPluginVoSchema,
@@ -35,6 +37,7 @@ import {
   FieldRollup,
   baseQuerySchemaVoV2,
 } from '@teable/openapi';
+import { keyBy } from 'lodash';
 import { getError } from './utils/get-error';
 import { initApp } from './utils/init-app';
 
@@ -814,11 +817,12 @@ describe('DashboardController', () => {
     });
 
     // Parity port: legacy has ~15 more StatisticsFunc values than chartv2's original 5-member
-    // FieldRollup enum - see chart-improvement-plan.md's "Evaluation results" section. These cases
-    // exercise the ported functions end-to-end against a real database, complementing the unit
-    // tests in plugin-chart.service.spec.ts / rollup-expression.spec.ts, which cover the
-    // SQL-generation and validation logic in isolation.
-    describe('extended aggregations (parity port)', () => {
+    // FieldRollup enum, and no cross-table join at all - see chart-improvement-plan.md's
+    // "Evaluation results" section. These cases exercise the ported functions and the join path
+    // end-to-end against a real database, complementing the unit tests in
+    // plugin-chart.service.spec.ts / rollup-expression.spec.ts / join-support.spec.ts, which cover
+    // the SQL-generation and validation logic in isolation.
+    describe('extended aggregations and cross-table joins (parity port)', () => {
       it('computes Filled/Empty using newly-ported aggregation functions', async () => {
         const textField = table.fields.find((field) => field.name === 'Name')!;
         const numberField = table.fields.find((field) => field.name === 'Count')!;
@@ -887,6 +891,116 @@ describe('DashboardController', () => {
           getDashboardInstallPluginQueryV2(pluginInstallId, dashboardId, baseId)
         );
         expect(error?.status).toBe(400);
+      });
+
+      it('charts a linked table field via a ManyOne join (the Orders -> Profiles CRM case)', async () => {
+        const foreignTableRes = await createTable(baseId, {
+          name: 'chart-join-foreign',
+          fields: [{ type: FieldType.SingleLineText, name: 'Region' }],
+          records: [
+            { fields: { Region: 'Alberta' } },
+            { fields: { Region: 'Alberta' } },
+            { fields: { Region: 'Ontario' } },
+          ],
+        });
+        const foreignTable = foreignTableRes.data;
+        const regionField = foreignTable.fields.find((field) => field.name === 'Region')!;
+
+        try {
+          const linkFieldRes = await createField(table.id, {
+            type: FieldType.Link,
+            options: {
+              relationship: Relationship.ManyOne,
+              foreignTableId: foreignTable.id,
+            },
+          });
+          const linkField = linkFieldRes.data;
+
+          const [rec1, rec2, rec3] = table.records;
+          const [foreignRec1, , foreignRec3] = foreignTable.records;
+
+          await updateRecord(table.id, rec1.id, {
+            record: { fields: { [linkField.id]: { id: foreignRec1.id } } },
+            fieldKeyType: FieldKeyType.Id,
+          });
+          await updateRecord(table.id, rec2.id, {
+            record: { fields: { [linkField.id]: { id: foreignRec1.id } } },
+            fieldKeyType: FieldKeyType.Id,
+          });
+          await updateRecord(table.id, rec3.id, {
+            record: { fields: { [linkField.id]: { id: foreignRec3.id } } },
+            fieldKeyType: FieldKeyType.Id,
+          });
+
+          await updateDashboardPluginStorage(baseId, dashboardId, pluginInstallId, {
+            chartType: ChartType.Bar,
+            dataSource: DataSource.Table,
+            query: {
+              tableId: table.id,
+              viewId: table.views[0].id,
+              join: { linkFieldId: linkField.id },
+              xAxis: regionField.id,
+              seriesArray: 'COUNTA',
+              groupBy: null,
+            },
+            config: {},
+            appearance: { theme: 'light', legendVisible: true, labelVisible: false },
+          });
+
+          const queryRes = await getDashboardInstallPluginQueryV2(
+            pluginInstallId,
+            dashboardId,
+            baseId
+          );
+
+          expect(queryRes.status).toBe(200);
+          expect(baseQuerySchemaVoV2.safeParse(queryRes.data).success).toBe(true);
+          const rows = keyBy(queryRes.data.result, (row) => row[regionField.id] as string);
+          expect(Number(rows.Alberta?.[AGGREGATE_COUNT_KEY])).toBe(2);
+          expect(Number(rows.Ontario?.[AGGREGATE_COUNT_KEY])).toBe(1);
+        } finally {
+          await deleteTable(baseId, foreignTable.id);
+        }
+      });
+
+      it('rejects an unsupported (many-to-many) link for a chart join', async () => {
+        const foreignTableRes = await createTable(baseId, { name: 'chart-join-mm' });
+        const foreignTable = foreignTableRes.data;
+
+        try {
+          const linkFieldRes = await createField(table.id, {
+            type: FieldType.Link,
+            options: {
+              relationship: Relationship.ManyMany,
+              foreignTableId: foreignTable.id,
+            },
+          });
+          const linkField = linkFieldRes.data;
+
+          const textField = table.fields.find((field) => field.name === 'Name')!;
+
+          await updateDashboardPluginStorage(baseId, dashboardId, pluginInstallId, {
+            chartType: ChartType.Bar,
+            dataSource: DataSource.Table,
+            query: {
+              tableId: table.id,
+              viewId: table.views[0].id,
+              join: { linkFieldId: linkField.id },
+              xAxis: textField.id,
+              seriesArray: 'COUNTA',
+              groupBy: null,
+            },
+            config: {},
+            appearance: { theme: 'light', legendVisible: true, labelVisible: false },
+          });
+
+          const error = await getError(() =>
+            getDashboardInstallPluginQueryV2(pluginInstallId, dashboardId, baseId)
+          );
+          expect(error?.status).toBe(400);
+        } finally {
+          await deleteTable(baseId, foreignTable.id);
+        }
       });
     });
   });

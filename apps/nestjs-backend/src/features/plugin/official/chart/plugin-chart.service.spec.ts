@@ -6,9 +6,10 @@ import { PluginChartService } from './plugin-chart.service';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-// Exercises PluginChartService.applyGroupByAndSeries directly off the class prototype, bypassing
-// Nest's DI container - see dev-workflow.md's documented pattern (`field.service.spec.ts`) for
-// exercising a private method without booting the whole module.
+// These tests exercise PluginChartService.applyGroupByAndSeries directly off the class
+// prototype, bypassing Nest's DI container - see dev-workflow.md's documented pattern
+// (`field.service.spec.ts`) for exercising a private method without booting the whole module.
+// See plugin-chart.service.join.spec.ts for the same pattern applied to resolveJoin.
 
 describe('PluginChartService.applyGroupByAndSeries (aggregation query building)', () => {
   const db = knex({ client: 'pg' });
@@ -22,6 +23,7 @@ describe('PluginChartService.applyGroupByAndSeries (aggregation query building)'
   const numberField = {
     id: 'fldNumber',
     dbFieldName: 'fld_count',
+    qualifiedDbFieldName: 'filtered_records.fld_count',
     name: 'Count',
     type: 'number',
     cellValueType: 'number',
@@ -31,6 +33,7 @@ describe('PluginChartService.applyGroupByAndSeries (aggregation query building)'
   const multiSelectField = {
     id: 'fldTags',
     dbFieldName: 'fld_tags',
+    qualifiedDbFieldName: 'filtered_records.fld_tags',
     name: 'Tags',
     type: 'multipleSelect',
     cellValueType: 'string',
@@ -43,7 +46,7 @@ describe('PluginChartService.applyGroupByAndSeries (aggregation query building)'
     (service as any).applyGroupByAndSeries(qb, [numberField], undefined, undefined, [
       { column: 'fldNumber', rollup: FieldRollup.Sum },
     ]);
-    expect(qb.toQuery()).toContain('SUM("fld_count") as "fld_count_sum"');
+    expect(qb.toQuery()).toContain('SUM("filtered_records"."fld_count") as "fld_count_sum"');
   });
 
   it('builds a newly-ported PercentFilled series expression', () => {
@@ -86,12 +89,12 @@ describe('PluginChartService.applyGroupByAndSeries (aggregation query building)'
     expect(qb.toQuery()).toContain('as "fld_tags_filled"');
   });
 
-  it('selects xAxis/groupBy using the bare column but the field id as alias', () => {
+  it('selects xAxis/groupBy using the qualified column but the bare field id as alias', () => {
     const service = makeService();
     const qb = db.queryBuilder().from('filtered_records');
     (service as any).applyGroupByAndSeries(qb, [numberField], 'fldNumber', undefined, 'COUNTA');
     const sql = qb.toQuery();
-    expect(sql).toContain('"fld_count" as "fldNumber"');
+    expect(sql).toContain('"filtered_records"."fld_count" as "fldNumber"');
     expect(sql).toContain('group by "fldNumber"');
   });
 });

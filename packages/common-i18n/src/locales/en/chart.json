@@ -60,7 +60,11 @@
         "table": "Table",
         "dataRange": "Data Range",
         "view": "view",
-        "filter": "filter"
+        "filter": "filter",
+        "join": "Join Linked Table"
+      },
+      "join": {
+        "none": "None (no join)"
       },
       "axisConfig": {
         "noCountFields": "No count fields",

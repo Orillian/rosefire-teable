@@ -8,6 +8,7 @@ import { useStorage } from '../../hooks';
 import { AxisConfig } from './AxisConfig';
 import { FilterButton } from './FilterButton';
 import { FormLabel } from './FormLabel';
+import { LinkFieldSelect } from './LinkFieldSelect';
 import { ColumnConfig, SqlButton } from './sql-builder';
 import { TableSelect } from './TableSelect';
 import { ViewSelect } from './ViewSelect';
@@ -153,6 +154,10 @@ export const DataSourceSelect = () => {
                   }}
                   tableId={tableId}
                 />
+              </FormLabel>
+
+              <FormLabel label={t('chartV2.form.label.join')}>
+                <LinkFieldSelect />
               </FormLabel>
             </div>
           )}

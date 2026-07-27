@@ -5,3 +5,4 @@ export * from './ViewSelect';
 export * from './AxisConfig';
 export * from './TabSelect';
 export * from './ThemeSelect';
+export * from './LinkFieldSelect';

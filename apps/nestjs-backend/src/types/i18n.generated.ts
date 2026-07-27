@@ -109,6 +109,103 @@ export type I18nTranslations = {
             "area": string;
             "table": string;
         };
+        "chartV2": {
+            "dataConfig": string;
+            "chartAppearance": string;
+            "goConfig": string;
+            "appearance": {
+                "title": string;
+                "display": string;
+                "theme": string;
+                "legend": string;
+                "coordinateAxis": string;
+                "label": string;
+                "showAxisLine": string;
+                "showAxisTick": string;
+                "showSplitLine": string;
+                "backgroundColor": string;
+                "reset": string;
+                "style": string;
+                "padding": string;
+                "left": string;
+                "right": string;
+                "bottom": string;
+                "top": string;
+            };
+            "noData": string;
+            "form": {
+                "name": string;
+                "chartType": {
+                    "title": string;
+                    "bar": string;
+                    "line": string;
+                    "pie": string;
+                    "donutChart": string;
+                    "area": string;
+                    "table": string;
+                };
+                "dataSource": {
+                    "title": string;
+                    "fromTable": string;
+                    "fromQuery": string;
+                };
+                "label": {
+                    "table": string;
+                    "dataRange": string;
+                    "view": string;
+                    "filter": string;
+                    "join": string;
+                };
+                "axisConfig": {
+                    "noCountFields": string;
+                    "defaultSeriesName": string;
+                    "title": string;
+                    "xAxis": string;
+                    "yAxis": string;
+                    "field": string;
+                    "Statistic": string;
+                    "totalRecords": string;
+                    "fieldValue": string;
+                    "groupBy": string;
+                    "none": string;
+                    "groupAggregation": string;
+                };
+                "view": {
+                    "allData": string;
+                };
+                "dataSourceTitle": string;
+                "order": {
+                    "orderBy": {
+                        "title": string;
+                        "byXAxis": string;
+                        "byYAxis": string;
+                    };
+                    "orderType": {
+                        "title": string;
+                        "asc": string;
+                        "desc": string;
+                    };
+                };
+                "filter": {
+                    "title": string;
+                    "addFilter": string;
+                    "cancel": string;
+                    "confirm": string;
+                };
+                "sql": {
+                    "title": string;
+                    "sqlEditor": string;
+                    "runTest": string;
+                    "saveSql": string;
+                    "aiGenerate": string;
+                    "resultPreview": string;
+                    "addSeries": string;
+                };
+                "join": {
+                    "none": string;
+                };
+            };
+        };
         "form": {
             "chartType": {
                 "placeholder": string;
@@ -246,7 +343,6 @@ export type I18nTranslations = {
             "select": string;
             "refresh": string;
             "login": string;
-            "useTemplate": string;
             "copyToMySpace": string;
             "saveToMySpace": string;
             "supportSaveCopy": string;
@@ -298,13 +394,6 @@ export type I18nTranslations = {
                     "guide6": string;
                     "guide7": string;
                 };
-            };
-            "useTemplateDialog": {
-                "title": string;
-                "description": string;
-                "noSpaceDescription": string;
-                "newSpacePlaceholder": string;
-                "createSpace": string;
             };
         };
         "baseShare": {
@@ -436,11 +525,6 @@ export type I18nTranslations = {
                     };
                 };
             };
-            "notify": {
-                "title": string;
-                "label": string;
-                "desc": string;
-            };
             "setting": {
                 "title": string;
                 "theme": string;
@@ -492,7 +576,6 @@ export type I18nTranslations = {
             "nav": {
                 "settings": string;
                 "logout": string;
-                "contactSupport": string;
             };
             "integration": {
                 "title": string;
@@ -543,77 +626,6 @@ export type I18nTranslations = {
                 "scopeTitle": string;
                 "scopeDesc": string;
             };
-            "templateAdmin": {
-                "title": string;
-                "noData": string;
-                "importing": string;
-                "usageCount": string;
-                "useTemplate": string;
-                "createdBy": string;
-                "backToTemplateList": string;
-                "tips": {
-                    "errorCategoryName": string;
-                    "needSnapshot": string;
-                    "needPublish": string;
-                    "needBaseSource": string;
-                    "forbiddenUpdateSystemTemplate": string;
-                    "addCategoryTips": string;
-                    "categoryNamePlaceholder": string;
-                    "duplicateCategoryName": string;
-                };
-                "category": {
-                    "menu": {
-                        "getStarted": string;
-                        "recommended": string;
-                        "all": string;
-                        "browseByCategory": string;
-                    };
-                };
-                "header": {
-                    "cover": string;
-                    "name": string;
-                    "description": string;
-                    "markdownDescription": string;
-                    "category": string;
-                    "isSystem": string;
-                    "source": string;
-                    "status": string;
-                    "publishSnapshot": string;
-                    "snapshotTime": string;
-                    "actions": string;
-                    "featured": string;
-                    "createdBy": string;
-                    "userNonExistent": string;
-                    "preview": string;
-                    "usage": string;
-                    "visit": string;
-                };
-                "actions": {
-                    "title": string;
-                    "publish": string;
-                    "delete": string;
-                    "duplicate": string;
-                    "preview": string;
-                    "use": string;
-                    "pinTop": string;
-                    "addCategory": string;
-                    "selectCategory": string;
-                    "viewTemplate": string;
-                    "manageCategory": string;
-                };
-                "relatedTemplates": string;
-                "noImage": string;
-                "baseSelectPanel": {
-                    "title": string;
-                    "description": string;
-                    "confirm": string;
-                    "search": string;
-                    "cancel": string;
-                    "selectBase": string;
-                    "createTemplate": string;
-                    "abnormalBase": string;
-                };
-            };
         };
         "noun": {
             "table": string;
@@ -627,7 +639,6 @@ export type I18nTranslations = {
             "authorityMatrix": string;
             "design": string;
             "adminPanel": string;
-            "license": string;
             "instanceId": string;
             "beta": string;
             "trash": string;
@@ -738,11 +749,6 @@ export type I18nTranslations = {
                 "lastLogin": string;
             };
             "sendInvitationSuccess": string;
-            "authority": {
-                "title": string;
-                "description": string;
-                "viewDetail": string;
-            };
             "app": {
                 "previewAppError": string;
             };
@@ -764,18 +770,9 @@ export type I18nTranslations = {
             "levelTips": string;
             "enterpriseFeature": string;
             "automationRequiresUpgrade": string;
-            "authorityMatrixRequiresUpgrade": string;
             "viewPricing": string;
             "billable": string;
             "billableByAuthorityMatrix": string;
-            "licenseExpiredGracePeriod": string;
-            "licenseAutoFetchFailed": string;
-            "licenseAutoFetchRetryFailed": string;
-            "licenseExpiredGracePeriodDays": string;
-            "spaceSubscriptionModal": {
-                "title": string;
-                "description": string;
-            };
             "status": {
                 "active": string;
                 "canceled": string;
@@ -787,7 +784,6 @@ export type I18nTranslations = {
                 "paused": string;
                 "seatLimitExceeded": string;
             };
-            "contactAdminToUpgrade": string;
         };
         "admin": {
             "setting": {
@@ -1288,20 +1284,9 @@ export type I18nTranslations = {
                 "successText": string;
                 "failedText": string;
             };
-            "importantNotice": {
-                "title": string;
-                "acknowledge": string;
-            };
             "noAttention": string;
-            "noSeverity": string;
             "sections": {
                 "needsAction": string;
-                "all": string;
-            };
-            "severity": {
-                "critical": string;
-                "warning": string;
-                "info": string;
             };
         };
         "role": {
@@ -1344,6 +1329,7 @@ export type I18nTranslations = {
             "pluginEmpty": {
                 "title": string;
             };
+            "addPluginTitle": string;
         };
         "automation": {
             "turnOnTip": string;
@@ -1481,7 +1467,6 @@ export type I18nTranslations = {
                             "message": string;
                         };
                         "insufficientCredit": {
-                            "title": string;
                             "message": string;
                         };
                         "runQuotaExceeded": {
@@ -1558,7 +1543,6 @@ export type I18nTranslations = {
                             "cancelled": {
                                 "title": string;
                                 "rateLimit": string;
-                                "creditExhausted": string;
                                 "authFailed": string;
                                 "serviceUnavailable": string;
                                 "unknown": string;
@@ -1921,10 +1905,6 @@ export type I18nTranslations = {
         };
         "findDashboard": string;
         "expand": string;
-        "deprecation": {
-            "title": string;
-            "description": string;
-        };
         "pluginUrlEmpty": string;
         "install": string;
         "publisher": string;
@@ -3860,67 +3840,6 @@ export type I18nTranslations = {
             "empty": string;
             "recent": string;
             "manual": string;
-        };
-        "publishBase": {
-            "title": string;
-            "description": string;
-            "infoTitle": string;
-            "form": {
-                "title": string;
-                "description": string;
-                "security": string;
-                "advanced": string;
-                "publishNode": string;
-                "includeData": string;
-                "defaultActiveNode": string;
-                "descriptionPlaceholder": string;
-                "titlePlaceholder": string;
-                "toBeFilledTitle": string;
-                "toBeFilledDescription": string;
-            };
-            "publishToCommunity": string;
-            "publish": string;
-            "publishSuccess": string;
-            "previewTips": string;
-            "update": string;
-            "unPublish": string;
-            "unPublishSuccess": string;
-            "unPublishConfirmTitle": string;
-            "unPublishConfirmDescription": string;
-            "uploadCover": string;
-            "changeCover": string;
-            "uploading": string;
-            "uploadSuccess": string;
-            "uploadFailed": string;
-            "invalidImageType": string;
-            "tips": {
-                "publishValidation": string;
-                "atLeastOneNode": string;
-            };
-            "urlCopied": string;
-            "urlCopiedForDiscord": string;
-            "featuredLabel": string;
-            "unfeaturedLabel": string;
-            "featuredTip": string;
-            "unfeaturedTip": string;
-            "publishSuccessDescription": string;
-            "shareWith": string;
-            "unpublishedApps": {
-                "title": string;
-                "description": string;
-                "publishAll": string;
-                "publish": string;
-                "published": string;
-                "publishing": string;
-                "publishFailed": string;
-                "publishFailedTip1": string;
-                "publishFailedTip2": string;
-                "notPublished": string;
-                "ignoreAndContinue": string;
-                "goToFix": string;
-                "redeploy": string;
-                "unnamedApp": string;
-            };
         };
         "airtableImport": {
             "title": string;

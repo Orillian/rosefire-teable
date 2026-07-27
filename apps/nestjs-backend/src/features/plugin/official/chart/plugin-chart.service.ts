@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import type { IFilter, ISortItem, FieldType, CellValueType } from '@teable/core';
+import type { IFilter, ISortItem, ILinkFieldOptions, FieldType, CellValueType } from '@teable/core';
 import {
   HttpErrorCode,
   CellFormat,
@@ -10,6 +10,7 @@ import { PrismaService } from '@teable/db-main-prisma';
 import type {
   ISqlQuery,
   ITableQuery,
+  ITableQueryJoin,
   IBaseQuery,
   IChartStorage,
   IBaseQueryVoV2,
@@ -27,7 +28,12 @@ import { DashboardService } from '../../../dashboard/dashboard.service';
 import { FieldService } from '../../../field/field.service';
 import { PluginPanelService } from '../../../plugin-panel/plugin-panel.service';
 import { RecordService } from '../../../record/record.service';
+import { isSupportedTableJoin } from './join-support';
 import { buildRollupExpression } from './rollup-expression';
+
+const JOINED_TABLE_ALIAS = 'joined_table';
+const MAIN_TABLE_ALIAS = 'filtered_records';
+const MAIN_RAW_TABLE_ALIAS = 'main_raw';
 
 interface IChartField {
   id: string;
@@ -36,6 +42,11 @@ interface IChartField {
   type: string;
   cellValueType: string;
   isMultipleCellValue?: boolean | null;
+}
+
+interface IQualifiedChartField extends IChartField {
+  /** dbFieldName qualified with the alias it is actually selected from - use this in SQL. */
+  qualifiedDbFieldName: string;
 }
 
 @Injectable()
@@ -149,18 +160,18 @@ export class PluginChartService {
 
   private applyGroupByAndSeries(
     queryBuilder: Knex.QueryBuilder,
-    fields: Array<IChartField>,
+    fields: Array<IQualifiedChartField>,
     xAxis: string | string[] | undefined,
     groupBy: string | undefined,
     seriesArray: string | Array<{ column: string; rollup: FieldRollup }> | undefined
   ): void {
     if (xAxis && typeof xAxis === 'string') {
-      const dbFieldName = fields.find((field) => field.id === xAxis)?.dbFieldName;
+      const dbFieldName = fields.find((field) => field.id === xAxis)?.qualifiedDbFieldName;
       queryBuilder.select({ [xAxis]: dbFieldName });
       queryBuilder.groupBy(xAxis);
     }
     if (groupBy) {
-      const dbFieldName = fields.find((field) => field.id === groupBy)?.dbFieldName;
+      const dbFieldName = fields.find((field) => field.id === groupBy)?.qualifiedDbFieldName;
       queryBuilder.select({ [groupBy]: dbFieldName });
       queryBuilder.groupBy(groupBy);
     }
@@ -170,10 +181,6 @@ export class PluginChartService {
         if (!field || !item?.rollup) {
           return;
         }
-        // Validate the requested rollup is actually valid for this field's type before building
-        // any SQL for it - see getValidFieldRollup for the full per-type table (ported from
-        // legacy's getValidStatisticFunc) and its one documented gap (Unique/PercentUnique on
-        // multi-value fields).
         const validRollups = getValidFieldRollup({
           type: field.type as FieldType,
           cellValueType: field.cellValueType as CellValueType,
@@ -186,7 +193,7 @@ export class PluginChartService {
         }
         const expression = buildRollupExpression(
           this.knex,
-          field.dbFieldName,
+          field.qualifiedDbFieldName,
           field.dbFieldName,
           item.rollup
         );
@@ -203,8 +210,8 @@ export class PluginChartService {
   private getYColumnForOrderBy(
     groupBy: string | undefined,
     seriesArray: string | Array<{ column: string; rollup: FieldRollup }> | undefined,
-    fields: Array<IChartField>,
-    fieldsMap: Record<string, IChartField>
+    fields: Array<IQualifiedChartField>,
+    fieldsMap: Record<string, IQualifiedChartField>
   ): string {
     if (groupBy) {
       const groupByField = fields.find((field) => field.id === groupBy);
@@ -234,8 +241,8 @@ export class PluginChartService {
     xAxis: string | string[] | undefined,
     groupBy: string | undefined,
     seriesArray: string | Array<{ column: string; rollup: FieldRollup }> | undefined,
-    fields: Array<IChartField>,
-    fieldsMap: Record<string, IChartField>
+    fields: Array<IQualifiedChartField>,
+    fieldsMap: Record<string, IQualifiedChartField>
   ): void {
     if (!orderBy) {
       return;
@@ -244,7 +251,7 @@ export class PluginChartService {
     const { on, order } = orderBy;
     const xAxisField =
       xAxis && typeof xAxis === 'string' ? fields.find((field) => field.id === xAxis) : undefined;
-    const dbFieldName = xAxisField?.dbFieldName;
+    const dbFieldName = xAxisField?.qualifiedDbFieldName;
 
     if (!dbFieldName) {
       throw new NotFoundException('X-axis field not found');
@@ -252,6 +259,71 @@ export class PluginChartService {
 
     const yColumn = this.getYColumnForOrderBy(groupBy, seriesArray, fields, fieldsMap);
     queryBuilder.orderBy(on === 'xAxis' ? dbFieldName : yColumn, order);
+  }
+
+  /**
+   * Resolves `query.join` into the info needed to add a single `LEFT JOIN` onto the linked
+   * table, plus its field list. Only the single-hop, FK-on-this-table case is supported - see
+   * `isSupportedTableJoin` and the docs on `ITableQueryJoin`.
+   */
+  private async resolveJoin(
+    tableId: string,
+    dbTableName: string,
+    join: ITableQueryJoin | null | undefined
+  ): Promise<{
+    foreignDbTableName: string;
+    foreignKeyName: string;
+    foreignFields: IChartField[];
+  } | null> {
+    if (!join?.linkFieldId) {
+      return null;
+    }
+
+    const linkField = await this.prismaService.txClient().field.findFirst({
+      where: { id: join.linkFieldId, tableId, type: 'link', deletedTime: null },
+      select: { id: true, options: true },
+    });
+
+    if (!linkField?.options) {
+      throw new NotFoundException('Join link field not found');
+    }
+
+    const options = JSON.parse(linkField.options) as ILinkFieldOptions;
+
+    if (!isSupportedTableJoin(options, dbTableName)) {
+      throw new BadRequestException(
+        'Chart v2 joins currently support only many-to-one / one-to-one links whose foreign key ' +
+          'is stored on the charted table (e.g. "many Orders link to one Profile"). Many-to-many ' +
+          'links and links whose key is hosted on the linked table are not supported yet.'
+      );
+    }
+
+    const foreignTableMeta = await this.prismaService.txClient().tableMeta.findUnique({
+      where: { id: options.foreignTableId },
+      select: { dbTableName: true },
+    });
+
+    if (!foreignTableMeta) {
+      throw new NotFoundException('Linked table not found');
+    }
+
+    const foreignFields = await this.prismaService.txClient().field.findMany({
+      where: { tableId: options.foreignTableId, deletedTime: null },
+      select: {
+        id: true,
+        dbFieldName: true,
+        name: true,
+        type: true,
+        cellValueType: true,
+        isMultipleCellValue: true,
+      },
+    });
+
+    return {
+      foreignDbTableName: foreignTableMeta.dbTableName,
+      foreignKeyName: options.foreignKeyName,
+      foreignFields,
+    };
   }
 
   private convertQueryResult(
@@ -288,7 +360,8 @@ export class PluginChartService {
 
   async getTableResult(storage: IChartStorage) {
     const { query } = storage;
-    const { tableId, groupBy, seriesArray, xAxis, viewId, filter, orderBy } = query as ITableQuery;
+    const { tableId, groupBy, seriesArray, xAxis, viewId, filter, orderBy, join } =
+      query as ITableQuery;
 
     if (Array.isArray(xAxis) && xAxis.length === 0) {
       return {
@@ -297,7 +370,7 @@ export class PluginChartService {
       };
     }
 
-    const fields: IChartField[] = await this.prismaService.txClient().field.findMany({
+    const ownFields: IChartField[] = await this.prismaService.txClient().field.findMany({
       where: {
         tableId,
         deletedTime: null,
@@ -311,8 +384,6 @@ export class PluginChartService {
         isMultipleCellValue: true,
       },
     });
-
-    const fieldsMap = keyBy(fields, 'id');
 
     const viewQuery = await this.buildViewQuery(viewId, filter);
 
@@ -335,7 +406,41 @@ export class PluginChartService {
       throw new NotFoundException('Table not found');
     }
 
-    const queryBuilder = this.knex.from(mainQueryBuilder.as('filtered_records'));
+    const joinInfo = await this.resolveJoin(tableId, dbTableName, join);
+
+    const fields: IQualifiedChartField[] = [
+      ...ownFields.map((field) => ({
+        ...field,
+        qualifiedDbFieldName: `${MAIN_TABLE_ALIAS}.${field.dbFieldName}`,
+      })),
+      ...(joinInfo?.foreignFields ?? []).map((field) => ({
+        ...field,
+        qualifiedDbFieldName: `${JOINED_TABLE_ALIAS}.${field.dbFieldName}`,
+      })),
+    ];
+
+    const fieldsMap = keyBy(fields, 'id');
+
+    let queryBuilder = this.knex.from(mainQueryBuilder.as(MAIN_TABLE_ALIAS));
+
+    if (joinInfo) {
+      // `filtered_records` is the *field-visitor-projected* view of the table (it represents Link
+      // fields via their computed/CTE-joined shape, not necessarily the bare FK column), so the
+      // join can't safely assume `joinInfo.foreignKeyName` is one of its selected columns. Hop
+      // through the table's own raw physical row (keyed by the always-selected `__id`) instead,
+      // where the FK column is guaranteed to exist as an ordinary column.
+      queryBuilder = queryBuilder
+        .leftJoin(`${dbTableName} as ${MAIN_RAW_TABLE_ALIAS}`, function () {
+          this.on(`${MAIN_TABLE_ALIAS}.__id`, '=', `${MAIN_RAW_TABLE_ALIAS}.__id`);
+        })
+        .leftJoin(`${joinInfo.foreignDbTableName} as ${JOINED_TABLE_ALIAS}`, function () {
+          this.on(
+            `${MAIN_RAW_TABLE_ALIAS}.${joinInfo.foreignKeyName}`,
+            '=',
+            `${JOINED_TABLE_ALIAS}.__id`
+          );
+        });
+    }
 
     this.applyGroupByAndSeries(
       queryBuilder,

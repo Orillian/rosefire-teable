@@ -67,6 +67,28 @@ export enum FieldRollup {
   TotalAttachmentSize = 'totalAttachmentSize',
 }
 
+/**
+ * Cross-table join for chart v2 - the "Orders chart, grouped by the linked Profile's Province"
+ * case. `linkFieldId` must name a `Link` field that lives on `ITableQuery.tableId`; xAxis/groupBy/
+ * series `column` references may then point at a field id belonging to that link's foreign table as
+ * well as the base table's own fields (field ids are globally unique in Teable, so no extra
+ * qualification is needed to tell them apart).
+ *
+ * Scope, ported from legacy's generic `IBaseQuery.join` (arbitrary field-pair equi-join across any
+ * two tables, `packages/openapi/src/base/query-data/types.ts`): only the single-hop, many-to-one /
+ * one-to-one case where the foreign key column lives on the base table (`fkHostTableName` on the
+ * charted table itself) is supported - exactly the shape of "many Orders link to one Profile".
+ * NOT supported (server rejects with a 400 documenting this):
+ * - many-to-many links (foreign key hosted on a separate junction table)
+ * - one-to-many links where the foreign key is hosted on the *linked* table instead
+ * - traversing more than one link (no nested joins)
+ * These are real capabilities of legacy's generic join DSL that are not yet ported; see
+ * chart-improvement-plan.md for the parity discussion.
+ */
+export interface ITableQueryJoin {
+  linkFieldId: string;
+}
+
 export interface ITableQuery {
   tableId: string;
   viewId: string;
@@ -78,6 +100,7 @@ export interface ITableQuery {
   groupBy: string | null;
   xAxis: string;
   seriesArray: string | { column: string; rollup: FieldRollup }[];
+  join?: ITableQueryJoin | null;
 }
 
 interface IBaseAppearance {
