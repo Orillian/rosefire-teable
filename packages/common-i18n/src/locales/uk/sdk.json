@@ -795,52 +795,6 @@
     "copyTip": "Натисніть, щоб скопіювати",
     "copied": "Скопійовано"
   },
-  "baseQuery": {
-    "add": "Додати",
-    "error": {
-      "invalidCol": "Неправильний стовпець, виберіть знову",
-      "invalidCols": "Неправильні стовпці: {{colNames}}",
-      "invalidTable": "Неправильна таблиця, виберіть знову",
-      "requiredSelect": "Необхідно вибрати один"
-    },
-    "from": {
-      "title": "Звідки",
-      "fromTable": "Виберіть таблицю",
-      "fromQuery": "З запиту"
-    },
-    "select": {
-      "title": "Вибрати"
-    },
-    "where": {
-      "title": "Де"
-    },
-    "groupBy": {
-      "title": "Групувати"
-    },
-    "orderBy": {
-      "title": "Сортувати за",
-      "asc": "За зростанням",
-      "desc": "За спаданням"
-    },
-    "limit": {
-      "title": "Обмеження"
-    },
-    "offset": {
-      "title": "Зміщення"
-    },
-    "join": {
-      "title": "Об'єднання",
-      "joinType": "Тип об'єднання",
-      "leftJoin": "Ліве об'єднання",
-      "rightJoin": "Праве об'єднання",
-      "innerJoin": "Внутрішнє об'єднання",
-      "fullJoin": "Повне об'єднання",
-      "data": "Звідки"
-    },
-    "aggregation": {
-      "title": "Агрегація"
-    }
-  },
   "comment": {
     "title": "Коментар",
     "placeholder": "Залишіть коментар...",
@@ -1134,19 +1088,11 @@
       "notFound": "Контекстне меню плагіна не знайдено",
       "anchorNotFound": "Якір контекстного меню плагіна не знайдено"
     },
-    "pluginChart": {
-      "queryNotFound": "Запит діаграми плагіна не знайдено"
-    },
     "dbConnection": {
       "unsupportedDriver": "Непідтримуваний драйвер бази даних: {{driver}}",
       "onlyOwnerCanRemove": "Тільки власник бази може видалити підключення до бази даних для бази {{baseId}}",
       "onlyOwnerCanCreate": "Тільки власник бази може створити підключення до бази даних для бази {{baseId}}",
       "roleNotExist": "Роль бази даних {{role}} не існує"
-    },
-    "baseQuery": {
-      "queryFailed": "Запит не виконано: {{message}}",
-      "invalidJoinType": "Недопустимий тип об'єднання: {{joinType}}",
-      "tableNotFound": "Таблиця {{tableId}} не знайдена в базі {{baseId}}"
     },
     "baseSqlExecutor": {
       "notAllowedToExecuteSqlWithKeyword": "Не дозволено виконувати SQL з ключовим словом {{keyword}}",

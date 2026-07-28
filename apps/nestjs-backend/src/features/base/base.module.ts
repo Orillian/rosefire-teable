@@ -29,7 +29,6 @@ import { BaseImportAttachmentsCsvModule } from './base-import-processor/base-imp
 import { BaseImportAttachmentsModule } from './base-import-processor/base-import-attachments.module';
 import { BaseImportCsvModule } from './base-import-processor/base-import-csv.module';
 import { BaseImportService } from './base-import.service';
-import { BaseQueryService } from './base-query/base-query.service';
 import { BaseController } from './base.controller';
 import { BaseService } from './base.service';
 import { DbConnectionService } from './db-connection.service';
@@ -70,7 +69,6 @@ import { DbConnectionService } from './db-connection.service';
     DbConnectionService,
     BaseDuplicateService,
     BaseDuplicateV2Service,
-    BaseQueryService,
     TableDuplicateService,
   ],
   exports: [
@@ -82,7 +80,6 @@ import { DbConnectionService } from './db-connection.service';
     BaseExportService,
     BaseExportV2Service,
     BaseImportService,
-    BaseQueryService,
   ],
 })
 export class BaseModule {}

@@ -259,17 +259,17 @@ describe('OpenAPI BaseController for base import (e2e)', () => {
 
       await installPlugin(sourceBaseId, dashboard.id, {
         name: 'plugin1',
-        pluginId: 'plgchart',
+        pluginId: 'plgchartV2',
       });
 
       await installPlugin(sourceBaseId, dashboard.id, {
         name: 'plugin2',
-        pluginId: 'plgchart',
+        pluginId: 'plgchartV2',
       });
 
       await installPlugin(sourceBaseId, dashboard2.id, {
         name: 'plugin2_1',
-        pluginId: 'plgchart',
+        pluginId: 'plgchartV2',
       });
 
       // pluginViews init
@@ -282,17 +282,17 @@ describe('OpenAPI BaseController for base import (e2e)', () => {
 
       await installPluginPanel(table.id, panel.id, {
         name: 'plugin1',
-        pluginId: 'plgchart',
+        pluginId: 'plgchartV2',
       });
 
       await installPluginPanel(table.id, panel.id, {
         name: 'plugin2',
-        pluginId: 'plgchart',
+        pluginId: 'plgchartV2',
       });
 
       await installPluginPanel(table.id, panel2.id, {
         name: 'plugin2_1',
-        pluginId: 'plgchart',
+        pluginId: 'plgchartV2',
       });
 
       table.fields = (await getFields(table.id)).data;
@@ -1515,7 +1515,7 @@ describe('OpenAPI BaseController for base import (e2e)', () => {
       const dashboard = (await createDashboard(sourceBase.id, { name: 'dashboard' })).data;
       await installPlugin(sourceBase.id, dashboard.id, {
         name: 'dashboard plugin',
-        pluginId: 'plgchart',
+        pluginId: 'plgchartV2',
       });
 
       const sourcePluginViews = await Promise.all([
@@ -1526,7 +1526,7 @@ describe('OpenAPI BaseController for base import (e2e)', () => {
       const panel = (await createPluginPanel(mainTable.id, { name: 'panel1' })).data;
       await installPluginPanel(mainTable.id, panel.id, {
         name: 'panel plugin',
-        pluginId: 'plgchart',
+        pluginId: 'plgchartV2',
       });
 
       const { result } = await importExportedBaseViaSse(sourceBase.id);

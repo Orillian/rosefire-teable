@@ -11,7 +11,6 @@ export * from './duplicate';
 export * from './duplicate-check';
 export * from './create-from-template';
 export * from './get-permission';
-export * from './query-data';
 export * from './invitation-create-link';
 export * from './invitation-delete-link';
 export * from './invitation-get-link-list';

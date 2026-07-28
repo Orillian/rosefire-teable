@@ -1,8 +1,8 @@
 import type { IParentBridgeMethods, IUIConfig } from '@teable/sdk/plugin-bridge';
 import { useEffect, useRef, useState } from 'react';
-import { EnvProvider } from '../../chart/components/EnvProvider';
-import type { IPageParams } from '../../chart/types';
 import { PluginInstallContext } from '../hooks/context';
+import { EnvProvider } from '../hooks/EnvProvider';
+import type { IPageParams } from '../hooks/types';
 import { ChartConfig } from './ChartConfig';
 import { ChartPreview } from './ChartPreview';
 

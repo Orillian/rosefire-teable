@@ -54,7 +54,7 @@ import {
 import type { AxiosInstance } from 'axios';
 import { Events } from '../src/event-emitter/events';
 import type { SpaceDeleteEvent, SpaceUpdateEvent } from '../src/event-emitter/events';
-import { chartConfig } from '../src/features/plugin/official/config/chart';
+import { chart2Config } from '../src/features/plugin/official/config/chart2';
 import { createNewUserAxios } from './utils/axios-instance/new-user';
 import { getError } from './utils/get-error';
 import { createSpace, initApp, permanentDeleteSpace } from './utils/init-app';
@@ -144,7 +144,7 @@ describe('OpenAPI SpaceController (e2e)', () => {
     const base = await createBase({ spaceId, name: 'new base' });
     await emailBaseInvitation({
       baseId: base.data.id,
-      emailBaseInvitationRo: { emails: [getPluginEmail(chartConfig.id)], role: Role.Creator },
+      emailBaseInvitationRo: { emails: [getPluginEmail(chart2Config.id)], role: Role.Creator },
     });
     const { collaborators } = (
       await apiGetSpaceCollaboratorList(spaceId, { includeSystem: true, includeBase: true })

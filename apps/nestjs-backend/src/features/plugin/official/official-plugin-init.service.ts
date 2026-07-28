@@ -13,7 +13,6 @@ import StorageAdapter from '../../attachments/plugins/adapter';
 import { InjectStorageAdapter } from '../../attachments/plugins/storage';
 import { UserService } from '../../user/user.service';
 import { generateSecret } from '../utils';
-import { chartConfig } from './config/chart';
 import { chart2Config } from './config/chart2';
 import { sheetFormConfig } from './config/sheet-form-view';
 import type { IOfficialPluginConfig } from './config/types';
@@ -52,11 +51,6 @@ export class OfficialPluginInitService implements OnModuleInit {
 
   async onModuleInit() {
     const officialPlugins = [
-      {
-        ...chartConfig,
-        secret: this.configService.get<string>('PLUGIN_CHART_SECRET') || this.baseConfig.secretKey,
-        url: `/plugin/chart`,
-      },
       {
         ...chart2Config,
         secret: this.configService.get<string>('PLUGIN_CHART2_SECRET') || this.baseConfig.secretKey,

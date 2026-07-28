@@ -7,7 +7,6 @@ const backendRoot = join(__dirname, '../..');
 const tableScopedDataPlaneFiles = [
   'src/event-emitter/listeners/record-history.listener.ts',
   'src/features/aggregation/aggregation.service.ts',
-  'src/features/base/base-query/base-query.service.ts',
   'src/features/base/base.service.ts',
   'src/features/base/base-export.service.ts',
   'src/features/base/db-connection.service.ts',

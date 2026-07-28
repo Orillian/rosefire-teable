@@ -811,52 +811,6 @@
     "copyTip": "点击复制",
     "copied": "已复制"
   },
-  "baseQuery": {
-    "add": "添加",
-    "error": {
-      "invalidCol": "无效的列，请重新选择",
-      "invalidCols": "无效的列：{{colNames}}",
-      "invalidTable": "无效的表格，请重新选择",
-      "requiredSelect": "必须选择一个"
-    },
-    "from": {
-      "title": "来源",
-      "fromTable": "选择表格",
-      "fromQuery": "从查询中"
-    },
-    "select": {
-      "title": "选择"
-    },
-    "where": {
-      "title": "筛选"
-    },
-    "groupBy": {
-      "title": "分组"
-    },
-    "orderBy": {
-      "title": "排序",
-      "asc": "升序",
-      "desc": "降序"
-    },
-    "limit": {
-      "title": "查询数量"
-    },
-    "offset": {
-      "title": "跳过"
-    },
-    "join": {
-      "title": "连接",
-      "joinType": "连接类型",
-      "leftJoin": "左连接",
-      "rightJoin": "右连接",
-      "innerJoin": "内连接",
-      "fullJoin": "全连接",
-      "data": "数据来源"
-    },
-    "aggregation": {
-      "title": "聚合"
-    }
-  },
   "comment": {
     "title": "评论",
     "placeholder": "添加评论...",
@@ -1150,19 +1104,11 @@
       "notFound": "未找到插件右键菜单",
       "anchorNotFound": "未找到插件右键菜单锚点"
     },
-    "pluginChart": {
-      "queryNotFound": "未找到插件图表查询"
-    },
     "dbConnection": {
       "unsupportedDriver": "不支持的数据库驱动：{{driver}}",
       "onlyOwnerCanRemove": "只有数据库所有者可以移除数据库 {{baseId}} 的连接",
       "onlyOwnerCanCreate": "只有数据库所有者可以创建数据库 {{baseId}} 的连接",
       "roleNotExist": "数据库角色 {{role}} 不存在"
-    },
-    "baseQuery": {
-      "queryFailed": "查询失败：{{message}}",
-      "invalidJoinType": "无效的连接类型：{{joinType}}",
-      "tableNotFound": "在数据库 {{baseId}} 中未找到表 {{tableId}}"
     },
     "baseSqlExecutor": {
       "notAllowedToExecuteSqlWithKeyword": "不允许执行包含关键字 {{keyword}} 的 SQL",

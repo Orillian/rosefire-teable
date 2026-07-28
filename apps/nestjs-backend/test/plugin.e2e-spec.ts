@@ -116,7 +116,7 @@ describe('PluginController', () => {
   });
 
   it('does not let the regular plugin routes mutate a system plugin', async () => {
-    const systemPluginId = 'plgchart';
+    const systemPluginId = 'plgchartV2';
     const statusBefore = (await getPlugin(systemPluginId)).data.status;
 
     const regenerateError = await getError(() =>

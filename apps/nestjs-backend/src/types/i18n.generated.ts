@@ -92,23 +92,6 @@ export type I18nTranslations = {
         };
     };
     "chart": {
-        "notBaseId": string;
-        "notPositionId": string;
-        "notPluginInstallId": string;
-        "initBridge": string;
-        "actions": {
-            "cancel": string;
-            "save": string;
-        };
-        "queryTitle": string;
-        "notSupport": string;
-        "chart": {
-            "bar": string;
-            "line": string;
-            "pie": string;
-            "area": string;
-            "table": string;
-        };
         "chartV2": {
             "dataConfig": string;
             "chartAppearance": string;
@@ -206,79 +189,6 @@ export type I18nTranslations = {
                 };
             };
         };
-        "form": {
-            "chartType": {
-                "placeholder": string;
-                "label": string;
-            };
-            "pie": {
-                "dimension": string;
-                "measure": string;
-                "showTotal": string;
-            };
-            "combo": {
-                "xAxis": {
-                    "label": string;
-                };
-                "yAxis": {
-                    "label": string;
-                    "position": string;
-                };
-                "xDisplay": {
-                    "label": string;
-                };
-                "yDisplay": {
-                    "label": string;
-                };
-                "addXAxis": string;
-                "addYAxis": string;
-                "stack": string;
-                "position": {
-                    "auto": string;
-                    "left": string;
-                    "right": string;
-                };
-                "goalLine": {
-                    "label": string;
-                };
-                "range": {
-                    "label": string;
-                    "min": string;
-                    "max": string;
-                };
-                "lineStyle": {
-                    "label": string;
-                    "normal": string;
-                    "linear": string;
-                    "step": string;
-                };
-                "displayType": string;
-            };
-            "typeError": string;
-            "updateQuery": string;
-            "queryError": string;
-            "querySuccess": string;
-            "decimal": string;
-            "prefix": string;
-            "suffix": string;
-            "showLabel": string;
-            "showLegend": string;
-            "value": string;
-            "label": string;
-            "padding": {
-                "label": string;
-                "top": string;
-                "right": string;
-                "bottom": string;
-                "left": string;
-            };
-            "tableConfig": string;
-            "width": string;
-        };
-        "reloadQuery": string;
-        "noStorage": string;
-        "noPermission": string;
-        "goConfig": string;
     };
     "common": {
         "actions": {
@@ -2907,52 +2817,6 @@ export type I18nTranslations = {
             "copyTip": string;
             "copied": string;
         };
-        "baseQuery": {
-            "add": string;
-            "error": {
-                "invalidCol": string;
-                "invalidCols": string;
-                "invalidTable": string;
-                "requiredSelect": string;
-            };
-            "from": {
-                "title": string;
-                "fromTable": string;
-                "fromQuery": string;
-            };
-            "select": {
-                "title": string;
-            };
-            "where": {
-                "title": string;
-            };
-            "groupBy": {
-                "title": string;
-            };
-            "orderBy": {
-                "title": string;
-                "asc": string;
-                "desc": string;
-            };
-            "limit": {
-                "title": string;
-            };
-            "offset": {
-                "title": string;
-            };
-            "join": {
-                "title": string;
-                "joinType": string;
-                "leftJoin": string;
-                "rightJoin": string;
-                "innerJoin": string;
-                "fullJoin": string;
-                "data": string;
-            };
-            "aggregation": {
-                "title": string;
-            };
-        };
         "comment": {
             "title": string;
             "placeholder": string;
@@ -3246,19 +3110,11 @@ export type I18nTranslations = {
                 "notFound": string;
                 "anchorNotFound": string;
             };
-            "pluginChart": {
-                "queryNotFound": string;
-            };
             "dbConnection": {
                 "unsupportedDriver": string;
                 "onlyOwnerCanRemove": string;
                 "onlyOwnerCanCreate": string;
                 "roleNotExist": string;
-            };
-            "baseQuery": {
-                "queryFailed": string;
-                "invalidJoinType": string;
-                "tableNotFound": string;
             };
             "baseSqlExecutor": {
                 "notAllowedToExecuteSqlWithKeyword": string;

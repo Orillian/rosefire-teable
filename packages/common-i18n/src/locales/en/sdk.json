@@ -819,52 +819,6 @@
     "copyTip": "Click to copy",
     "copied": "Copied"
   },
-  "baseQuery": {
-    "add": "Add",
-    "error": {
-      "invalidCol": "Invalid column, please reselect",
-      "invalidCols": "Invalid columns: {{colNames}}",
-      "invalidTable": "Invalid table, please reselect",
-      "requiredSelect": "You must select one"
-    },
-    "from": {
-      "title": "From",
-      "fromTable": "Select table",
-      "fromQuery": "From query"
-    },
-    "select": {
-      "title": "Select"
-    },
-    "where": {
-      "title": "Where"
-    },
-    "groupBy": {
-      "title": "Group by"
-    },
-    "orderBy": {
-      "title": "Order by",
-      "asc": "Ascending",
-      "desc": "Descending"
-    },
-    "limit": {
-      "title": "Limit"
-    },
-    "offset": {
-      "title": "Offset"
-    },
-    "join": {
-      "title": "Join",
-      "joinType": "Join type",
-      "leftJoin": "Left join",
-      "rightJoin": "Right join",
-      "innerJoin": "Inner join",
-      "fullJoin": "Full join",
-      "data": "From"
-    },
-    "aggregation": {
-      "title": "Aggregation"
-    }
-  },
   "comment": {
     "title": "Comment",
     "placeholder": "Leave a comment...",
@@ -1158,19 +1112,11 @@
       "notFound": "Plugin context menu not found",
       "anchorNotFound": "Plugin context menu anchor not found"
     },
-    "pluginChart": {
-      "queryNotFound": "Plugin chart query not found"
-    },
     "dbConnection": {
       "unsupportedDriver": "Unsupported database driver: {{driver}}",
       "onlyOwnerCanRemove": "Only the base owner can remove database connection for base {{baseId}}",
       "onlyOwnerCanCreate": "Only the base owner can create database connection for base {{baseId}}",
       "roleNotExist": "Database role {{role}} does not exist"
-    },
-    "baseQuery": {
-      "queryFailed": "Query failed: {{message}}",
-      "invalidJoinType": "Invalid join type: {{joinType}}",
-      "tableNotFound": "Table {{tableId}} not found in base {{baseId}}"
     },
     "baseSqlExecutor": {
       "notAllowedToExecuteSqlWithKeyword": "Not allowed to execute sql with keyword {{keyword}}",

@@ -31,8 +31,6 @@ import {
 } from '../features/record/query-builder/sql-conversion.visitor';
 import type { IAggregationQueryInterface } from './aggregation-query/aggregation-query.interface';
 import { AggregationQueryPostgres } from './aggregation-query/postgres/aggregation-query.postgres';
-import type { BaseQueryAbstract } from './base-query/abstract';
-import { BaseQueryPostgres } from './base-query/base-query.postgres';
 import type { ICreateDatabaseColumnContext } from './create-database-column-query/create-database-column-field-visitor.interface';
 import { CreatePostgresDatabaseColumnFieldVisitor } from './create-database-column-query/create-database-column-field-visitor.postgres';
 import type {
@@ -680,10 +678,6 @@ WHERE tc.constraint_type = 'FOREIGN KEY'
         this.knex.raw(`jsonb_extract_path_text("${dbFieldName}", 'id') AS user_id`)
       );
     }
-  }
-
-  baseQuery(): BaseQueryAbstract {
-    return new BaseQueryPostgres(this.knex);
   }
 
   integrityQuery(): IntegrityQueryAbstract {

@@ -16,7 +16,6 @@ export * from './create-record';
 export * from './ReadOnlyTip';
 export * from './collaborator';
 export * from './color';
-export * from './base-query';
 export * from './filter';
 export * from './table';
 export * from './view';

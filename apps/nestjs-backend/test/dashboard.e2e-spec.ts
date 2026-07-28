@@ -153,7 +153,7 @@ describe('DashboardController', () => {
       const installPluginRes = (
         await installPlugin(baseId, sourceDashboardId, {
           name: 'source-plugin-item',
-          pluginId: 'plgchart',
+          pluginId: 'plgchartV2',
         })
       ).data;
       await updateDashboardPluginStorage(
@@ -224,7 +224,7 @@ describe('DashboardController', () => {
       const installPluginRes = (
         await installPlugin(baseId, sourceDashboardId, {
           name: 'source-plugin-item',
-          pluginId: 'plgchart',
+          pluginId: 'plgchartV2',
         })
       ).data;
       await updateDashboardPluginStorage(

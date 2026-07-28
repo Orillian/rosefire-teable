@@ -1,17 +1,11 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import type { IFilter, ISortItem, ILinkFieldOptions, FieldType, CellValueType } from '@teable/core';
-import {
-  HttpErrorCode,
-  CellFormat,
-  mergeWithDefaultFilter,
-  mergeWithDefaultSort,
-} from '@teable/core';
+import { mergeWithDefaultFilter, mergeWithDefaultSort } from '@teable/core';
 import { PrismaService } from '@teable/db-main-prisma';
 import type {
   ISqlQuery,
   ITableQuery,
   ITableQueryJoin,
-  IBaseQuery,
   IChartStorage,
   IBaseQueryVoV2,
   ITestSqlRo,
@@ -21,8 +15,6 @@ import { DataSource, AGGREGATE_COUNT_KEY, getValidFieldRollup } from '@teable/op
 import { Knex } from 'knex';
 import { keyBy } from 'lodash';
 import { InjectModel } from 'nest-knexjs';
-import { CustomHttpException } from '../../../../custom.exception';
-import { BaseQueryService } from '../../../base/base-query/base-query.service';
 import { BaseSqlExecutorService } from '../../../base-sql-executor/base-sql-executor.service';
 import { DashboardService } from '../../../dashboard/dashboard.service';
 import { FieldService } from '../../../field/field.service';
@@ -52,7 +44,6 @@ interface IQualifiedChartField extends IChartField {
 @Injectable()
 export class PluginChartService {
   constructor(
-    private readonly baseQueryService: BaseQueryService,
     private readonly dashboardService: DashboardService,
     private readonly pluginPanelService: PluginPanelService,
     private readonly recordService: RecordService,
@@ -61,32 +52,6 @@ export class PluginChartService {
     private readonly baseSqlExecutorService: BaseSqlExecutorService,
     @InjectModel('CUSTOM_KNEX') private readonly knex: Knex
   ) {}
-
-  async getDashboardPluginQuery(
-    pluginInstallId: string,
-    positionId: string,
-    baseId: string,
-    cellFormat: CellFormat = CellFormat.Text
-  ) {
-    const { storage } = await this.dashboardService.getPluginInstall(
-      baseId,
-      positionId,
-      pluginInstallId
-    );
-    const query = storage?.query as IBaseQuery;
-    if (!query) {
-      throw new CustomHttpException(
-        'Dashboard Plugin Storage Query not found',
-        HttpErrorCode.VALIDATION_ERROR,
-        {
-          localization: {
-            i18nKey: 'httpErrors.pluginChart.queryNotFound',
-          },
-        }
-      );
-    }
-    return this.baseQueryService.baseQuery(baseId, query, cellFormat);
-  }
 
   async getDashboardSqlResult(baseId: string, storage: { query: ISqlQuery }) {
     const sql = storage?.query?.sql;
@@ -563,32 +528,6 @@ export class PluginChartService {
     }
 
     return await this.getTableResult(storage as unknown as IChartStorage<ITableQuery>);
-  }
-
-  async getPluginPanelPluginQuery(
-    pluginInstallId: string,
-    positionId: string,
-    tableId: string,
-    cellFormat: CellFormat = CellFormat.Text
-  ) {
-    const { baseId, storage } = await this.pluginPanelService.getPluginPanelPlugin(
-      tableId,
-      positionId,
-      pluginInstallId
-    );
-    const query = storage?.query as IBaseQuery;
-    if (!query) {
-      throw new CustomHttpException(
-        'Plugin Panel Plugin Storage Query not found',
-        HttpErrorCode.VALIDATION_ERROR,
-        {
-          localization: {
-            i18nKey: 'httpErrors.pluginChart.queryNotFound',
-          },
-        }
-      );
-    }
-    return this.baseQueryService.baseQuery(baseId, query, cellFormat);
   }
 
   async getSchemaByBaseId(baseId: string) {

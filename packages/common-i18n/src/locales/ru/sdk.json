@@ -795,52 +795,6 @@
     "copyTip": "Нажмите, чтобы скопировать",
     "copied": "Скопировано"
   },
-  "baseQuery": {
-    "add": "Добавить",
-    "error": {
-      "invalidCol": "Неверный столбец, выберите снова",
-      "invalidCols": "Неверные столбцы: {{colNames}}",
-      "invalidTable": "Неверная таблица, выберите снова",
-      "requiredSelect": "Необходимо выбрать один"
-    },
-    "from": {
-      "title": "Откуда",
-      "fromTable": "Выберите таблицу",
-      "fromQuery": "Из запроса"
-    },
-    "select": {
-      "title": "Выбрать"
-    },
-    "where": {
-      "title": "Где"
-    },
-    "groupBy": {
-      "title": "Группировать по"
-    },
-    "orderBy": {
-      "title": "Сортировать по",
-      "asc": "По возрастанию",
-      "desc": "По убыванию"
-    },
-    "limit": {
-      "title": "Ограничение"
-    },
-    "offset": {
-      "title": "Смещение"
-    },
-    "join": {
-      "title": "Объединение",
-      "joinType": "Тип объединения",
-      "leftJoin": "Левое объединение",
-      "rightJoin": "Правое объединение",
-      "innerJoin": "Внутреннее объединение",
-      "fullJoin": "Полное объединение",
-      "data": "Откуда"
-    },
-    "aggregation": {
-      "title": "Агрегация"
-    }
-  },
   "comment": {
     "title": "Комментарий",
     "placeholder": "Оставьте комментарий...",
@@ -1134,19 +1088,11 @@
       "notFound": "Контекстное меню плагина не найдено",
       "anchorNotFound": "Якорь контекстного меню плагина не найден"
     },
-    "pluginChart": {
-      "queryNotFound": "Запрос диаграммы плагина не найден"
-    },
     "dbConnection": {
       "unsupportedDriver": "Неподдерживаемый драйвер базы данных: {{driver}}",
       "onlyOwnerCanRemove": "Только владелец базы может удалить подключение к базе данных для базы {{baseId}}",
       "onlyOwnerCanCreate": "Только владелец базы может создать подключение к базе данных для базы {{baseId}}",
       "roleNotExist": "Роль базы данных {{role}} не существует"
-    },
-    "baseQuery": {
-      "queryFailed": "Запрос не выполнен: {{message}}",
-      "invalidJoinType": "Недопустимый тип соединения: {{joinType}}",
-      "tableNotFound": "Таблица {{tableId}} не найдена в базе {{baseId}}"
     },
     "baseSqlExecutor": {
       "notAllowedToExecuteSqlWithKeyword": "Не разрешено выполнять SQL с ключевым словом {{keyword}}",

@@ -1273,13 +1273,13 @@ describe('OpenAPI Base Duplicate (e2e)', () => {
       const dashboard = (await createDashboard(base.id, { name: 'Dashboard 1' })).data;
       await installPlugin(base.id, dashboard.id, {
         name: 'dashboard plugin',
-        pluginId: 'plgchart',
+        pluginId: 'plgchartV2',
       });
 
       const panel = (await createPluginPanel(pluginTableNode.resourceId, { name: 'panel1' })).data;
       await installPluginPanel(pluginTableNode.resourceId, panel.id, {
         name: 'panel plugin',
-        pluginId: 'plgchart',
+        pluginId: 'plgchartV2',
       });
 
       const sheetView = (
@@ -1547,17 +1547,17 @@ describe('OpenAPI Base Duplicate (e2e)', () => {
 
       await installPlugin(base.id, dashboard.id, {
         name: 'plugin1',
-        pluginId: 'plgchart',
+        pluginId: 'plgchartV2',
       });
 
       await installPlugin(base.id, dashboard.id, {
         name: 'plugin2',
-        pluginId: 'plgchart',
+        pluginId: 'plgchartV2',
       });
 
       await installPlugin(base.id, dashboard2.id, {
         name: 'plugin2_1',
-        pluginId: 'plgchart',
+        pluginId: 'plgchartV2',
       });
 
       const dupResult = await duplicateBase({
@@ -1593,17 +1593,17 @@ describe('OpenAPI Base Duplicate (e2e)', () => {
 
       await installPluginPanel(pluginTable.id, panel.id, {
         name: 'plugin1',
-        pluginId: 'plgchart',
+        pluginId: 'plgchartV2',
       });
 
       await installPluginPanel(pluginTable.id, panel.id, {
         name: 'plugin2',
-        pluginId: 'plgchart',
+        pluginId: 'plgchartV2',
       });
 
       await installPluginPanel(pluginTable.id, panel2.id, {
         name: 'plugin2_1',
-        pluginId: 'plgchart',
+        pluginId: 'plgchartV2',
       });
 
       const dupResult = await duplicateBase({

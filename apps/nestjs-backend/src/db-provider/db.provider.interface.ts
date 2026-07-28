@@ -27,7 +27,6 @@ import type {
   ISelectQueryInterface,
 } from '../features/record/query-builder/sql-conversion.visitor';
 import type { IAggregationQueryInterface } from './aggregation-query/aggregation-query.interface';
-import type { BaseQueryAbstract } from './base-query/abstract';
 import type { DropColumnOperationType } from './drop-database-column-query/drop-database-column-field-visitor.interface';
 import type { DuplicateTableQueryAbstract } from './duplicate-table/abstract';
 import type { DuplicateAttachmentTableQueryAbstract } from './duplicate-table/duplicate-attachment-table-query.abstract';
@@ -244,8 +243,6 @@ export interface IDbProvider {
     dbFieldName: string,
     isMultipleCellValue?: boolean | null
   ): void;
-
-  baseQuery(): BaseQueryAbstract;
 
   integrityQuery(): IntegrityQueryAbstract;
 

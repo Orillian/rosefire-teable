@@ -795,52 +795,6 @@
     "copyTip": "Fai clic per copiare",
     "copied": "Copiato"
   },
-  "baseQuery": {
-    "add": "Add",
-    "error": {
-      "invalidCol": "Invalid column, please reselect",
-      "invalidCols": "Invalid columns: {{colNames}}",
-      "invalidTable": "Invalid table, please reselect",
-      "requiredSelect": "You must select one"
-    },
-    "from": {
-      "title": "From",
-      "fromTable": "Select Table",
-      "fromQuery": "From Query"
-    },
-    "select": {
-      "title": "Select"
-    },
-    "where": {
-      "title": "Where"
-    },
-    "groupBy": {
-      "title": "Group By"
-    },
-    "orderBy": {
-      "title": "Order By",
-      "asc": "Ascending",
-      "desc": "Descending"
-    },
-    "limit": {
-      "title": "Limit"
-    },
-    "offset": {
-      "title": "Offset"
-    },
-    "join": {
-      "title": "Join",
-      "joinType": "Join Type",
-      "leftJoin": "Left Join",
-      "rightJoin": "Right Join",
-      "innerJoin": "Inner Join",
-      "fullJoin": "Full Join",
-      "data": "From"
-    },
-    "aggregation": {
-      "title": "Aggregation"
-    }
-  },
   "comment": {
     "title": "Comment",
     "placeholder": "Leave a comment...",
@@ -1134,19 +1088,11 @@
       "notFound": "Menu contestuale del plugin non trovato",
       "anchorNotFound": "Ancoraggio del menu contestuale del plugin non trovato"
     },
-    "pluginChart": {
-      "queryNotFound": "Query del grafico del plugin non trovata"
-    },
     "dbConnection": {
       "unsupportedDriver": "Driver di database non supportato: {{driver}}",
       "onlyOwnerCanRemove": "Solo il proprietario della base può rimuovere la connessione al database per la base {{baseId}}",
       "onlyOwnerCanCreate": "Solo il proprietario della base può creare una connessione al database per la base {{baseId}}",
       "roleNotExist": "Il ruolo del database {{role}} non esiste"
-    },
-    "baseQuery": {
-      "queryFailed": "Query fallita: {{message}}",
-      "invalidJoinType": "Tipo di join non valido: {{joinType}}",
-      "tableNotFound": "Tabella {{tableId}} non trovata nella base {{baseId}}"
     },
     "baseSqlExecutor": {
       "notAllowedToExecuteSqlWithKeyword": "Non è consentito eseguire SQL con la parola chiave {{keyword}}",

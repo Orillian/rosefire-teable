@@ -5,7 +5,7 @@ import {
   PluginPosition,
 } from '@teable/openapi';
 import { useMemo } from 'react';
-import { useEnv } from '../../../chart/hooks/useEnv';
+import { useEnv } from '../../hooks/useEnv';
 
 export const useBaseQueryData = () => {
   const { baseId, positionId, positionType, pluginInstallId, tableId } = useEnv();

@@ -795,52 +795,6 @@
     "copyTip": "クリックしてコピー",
     "copied": "コピーしました"
   },
-  "baseQuery": {
-    "add": "追加",
-    "error": {
-      "invalidCol": "無効な列です。再度選択してください",
-      "invalidCols": "無効な列: {{colNames}}",
-      "invalidTable": "無効なテーブルです。再度選択してください",
-      "requiredSelect": "いずれかを選択してください"
-    },
-    "from": {
-      "title": "From",
-      "fromTable": "テーブルを選択",
-      "fromQuery": "クエリから"
-    },
-    "select": {
-      "title": "選択"
-    },
-    "where": {
-      "title": "場所"
-    },
-    "groupBy": {
-      "title": "グループ化"
-    },
-    "orderBy": {
-      "title": "並び替え",
-      "asc": "昇順",
-      "desc": "降順"
-    },
-    "limit": {
-      "title": "リミット"
-    },
-    "offset": {
-      "title": "オフセット"
-    },
-    "join": {
-      "title": "結合",
-      "joinType": "結合タイプ",
-      "leftJoin": "左結合",
-      "rightJoin": "右結合",
-      "innerJoin": "内部結合",
-      "fullJoin": "全て結合",
-      "data": "From"
-    },
-    "aggregation": {
-      "title": "集約"
-    }
-  },
   "comment": {
     "title": "コメント",
     "placeholder": "コメントを残す...",
@@ -1134,19 +1088,11 @@
       "notFound": "プラグインコンテキストメニューが見つかりません",
       "anchorNotFound": "プラグインコンテキストメニューのアンカーが見つかりません"
     },
-    "pluginChart": {
-      "queryNotFound": "プラグインチャートのクエリが見つかりません"
-    },
     "dbConnection": {
       "unsupportedDriver": "サポートされていないデータベースドライバー: {{driver}}",
       "onlyOwnerCanRemove": "ベース {{baseId}} のデータベース接続を削除できるのはベース所有者のみです",
       "onlyOwnerCanCreate": "ベース {{baseId}} のデータベース接続を作成できるのはベース所有者のみです",
       "roleNotExist": "データベースロール {{role}} は存在しません"
-    },
-    "baseQuery": {
-      "queryFailed": "クエリが失敗しました: {{message}}",
-      "invalidJoinType": "無効な結合タイプ: {{joinType}}",
-      "tableNotFound": "ベース {{baseId}} にテーブル {{tableId}} が見つかりません"
     },
     "baseSqlExecutor": {
       "notAllowedToExecuteSqlWithKeyword": "キーワード {{keyword}} を含むSQLの実行は許可されていません",

@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import type { IPageParams } from '../types';
+import type { IPageParams } from './types';
 
 export const EnvContext = React.createContext<IPageParams>({} as IPageParams);
 

@@ -795,52 +795,6 @@
     "copyTip": "Cliquer pour copier",
     "copied": "Copié"
   },
-  "baseQuery": {
-    "add": "Ajouter",
-    "error": {
-      "invalidCol": "Colonne invalide, veuillez sélectionner à nouveau",
-      "invalidCols": "Colonnes invalides : {{colNames}}",
-      "invalidTable": "Table invalide, veuillez sélectionner à nouveau",
-      "requiredSelect": "Vous devez sélectionner un élément"
-    },
-    "from": {
-      "title": "De",
-      "fromTable": "Sélectionner la table",
-      "fromQuery": "De la requête"
-    },
-    "select": {
-      "title": "Sélectionner"
-    },
-    "where": {
-      "title": "Où"
-    },
-    "groupBy": {
-      "title": "Grouper par"
-    },
-    "orderBy": {
-      "title": "Trier par",
-      "asc": "Croissant",
-      "desc": "Décroissant"
-    },
-    "limit": {
-      "title": "Limite"
-    },
-    "offset": {
-      "title": "Décalage"
-    },
-    "join": {
-      "title": "Joindre",
-      "joinType": "Type de jointure",
-      "leftJoin": "Jointure à gauche",
-      "rightJoin": "Jointure à droite",
-      "innerJoin": "Jointure interne",
-      "fullJoin": "Jointure complète",
-      "data": "De"
-    },
-    "aggregation": {
-      "title": "Agrégation"
-    }
-  },
   "comment": {
     "title": "Commentaire",
     "placeholder": "Laissez un commentaire...",
@@ -1134,19 +1088,11 @@
       "notFound": "Menu contextuel du plugin non trouvé",
       "anchorNotFound": "Ancre du menu contextuel du plugin non trouvée"
     },
-    "pluginChart": {
-      "queryNotFound": "Requête du graphique du plugin non trouvée"
-    },
     "dbConnection": {
       "unsupportedDriver": "Pilote de base de données non pris en charge: {{driver}}",
       "onlyOwnerCanRemove": "Seul le propriétaire de la base peut supprimer la connexion à la base de données pour la base {{baseId}}",
       "onlyOwnerCanCreate": "Seul le propriétaire de la base peut créer une connexion à la base de données pour la base {{baseId}}",
       "roleNotExist": "Le rôle de base de données {{role}} n'existe pas"
-    },
-    "baseQuery": {
-      "queryFailed": "Échec de la requête: {{message}}",
-      "invalidJoinType": "Type de jointure non valide: {{joinType}}",
-      "tableNotFound": "Table {{tableId}} non trouvée dans la base {{baseId}}"
     },
     "baseSqlExecutor": {
       "notAllowedToExecuteSqlWithKeyword": "Non autorisé à exécuter SQL avec le mot-clé {{keyword}}",

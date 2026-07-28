@@ -5,9 +5,8 @@ import type {
   IUIConfig,
 } from '@teable/sdk/plugin-bridge';
 import { useMemo, useRef } from 'react';
-import { Chart } from '../../blocks/chart/components/Chart';
-import type { IPageParams } from '../../blocks/chart/types';
 import { ChartPage as ChartV2Page } from '../../blocks/chart-v2/components/ChartPage';
+import type { IPageParams } from '../../blocks/chart-v2/hooks/types';
 import type { IPluginParams } from './types';
 
 type IBaseProps = {
@@ -52,22 +51,12 @@ export const ComponentPluginRender = (props: IComponentPluginRenderProps) => {
     ...uiEvent,
   };
 
-  if (pluginId === 'plgchartV2') {
-    return (
-      <ChartV2Page
-        parentBridgeMethods={parentBridgeMethods.current}
-        uiConfig={uiConfig}
-        pageParams={pageParams}
-        dragging={dragging}
-      />
-    );
-  }
-
   return (
-    <Chart
-      pageParams={pageParams}
+    <ChartV2Page
       parentBridgeMethods={parentBridgeMethods.current}
       uiConfig={uiConfig}
+      pageParams={pageParams}
+      dragging={dragging}
     />
   );
 };

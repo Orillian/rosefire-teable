@@ -795,52 +795,6 @@
     "copyTip": "Kopyalamak için tıklayın",
     "copied": "Kopyalandı"
   },
-  "baseQuery": {
-    "add": "Ekle",
-    "error": {
-      "invalidCol": "Geçersiz sütun, lütfen tekrar seçin",
-      "invalidCols": "Geçersiz sütunlar: {{colNames}}",
-      "invalidTable": "Geçersiz tablo, lütfen tekrar seçin",
-      "requiredSelect": "Bir tane seçmelisiniz"
-    },
-    "from": {
-      "title": "Kaynak",
-      "fromTable": "Tablo Seç",
-      "fromQuery": "Sorgudan"
-    },
-    "select": {
-      "title": "Seç"
-    },
-    "where": {
-      "title": "Koşul"
-    },
-    "groupBy": {
-      "title": "Grupla"
-    },
-    "orderBy": {
-      "title": "Sırala",
-      "asc": "Artan",
-      "desc": "Azalan"
-    },
-    "limit": {
-      "title": "Limit"
-    },
-    "offset": {
-      "title": "Ofset"
-    },
-    "join": {
-      "title": "Birleştir",
-      "joinType": "Birleştirme Türü",
-      "leftJoin": "Sol Birleştirme",
-      "rightJoin": "Sağ Birleştirme",
-      "innerJoin": "İç Birleştirme",
-      "fullJoin": "Tam Birleştirme",
-      "data": "Kaynak"
-    },
-    "aggregation": {
-      "title": "Toplama"
-    }
-  },
   "comment": {
     "title": "Yorum",
     "placeholder": "Bir yorum bırakın...",
@@ -1134,19 +1088,11 @@
       "notFound": "Eklenti bağlam menüsü bulunamadı",
       "anchorNotFound": "Eklenti bağlam menüsü bağlantısı bulunamadı"
     },
-    "pluginChart": {
-      "queryNotFound": "Eklenti grafik sorgusu bulunamadı"
-    },
     "dbConnection": {
       "unsupportedDriver": "Desteklenmeyen veritabanı sürücüsü: {{driver}}",
       "onlyOwnerCanRemove": "Yalnızca base sahibi, base {{baseId}} için veritabanı bağlantısını kaldırabilir",
       "onlyOwnerCanCreate": "Yalnızca base sahibi, base {{baseId}} için veritabanı bağlantısı oluşturabilir",
       "roleNotExist": "Veritabanı rolü {{role}} mevcut değil"
-    },
-    "baseQuery": {
-      "queryFailed": "Sorgu başarısız: {{message}}",
-      "invalidJoinType": "Geçersiz birleştirme türü: {{joinType}}",
-      "tableNotFound": "Tablo {{tableId}}, base {{baseId}} içinde bulunamadı"
     },
     "baseSqlExecutor": {
       "notAllowedToExecuteSqlWithKeyword": "{{keyword}} anahtar kelimesiyle SQL çalıştırılmasına izin verilmiyor",
